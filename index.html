@@ -32,12 +32,36 @@
                 const app = document.getElementById('app');
                 app.innerHTML = ''; // ローディング消去
 
-                if (data.length === 0) {
+                // データ構造の正規化
+                let companies = [];
+                let metadata = null;
+
+                if (Array.isArray(data)) {
+                    companies = data;
+                } else if (data.companies) {
+                    companies = data.companies;
+                    metadata = data.metadata;
+                }
+
+                if (!companies || companies.length === 0) {
                     app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
                     return;
                 }
 
-                data.forEach(company => {
+                // メタデータ表示（トークン数など）
+                if (metadata && metadata.token_usage) {
+                    const totalTokens = metadata.token_usage.total_tokens || 0;
+                    const metaHtml = `
+                        <div class="system-status" style="text-align: center; color: var(--text-sub); font-size: 0.8rem; margin-bottom: 2rem; opacity: 0.8;">
+                            <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+                                Last Scan: ${metadata.updated_at} &nbsp;|&nbsp; Token Usage: ${totalTokens.toLocaleString()}
+                            </span>
+                        </div>
+                    `;
+                    app.innerHTML += metaHtml;
+                }
+
+                companies.forEach(company => {
                     // スコアに応じたクラス
                     let scoreClass = 'score-low';
                     if (company.average_score >= 8) scoreClass = 'score-high';
