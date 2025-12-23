@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minamo | 市場観測</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Minamo</h1>
+            <div class="subtitle">Market Ripple Observer</div>
+        </header>
+
+        <div id="app">
+            <div id="status">Scanning the surface...</div>
+        </div>
+    </div>
+
+    <script>
+        fetch('data.json')
+            .then(response => {
+                if (!response.ok) throw new Error("Data not found");
+                return response.json();
+            })
+            .then(data => {
+                const app = document.getElementById('app');
+                app.innerHTML = ''; // ローディング消去
+                
+                data.forEach(item => {
+                    let scoreClass = 'score-low';
+                    if (item.score >= 8) scoreClass = 'score-high';
+                    else if (item.score >= 5) scoreClass = 'score-mid';
+
+                    const html = `
+                        <div class="card">
+                            <div class="meta">
+                                <span class="date">${item.date}</span>
+                                <span class="score-badge ${scoreClass}">SCORE: ${item.score}</span>
+                            </div>
+                            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+                            <div class="analysis">
+                                <span class="ai-label">AI EYE</span> ${item.reason}
+                            </div>
+                        </div>
+                    `;
+                    app.innerHTML += html;
+                });
+            })
+            .catch(err => {
+                document.getElementById('status').innerHTML = 
+                    'まだ水面は静かです。<br><small>(GitHub Actionsの初回実行を待ってください)</small>';
+            });
+    </script>
+</body>
+</html>

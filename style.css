@@ -1,0 +1,138 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-main: #e2e8f0;
+    --text-sub: #94a3b8;
+    --accent-cyan: #06b6d4;
+    --accent-red: #f43f5e;
+    --border: rgba(148, 163, 184, 0.1);
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-color);
+    background-image: radial-gradient(circle at top right, #1e293b 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, #164e63 0%, transparent 40%);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ヘッダー周り */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+h1 {
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.subtitle {
+    color: var(--accent-cyan);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+/* カードデザイン */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px); /* すりガラス効果 */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-cyan);
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: var(--text-sub);
+}
+
+/* スコアバッジ */
+.score-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.score-high {
+    background: rgba(244, 63, 94, 0.2);
+    color: #fda4af;
+    border: 1px solid #f43f5e;
+}
+
+.score-mid {
+    background: rgba(249, 115, 22, 0.2);
+    color: #fdba74;
+    border: 1px solid #f97316;
+}
+
+.score-low {
+    background: rgba(148, 163, 184, 0.2);
+    color: #cbd5e1;
+    border: 1px solid #64748b;
+}
+
+h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+a {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--accent-cyan);
+}
+
+.analysis {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    color: var(--text-sub);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.ai-label {
+    color: var(--accent-cyan);
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+/* ローディング・ステータス表示 */
+#status {
+    text-align: center;
+    color: var(--text-sub);
+    margin-top: 50px;
+}
