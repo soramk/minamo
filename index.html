@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minamo | 市場観測</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for premium feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -27,21 +31,55 @@
             .then(data => {
                 const app = document.getElementById('app');
                 app.innerHTML = ''; // ローディング消去
-                
-                data.forEach(item => {
+
+                if (data.length === 0) {
+                    app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
+                    return;
+                }
+
+                data.forEach(company => {
+                    // スコアに応じたクラス
                     let scoreClass = 'score-low';
-                    if (item.score >= 8) scoreClass = 'score-high';
-                    else if (item.score >= 5) scoreClass = 'score-mid';
+                    if (company.average_score >= 8) scoreClass = 'score-high';
+                    else if (company.average_score >= 5) scoreClass = 'score-mid';
+
+                    // ニュースリストのHTML生成
+                    let newsHtml = '';
+                    if (company.news && company.news.length > 0) {
+                        newsHtml = '<ul class="news-list">';
+                        company.news.forEach(news => {
+                            let newsScoreClass = 'text-low';
+                            if (news.score >= 8) newsScoreClass = 'text-high';
+                            else if (news.score >= 5) newsScoreClass = 'text-mid';
+
+                            newsHtml += `
+                               <li class="news-item">
+                                   <div class="news-score ${newsScoreClass}">${news.score}</div>
+                                   <div class="news-content">
+                                       <a href="${news.link}" target="_blank" class="news-title">${news.title}</a>
+                                       <div class="news-reason">${news.reason}</div>
+                                   </div>
+                               </li>
+                           `;
+                        });
+                        newsHtml += '</ul>';
+                    } else {
+                        newsHtml = '<div class="no-news">No recent news analyzed.</div>';
+                    }
 
                     const html = `
-                        <div class="card">
-                            <div class="meta">
-                                <span class="date">${item.date}</span>
-                                <span class="score-badge ${scoreClass}">SCORE: ${item.score}</span>
+                        <div class="company-card">
+                            <div class="company-info">
+                                <h2>${company.company}</h2>
+                                <div class="main-score ${scoreClass}">
+                                    <span class="score-label">AI SCORE</span>
+                                    <span class="score-value">${company.average_score}</span>
+                                </div>
+                                <div class="updated-at">Updated: ${company.updated_at}</div>
                             </div>
-                            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
-                            <div class="analysis">
-                                <span class="ai-label">AI EYE</span> ${item.reason}
+                            <div class="company-news">
+                                <h3>Latest Analysis</h3>
+                                ${newsHtml}
                             </div>
                         </div>
                     `;
@@ -49,9 +87,11 @@
                 });
             })
             .catch(err => {
-                document.getElementById('status').innerHTML = 
-                    'まだ水面は静かです。<br><small>(GitHub Actionsの初回実行を待ってください)</small>';
+                console.error(err);
+                document.getElementById('status').innerHTML =
+                    'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
             });
     </script>
 </body>
+
 </html>
