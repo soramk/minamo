@@ -33,6 +33,13 @@ header {
     animation: fadeIn 1s ease-out;
 }
 
+.logo {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+}
+
 h1 {
     font-size: 3rem;
     margin: 0;
