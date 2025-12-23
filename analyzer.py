@@ -21,7 +21,7 @@ genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 def get_gemini_analysis(title, snippet):
     # モデル指定を少し変更（念のため最新のモデル名に近づける）
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-3-flash-preview")
     prompt = f"""
     以下のニュースタイトルと概要から、投資家目線で「株価上昇の期待値」を1〜10点で採点し、その理由を30文字以内で簡潔に述べよ。
     出力はJSON形式のみ: {{"score": 数値, "reason": "理由"}}
