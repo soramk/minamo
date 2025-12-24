@@ -5,8 +5,15 @@ import feedparser
 from google import genai
 from google.genai import types
 import urllib.parse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import yfinance as yf
+
+# JSTタイムゾーン（UTC+9）
+JST = timezone(timedelta(hours=9))
+
+def now_jst():
+    """現在時刻をJSTで取得"""
+    return datetime.now(JST)
 
 # 設定
 CONFIG_FILE = "config.json"
@@ -100,8 +107,8 @@ def migrate_old_history():
             print("No history data to migrate")
             return
         
-        # 本日の日付で保存
-        today = datetime.now().strftime("%Y-%m-%d")
+        # 本日の日付で保存（JST）
+        today = now_jst().strftime("%Y-%m-%d")
         today_file = os.path.join(HISTORY_DIR, f"{today}.json")
         
         # 既存のファイルがある場合はマージ
@@ -275,7 +282,7 @@ def main():
         news_items = []
         for entry in entries:
             # 記事の公開日を取得（RSSフィードから）
-            article_date = datetime.now().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻
+            article_date = now_jst().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻（JST）
             if hasattr(entry, 'published'):
                 try:
                     # feedparserが日付を解析している場合
@@ -292,7 +299,7 @@ def main():
                 "snippet": entry.summary,
                 "link": entry.link,
                 "date": article_date,  # 記事の公開日
-                "collected_at": datetime.now().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持
+                "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持（JST）
             })
         
         if news_items:
@@ -406,7 +413,7 @@ def main():
         company_record = {
             "company": company_name,
             "average_score": predicted_score,
-            "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
             "stock_info": stock_info,
             "score_evaluation": score_evaluation,
             "news": []
@@ -430,7 +437,7 @@ def main():
     # 保存データの構築 (メタデータを含める)
     final_output = {
         "metadata": {
-            "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
             "token_usage": token_usage
         },
         "companies": companies_data
@@ -444,8 +451,8 @@ def main():
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(final_output, f, indent=2, ensure_ascii=False)
     
-    # 履歴を日付ごとに分割して保存
-    timestamp = datetime.now()
+    # 履歴を日付ごとに分割して保存（JST）
+    timestamp = now_jst()
     date_str = timestamp.strftime("%Y-%m-%d")
     time_str = timestamp.strftime("%H:%M")
     
