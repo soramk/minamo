@@ -1,850 +1,1251 @@
 {
   "metadata": {
-    "updated_at": "2025-12-23 23:19",
+    "updated_at": "2025-12-24 15:10",
     "token_usage": {
-      "prompt_tokens": 21671,
-      "candidates_tokens": 7877,
-      "total_tokens": 32456
+      "prompt_tokens": 21882,
+      "candidates_tokens": 8242,
+      "total_tokens": 31477
     }
   },
   "companies": [
     {
       "company": "トヨタ自動車",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 78,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "7203.T",
+        "current_price": 3353.0,
+        "previous_price": 3415.0,
+        "price_change": -62.0,
+        "price_change_percent": -1.815519765739385,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 40.9,
+        "prediction": "上昇予測 (強い)",
+        "actual": "-1.82%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "トヨタ自動車株価が1年7カ月ぶり高値 円安進行で - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE51U2tQRkNyTTUwcU41clVKVVJieHp2c3E4Ti1ac0kzbUxjV3pQb29hRmFraDFOVkpHb015X2lqRzVHTHU3Z3NBQ2hQSmVja2tOUG9tcElsRUNOWjA5MUdadlF6NUxnWHN4NE9yZw?oc=5",
-          "score": 8,
-          "reason": "円安進行による収益改善期待が株価を押し上げ",
-          "date": "2025-12-23 23:18"
+          "score": 75,
+          "reason": "円安による業績上振れ期待が株価を押し上げている。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト評価】トヨタ自動車、レーティング強気を継続、目標株価3,900円に引上げ（欧州系大手証券）(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQZUt6cUxsVkRDeTNmZUdEWW5DTnZvRGtHcmFYY0dxR0xMeXhLUUlnRFBmWEVUcHNUVnM3Z3Rhc0xrdUhoNTFfZzV4b2dELVJZaHNyb1k3dml0Um9kWUpEV0ZFOHF3d2VKTEpaV0VXRDBGbjlUQnVoTEFfUWtQY3h0c3dCRTMwQm8?oc=5",
-          "score": 9,
-          "reason": "欧州系大手証券の目標株価大幅引上げはポジティブ",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "大手証券による目標株価の大幅引き上げは強い買い材料。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "トヨタ自動車、営業減益悪化予想 5日決算 円安進行は株価の追い風 - ig.com",
           "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPSWJBU3R2cE1RZmxtYVdqOTl0RHZrYWVTdld5RjJJanAtcW1meVRzTGlRTjNJazRqSDBtLWhhUzV1V0dXVXFWRXB6dWdFT1dCQk5UUHlIc0syemlxaHd2VGpZNUNza3dUTVdaZkVtTUhJMno1X3RQMzZMelQ4Y1A5MVU5Q3AtT09pUEo3cXdnaFdnRlNVUXdCQm1TRGw?oc=5",
-          "score": 6,
-          "reason": "減益予想は懸念材料だが、円安メリットが相殺する",
-          "date": "2025-12-23 23:18"
+          "score": 74,
+          "reason": "減益予想は懸念だが、為替メリットが相殺し底堅い。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "ソニーグループ",
-      "average_score": 7,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 68,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6758.T",
+        "current_price": 3990.0,
+        "previous_price": 4069.0,
+        "price_change": -79.0,
+        "price_change_percent": -1.9415089702629638,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 40.3,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "-1.94%",
+        "status": "外れ"
+      },
       "news": [
+        {
+          "title": "ソニーフィナンシャルグループ(株)【8729】：株価・株式情報 - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9Pa3JPa0lpN3U4UUtXb2RQN2pnb1JDUEJyMEl4Ym9aZXRlYUtpMm9DblpjY2JVTnV4T0tuX1VOaTlUZW1VUHoxM0VONHVFQk1Zcmc?oc=5",
+          "score": 50,
+          "reason": "現状維持のステータスであり、直接的な株価刺激は限定的。",
+          "date": "2025-12-24 15:09"
+        },
         {
           "title": "ソニーG株価反落、ゲーム関連に売り スヌーピー企業子会社化は反応薄 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1CRzI2OVdGWXZ4Y1llbE02LVJ5MVN5QjB1NUJPMzlsWnIwZm83SGlieFAzRWJzeVdDeGYtUExzLVNJSjRWbVFKckRkUF9zVWVGSjJhbVhiS0NoMjhUSGVIS1VHVlBHbjFSS1F3eA?oc=5",
-          "score": 4,
-          "reason": "主力事業のゲーム関連への売りが重荷となっている",
-          "date": "2025-12-23 23:18"
+          "score": 60,
+          "reason": "ゲーム部門の売り越しが重石だが、買収戦略は長期的。 ",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "ソニーグループ、エンタメ成長に評価 株価好調 半導体にも追い風 - ig.com",
           "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNSUlIS1c3S0FWd1B1bTlvVkptTmdWSHBxMTd1TmZjUV8zTnRUTzRfMFF5clRpRXljcG9JNk9qV0lROHlVTDVkcXRyb1I4Q0xCcnVhdG0xN2N2bTdjU1RneWYyN2hZSFd3Um5xQ1FSVllmY3pMUVJFaFE0QmZYMEx3OHhjX082Z2s2ZEpRS1daVC1YOGlaazg4?oc=5",
-          "score": 8,
-          "reason": "エンタメと半導体の成長期待が下値を支える",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "ソニーグループ【6758】、今期最終を8％上方修正 | 決算速報 - 株探ニュース - かぶたん",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5ucUdLWFNpemtFaGFUWVlEOXI4VFhtaGVUYm1nLWM1aU9OaGdvdVI2MGtxdm9tUFJIYk5KcGZyS1Z5aXMxaEFsS2FseGZLME1oTHc?oc=5",
-          "score": 9,
-          "reason": "最終利益の8％上方修正は非常に強い買い材料",
-          "date": "2025-12-23 23:18"
+          "score": 94,
+          "reason": "多角的な成長シナリオと半導体需要の回復が非常にポジティブ。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "キーエンス",
-      "average_score": 5,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 72,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6861.T",
+        "current_price": 57470.0,
+        "previous_price": 57980.0,
+        "price_change": -510.0,
+        "price_change_percent": -0.8796136598827182,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 45.6,
+        "prediction": "上昇予測 (強い)",
+        "actual": "-0.88%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "「ぼんやり増配」響かぬ株価 キーエンス、10年前の再現ならず - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBkOWIzblctZ2dEaUtDUVlZZ0xDRlJPR0JObG1aUGxCOXF6aTU5dXlkRFhxWG1NdURRMmVaal8tcVZYYzJVSUhFZmFJRG1lXzhpbVg4SWxNelh3Tmoxa0l2V2RJMHpuOFpxZnVYOA?oc=5",
-          "score": 4,
-          "reason": "増配への期待が既に織り込まれ、反応は限定的",
-          "date": "2025-12-23 23:18"
+          "score": 55,
+          "reason": "増配幅が市場の期待に届かず、失望売りを招いた側面がある。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "キーエンス、7-9月期(2Q)経常は14％増益、今期配当を200円増額修正 - かぶたん",
+          "title": "キーエンス【6861】、7-9月期(2Q)経常は14％増益、今期配当を200円増額修正 | 決算速報 - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5rMGFJWk9naWRSdnB6Zk5SU24wQzhMRFNhcWpxeVA4SHhtc1lHRWtka1hMU1h3dGlHM2NzbktYbHhjb1lVRWZVdk1LOUNDOWt3UHc?oc=5",
-          "score": 8,
-          "reason": "14％増益と200円の増配修正は実力値を証明",
-          "date": "2025-12-23 23:18"
+          "score": 80,
+          "reason": "14%増益と大幅増配はファンダメンタルズの強さを示す。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "寄前【板状況】注文ランキング 【買いトップ】日本新薬 【売りトップ】キーエンス [08:32](株探ニュース) - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNUlZ1N2VhVVF6M3FfZWM1d01YY01oS2VXdUpHa3JBZXlJZlFSZWlPWnJTQVJxOXIzd1h0Y0IteFZUbWFFWDdNY0NQcFY3VGlQN1JrMUo0cXBhbDhfZjluZHNpXzBTSFFrcXoyanJHamVub1JiR3lMMTZzSnZtLUozTnhzeUs3Nnc?oc=5",
-          "score": 3,
-          "reason": "売り注文ランキングトップは短期的な需給悪化を示す",
-          "date": "2025-12-23 23:18"
+          "title": "【決算速報】キーエンス、7-9月期(2Q)経常は14％増益、今期配当を200円増額修正(株探ニュース) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOVGFJc2RITmczSW5MUXo2c0pNdWZBMUxlRUZtZEVHWUU4amY5VUZ0NHpBSkE4cDVkMzAyMUczN1NEODRVX2JCdXJLR2RKQjQ4bXdfYVJyMUUyREhyX2ZzX3F6eUwxeGRxN0lBbXNDNTc3aC1uWldPOWJRaWJ3MktfLW9xc0dmTms?oc=5",
+          "score": 81,
+          "reason": "堅調な決算内容を再確認。株主還元姿勢も評価できる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "三菱UFJフィナンシャルG",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 75,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8306.T",
+        "current_price": 2481.0,
+        "previous_price": 2515.0,
+        "price_change": -34.0,
+        "price_change_percent": -1.3518886679920477,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 43.2,
+        "prediction": "上昇予測 (強い)",
+        "actual": "-1.35%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "(株)三井住友フィナンシャルグループ【8316】：株価・株式情報 - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBybzZGRmxVYWhDUTdFYUt5YlRpbndxaEpuZEU4S2RPVm56dFRCODJlNm5uTW9jUF9hRHF1aXBjeGRhVTdvdThLalNySEVnMTFiQWc?oc=5",
-          "score": 7,
-          "reason": "メガバンク全体の好調な投資環境を反映",
-          "date": "2025-12-23 23:18"
+          "score": 60,
+          "reason": "競合他社の情報だが、銀行セクター全体の活況を示唆。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "日経平均株価続伸、午前終値は68円高の5万0481円 - 日本経済新聞",
+          "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNaFk2Mlc5MmFwblFHZzhidFFmMjFadmtUalhROVVPaElQVDh4Zng1enZXVWFLd0Nkb09RSkNTM1F4cFJNcnpwaXN1ekdOVFF1Q081LVlqeFlKVWRwYW1YR2E4ekEza0k1QmlDMmlGTEVRbE93eEQ2RWpyRXVCX2VBX1ZrRG4wM0dNMmVCN200T3hRS1JyX3A0LXVvZmloVFBEOHc?oc=5",
+          "score": 75,
+          "reason": "地合いの良さが大型株である同社にプラスに働く。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "三井住友ＦＧ株が続伸 上場来高値、利ざや改善期待が継続 - QUICK Money World",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBBbFE5NkpHR2hYWjkwcHUtd25wZTZsZTNVTDJjWWhkVGVnbkt6Sjk3el90T3ZVbXFSODRoa3dSM2N4cEk4WThXUUc2ZmNmd3BDdnNPei1B?oc=5",
-          "score": 9,
-          "reason": "利ざや改善期待による上場来高値更新は追い風",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "三菱UFJFG株価強含む 日銀が0.75%に利上げ、上値は限定的 - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBQYTUtdXRvWnlSVUctZm1oSnFVSmNGN0t4MlJUc3RxMUxSbHNzbXNEWTh1eVdvZ0FITVh6SUVNeUVxcmJEWFJrdEJWOW15OGI3MTVlLWtvZFg4dDVJY3RlUnJxTWsybmhrZmZvMw?oc=5",
-          "score": 7,
-          "reason": "利上げはポジティブだが、上昇幅に限定感がある",
-          "date": "2025-12-23 23:18"
+          "score": 90,
+          "reason": "利ざや改善期待は同社にとっても強力な追い風となる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "東京エレクトロン",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 92,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8035.T",
+        "current_price": 33220.0,
+        "previous_price": 33000.0,
+        "price_change": 220.0,
+        "price_change_percent": 0.6666666666666667,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 72.0,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "+0.67%",
+        "status": "部分的的中"
+      },
       "news": [
         {
           "title": "東京エレクトロン株価7%高 モルガンMUFG証券が目標引き上げ - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBqY2VYTkh0RWw1OHV0bnZORWwyOGVQZ01vMHcyX0xTWWxjUk12bV8zQXlrY24xZUJQMTQxczBsbm5lYXQ2VlRhdjhYWTRnZ2R5bHZkM2tHbWU4RS0teFVLUEptUmx5Z3FWQmlEZQ?oc=5",
-          "score": 9,
-          "reason": "大手証券の目標株価引上げに伴う7%高は強力",
-          "date": "2025-12-23 23:18"
+          "score": 93,
+          "reason": "目標株価引き上げによる急騰は、強い上昇トレンドを示す。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト評価】東京エレクトロン、レーティング強気に引上げ、目標株価39,600円に引上げ（米系大手証券）(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNMExuT0R5Q2FRSHRtSU1BQlhHc2dKVlc0OWRBeUF2M0ZmTGZLTmlocHFpM1hqbC1KLTFLUmFYV01rNDVuVjRFX1BnSlBVYjVjeDdxNXhuWHhzQU50ZFdKRVZzSm8wQjAxQkV3cW9EZXRBSzhPbnVGQ0RlTjk3TzBVWEtkaUxFOTQ?oc=5",
-          "score": 10,
-          "reason": "米系大手による強気評価と高水準の目標株価は有望",
-          "date": "2025-12-23 23:18"
+          "score": 95,
+          "reason": "米系大手による強気評価は、海外勢の買いを誘発する。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "東京エレクトロン、市場予想超えに注目 31日決算 株価上昇の加速も - ig.com",
           "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPcmRoQjd4LTV5UjIxNjR3NlJYYkFaTGp5b0xjR05KLTczNTZvOVB5OFNuMGJ3bHNzakdyU0xwNUFhX1lnVlA3eUw2eTk2ZTZhbFl1ajl1bjYzM29zTDJ1cXZGUUlBWVE4MkFubENDN3BnVmFZZ3RkT2U2dlJDT09ldlMzaFlpMEloYzdTQTdTVFhLaFZGdnA5aWwzOGlhRVk?oc=5",
-          "score": 8,
-          "reason": "市場予想を上回る決算への期待感が強い",
-          "date": "2025-12-23 23:18"
+          "score": 88,
+          "reason": "好決算への期待感が先行しており、期待買いが入りやすい。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "ソフトバンクグループ",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 86,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "9984.T",
+        "current_price": 17525.0,
+        "previous_price": 17735.0,
+        "price_change": -210.0,
+        "price_change_percent": -1.1840992387933464,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 44.1,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-1.18%",
+        "status": "外れ"
+      },
       "news": [
-        {
-          "title": "ソフトバンク(株)【9434】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ONUtFdXBOUGtLMzVlU3g3elVyNThyUWFEZVhtRm5CNkxNOUxRZFljOUprMTl2YXBVV0NSX2tLR3RDNjh0NmRiX3VzRzEtSHN1bnc?oc=5",
-          "score": 7,
-          "reason": "通信子会社と親会社の両輪で堅実な推移",
-          "date": "2025-12-23 23:18"
-        },
         {
           "title": "ソフトバンクグループとソフトバンクを買い推奨（窪田真之） - トウシル",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Cd1FVa2lhS3VuR3lYNUtTZFFWZHBIajhqNlVmNmhVU2JlRmxWQU82T1BxTzNtZ3FSWlNVV2d5SDByTWI0M3FuSUNMUmlKZWRiY1dCRmxHZ0pWQQ?oc=5",
-          "score": 8,
-          "reason": "著名アナリストの買い推奨は投資家心理を好転させる",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "著名アナリストの買い推奨は投資家心理を好転させる。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "ソフトバンクグループ(株)【9984】：株価・株式情報 - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE55YWlQaEwwWXc5TW9lVHVuTGxCY2hKTnRLZjZTZFRoNVJZenhZUERYZWdxaDJreVdfa3p4Sk9zTHNaRkhHb3FHWUp3MVhmLVJGVEE?oc=5",
+          "score": 80,
+          "reason": "情報注目度が高く、ボラティリティを伴う上昇が期待できる。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "ソフトバンクG株価3連騰、孫社長の保有比率上昇 「米に工場」報道も - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9HNHgta3BDUGZNU0FtS1RmYXE4V1ZkUlZoY2kzTjJCQTcydmZib2p0bWRzbmtWR1Y2Z2hjZ1RZNG5NdHV5MDZ0STFueWljdVNPTV9oVGlVX3pPQ2ZxZFRFWGprdXczcUtDdGQ4Zg?oc=5",
-          "score": 9,
-          "reason": "孫社長の保有増と米工場報道は成長戦略の期待に直結",
-          "date": "2025-12-23 23:18"
+          "score": 93,
+          "reason": "トップの保有比率上昇と米国投資は、極めて強い好材料。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "日立製作所",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 83,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6501.T",
+        "current_price": 4988.0,
+        "previous_price": 5011.0,
+        "price_change": -23.0,
+        "price_change_percent": -0.4589902215126721,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 47.7,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.46%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "(株)日立製作所【6501】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1Td3ZhMk5EWTVIUEtCdHVpS1FHMlBVYzB3Qkh3REFWREtRV0NQSThxVDE2b2o5TG05SUxUSHpWTzR0Y3M5U1ZQZ0pYazlBQm9QREE?oc=5",
-          "score": 7,
-          "reason": "大型株としての安定感と関心の高さが継続",
-          "date": "2025-12-23 23:18"
+          "title": "ＮＥＣ【6701】：株価・株式情報 - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8yT3ExbkM2eHoxSXJTdUZVU0FLSXlHbzhkNmVGVy12b0duX3VmQVFUYVloWENpWTVnVV85ZW91QUlMWDlveklabW1BSFk0bW5KY0E?oc=5",
+          "score": 60,
+          "reason": "同業他社の好調はITセクター全体への波及効果がある。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "日立製作所【6501】、今期最終を6％上方修正・最高益予想を上乗せ | 決算速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9JX21HSUdzNWMzbU9PRjloeVZRMXNSYXdybFdQdnFuVTRPaElta2pCbU5lalZIRkwzQmw5V2lqcktYV0pOTzFCWllyOTJzQklqa1E?oc=5",
-          "score": 9,
-          "reason": "上方修正かつ最高益更新の継続は極めてポジティブ",
-          "date": "2025-12-23 23:18"
+          "score": 95,
+          "reason": "上方修正と最高益更新は、文句なしのポジティブサプライズ。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "横河電機、日立製作所しのぐ利益率15% 受注急増の中東がけん引 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAydmFOdWNOZnJXRjJRZGhHQ215ckdoOWRkYnd6WElWblcyS1VYajkwUWhocS1PWmk4XzNWYWxtMXZpemFIdXl5WEtyNXVxSW5hVTZCRThpckxnUllYdGFvWUVpSWpKNzEwUk81Tg?oc=5",
-          "score": 7,
-          "reason": "他社比で利益率は劣るが中東需要等の期待は残る",
-          "date": "2025-12-23 23:18"
+          "score": 94,
+          "reason": "他社との比較で利益水準が注目され、評価が高まる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "ファーストリテイリング",
-      "average_score": 5,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 70,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "9983.T",
+        "current_price": 56480.0,
+        "previous_price": 56990.0,
+        "price_change": -510.0,
+        "price_change_percent": -0.8948938410247412,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 45.5,
+        "prediction": "上昇予測 (強い)",
+        "actual": "-0.89%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "ファーストリテイリング株価反落 11月既存店7%増収も利益確定売り - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9ROXNpMjgtSFByczl3UXNDcGpkQmRVWjV3RE4zdG0wc0ZFdnNKYzRmV016bHJIaXlYbU1fdXlWQzlEZmtQWFlnZk43NXJsYnVsTjA0WUgxdHVrQm9IdjRlakcxNFV4a2dKUUJJYg?oc=5",
-          "score": 5,
-          "reason": "好調な増収でも材料出尽くしによる利確売りが優勢",
-          "date": "2025-12-23 23:18"
+          "score": 65,
+          "reason": "好業績ながら利確売りに押されており、短期的には調整局面。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "現在の株価で「ユニクロ株」を買おうと思ったら“560万円以上”必要！「株式分割」の前だったら“4700万円以上”も必要だった!? - Yahoo!ニュース",
           "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5kbjlEaUJlLW9nV0stS0Z3cXZNdUdNRFlFSDRPdVQ5cDM0ZzRsS0dPTFg1VjhOQmx5dlJtdkpfRGJlaXdwNUN4b3Y1WHMwLVFYVW9paXozaHZpU1o1TlEzblJjbTB0NEpPYi1ObF9iUzAyY0RjcWdFZDNUcmZGcEk?oc=5",
-          "score": 4,
-          "reason": "高い最低投資金額が個人投資家の参入障壁に",
-          "date": "2025-12-23 23:18"
+          "score": 60,
+          "reason": "値がさ株ゆえの流動性懸念が意識されやすい内容。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【市況】 前場に注目すべき3つのポイント～ファーストリテイリングが日経平均株価をけん引する可能性～ - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1JUXNEcU9Rc2J5ZkhIbFZYZ1ZsMGdRNm5waUdTdkttazdnM1dGTk1Hb3NEYjg2QkdyTmhGT1NuVWpGandSSUZPNTBkanVIN1NYYXJUaThSS3JKU1J3eW83cA?oc=5",
-          "score": 7,
-          "reason": "寄与度の高さから指数連動買いが期待される",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "指数の牽引役としての期待は、消去法的な買いを誘う。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "任天堂",
-      "average_score": 2,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 35,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "7974.T",
+        "current_price": 10435.0,
+        "previous_price": 10515.0,
+        "price_change": -80.0,
+        "price_change_percent": -0.7608178792201616,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 72.3,
+        "prediction": "下落予測 (弱い)",
+        "actual": "-0.76%",
+        "status": "部分的的中"
+      },
       "news": [
         {
           "title": "任天堂株が3.8％安 ６日続落、東海東京が目標株価を引き下げ - QUICK Money World",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBYUDVTYTd1SXNzTVFLUnhtMmVSbHdjb3pIU1gtckptX3M2elVFR20xV3JaUlB5TkxJWWNLSk9kdURZNEsxYklrN0R2U0s1ZU5nSVRUR2pR?oc=5",
-          "score": 2,
-          "reason": "6日続落と目標株価の引下げは投資家離れを招く",
-          "date": "2025-12-23 23:18"
+          "score": 30,
+          "reason": "目標株価引き下げと連日の続落は、目先の下落トレンドを示す。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "任天堂の株価が午後一段安、8カ月ぶり安値 シティG証券は目標下げ - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE0wa2lWUVNXQWFyWGxFWEdNTTdBS2N6VTZfNnNTVmI2M0xpZF8tZGxzMmpyaG1qbFdBdThBVUNjeEhXWkViOWVEdk9tcUFaYVBjcXg1bDRPekplQUNJM2N4bkJQQXdSVTlTZDVwNg?oc=5",
-          "score": 2,
-          "reason": "大手証券の下方評価と安値更新は非常にネガティブ",
-          "date": "2025-12-23 23:18"
+          "score": 25,
+          "reason": "8カ月ぶり安値更新は、投資家心理を著しく悪化させる。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "任天堂も株価暴落……2026年、PC市場を襲う「未曽有の供給ショック」とは（ITmedia ビジネスオンライン） - Yahoo!ニュース",
-          "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5WdGJFYmFMZHVHZjJ3RkRwVThwcXpsbnRwclFabFphQ1pNdk84ZlFRSXB0Z1RjaWZuNng2YjdvRDVVSk1TRTlpVC14QnlPakdKZkk2YUtXR0VRc0pQT1Q1NG4ydGNpZFAyRFNJZHBfZ1BTVzFob3pZQzEzMTR1NjQ?oc=5",
-          "score": 2,
-          "reason": "中長期的な供給不安の報道が買いを手控えさせる",
-          "date": "2025-12-23 23:18"
+          "title": "ゴールドマン・サックス、任天堂株の「買い」評価を維持、目標株価も据え置き 執筆 - Investing.com - FX | 株式市場 | ファイナンス | 金融ニュース",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBYVmY0VWJpY09LS09tejlySzdFS3NNbld5RUxaV0VKZnIzbXJBM2FwSlJzbHZGbUNuRTQ2NGU0SjJvWGNQelBjdXBtdk5lYXk4dGQwNjdTUU1iVGhlZVVuSHFua1FMc1RlaFI4WkNwZnBGYWhn?oc=5",
+          "score": 50,
+          "reason": "GSの維持評価は下支え要因になるが、下げ止まりには至らない。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "新光電気工業",
-      "average_score": 4,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 52,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": null,
+      "score_evaluation": null,
       "news": [
         {
           "title": "新光電気工業【6967】、前期経常は8％減益で着地、今期業績は非開示 | 決算速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ReENDQXY4dVFLb2ZrS244c1BOaVlwc0R0bFQwZnRrckFMUW95ZnYteW1kcGFDZ0VUYlJwYTNUbF9YbEF0dlhBUDVKOXkzZzdyYlE?oc=5",
-          "score": 3,
-          "reason": "減益かつ業績非開示は不透明感を強める",
-          "date": "2025-12-23 23:18"
+          "score": 40,
+          "reason": "減益かつ業績非開示は、先行きの不透明感を強める。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "決算:富士通の4〜6月、純利益10倍の1717億円 新光電気売却で最高 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5WaFZNYnBnOWZFcmlGVDVSTmNuTnZNelBaX2FBU3BlaFVmOFhyZlRoY2ZrblRfMnJ6RzVnMzJNcFJ6a29HX1VHZWdxMlhBVlg1OFQxTFNVVDAycDdpdlpMMTZtZ283LWhJQVhoUQ?oc=5",
-          "score": 5,
-          "reason": "親会社の売却益には貢献するが当事者には不透明",
-          "date": "2025-12-23 23:18"
+          "score": 55,
+          "reason": "売却案件の進捗は親会社には利益だが、本体への影響は精査必要。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【材料】 前日に動いた銘柄 part1 GMOインターネット、新光電気工業、川崎重工業など - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5GTEhiR3BKZGxvb0hYbVVHbHJHb1l6N3NNUEdQNEJNeXV6SUFzYjZDWkN1aUp4NjNGMGRrU2RVVnpsYVAteHEtbnBDdEdfTlVuTzBVNnBtRERPbmk2WW5zUg?oc=5",
-          "score": 5,
-          "reason": "材料株として注目されるが方向感は定まらず",
-          "date": "2025-12-23 23:18"
+          "score": 61,
+          "reason": "材料視された銘柄として出来高を伴う動きがあり、底堅い。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "伊藤忠商事",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 89,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8001.T",
+        "current_price": 9486.0,
+        "previous_price": 9460.0,
+        "price_change": 26.0,
+        "price_change_percent": 0.2748414376321353,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 70.8,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "+0.27%",
+        "status": "部分的的中"
+      },
       "news": [
+        {
+          "title": "JR東日本の株価続伸 伊藤忠商事と不動産子会社の統合を協議 - 日本経済新聞",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE0zM2hJTWxtS20wbHl5Y0tKeXlDVGF6cTg5RHlXclU4UnQteWVWTjRTZW5MXzNYdnFsV1ljdUZHYmw0OW0wRHUxMldXd2M3YlVtSVl0bURvWmhnQ0EtbnZXZ3R1YTdfa1d1bnBROA?oc=5",
+          "score": 85,
+          "reason": "不動産子会社の統合による効率化と規模拡大は好感される。",
+          "date": "2025-12-24 15:09"
+        },
         {
           "title": "伊藤忠は大幅増益で三菱商事は株価急落──総合商社5社決算まとめ「資源の次」は？ - ビジネス+IT",
           "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1FeE9vOVBkX2tNcnFaUzVXck1EcFlqMGwtVGdyS2RIdnpfNkZhZUtVUUtuY0NHUFJINFlPX2Y2WVA1WE9sTHRLLUJVd1VjdlkyWFg0?oc=5",
-          "score": 9,
-          "reason": "競合他社を凌駕する大幅増益が際立つ",
-          "date": "2025-12-23 23:18"
+          "score": 92,
+          "reason": "他商社との対比で「大幅増益」が際立ち、選好されやすい。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "伊藤忠、株式分割を発表 | 銘柄速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84eUtPZkk5cDQ2dEFwZGp4c3NVSTVhSWM3WW9LeVhGQ2ZyYkp6UWo0VmJqUy1EWGpPTm9tSk5BenFIRHZ2TVVrc2E1Yl9aQnk3a0s0OUVCR3dVTFNOX2p1cg?oc=5",
-          "score": 10,
-          "reason": "株式分割（5分割）は流動性向上と買い材料になる",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "決算:伊藤忠の純利益4年ぶり5000億円超え、4〜9月14%増 株式5分割 - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE84ckFIdnVtU1R1TUVvTjZjc2JzLVVfdGNYNUtJYlk5aENVWk1ERHRRcUI5RXZWeHFCenlpdG83QmE3ZmlZRWlHUUt1NXlWVFRYZFJub0IyUmx2aHQyTjE1RzdpSTByMmxhaTlRWA?oc=5",
-          "score": 9,
-          "reason": "4年ぶりの高利益と好決算を評価",
-          "date": "2025-12-23 23:18"
+          "score": 90,
+          "reason": "株式分割による流動性の向上は、個人投資家の買いを呼び込む。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "三井住友フィナンシャルG",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 94,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8316.T",
+        "current_price": 5096.0,
+        "previous_price": 5129.0,
+        "price_change": -33.0,
+        "price_change_percent": -0.6434002729576915,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 46.8,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.64%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "(株)三井住友フィナンシャルグループ【8316】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBybzZGRmxVYWhDUTdFYUt5YlRpbndxaEpuZEU4S2RPVm56dFRCODJlNm5uTW9jUF9hRHF1aXBjeGRhVTdvdThLalNySEVnMTFiQWc?oc=5",
-          "score": 8,
-          "reason": "メガバンク筆頭として高い市場関心を維持",
-          "date": "2025-12-23 23:18"
+          "title": "三井住友FG、この1年で株価は+37%！日銀の利上げ＆金利上昇でさらなる注目集まる（2025年12月22日）(LIMO) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOX2RTWk9pQUV3anZoQk1GempObGpDSFlpczhxNF9DOXFtVi0wRzBPd1lYVjEzYVpkam9TRUhPU2M4cWFZRTh1Q1BHZHRseXlXQ0tEam9PNTBrNzJFQjFMQ05jX0cxbTZjT2xpcFlTbWpWaVlWeGZvakx4X1JYbGMzSXQxTHpRaDg?oc=5",
+          "score": 95,
+          "reason": "利上げ局面での収益拡大期待は極めて強力な買い材料。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "三井住友FG、欧州に5500億円ファンド 買収資金を融資 - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOZmcwanZxWWE1aFhNWmx4Z293TFNfNFM4VlJlWGxINE1hdUdWalBJZ1JTWWRnSWZnN3J5elFrU20xLWJnQ2ZUY0ltN3Jld0xWNnZ0UEs1QTUzdEM5cFpNVnlISVBoZHlydkVaUmpmZUhCNXlfX1RaTzNISXBlSVVVUlNqMzcwVU10a0NwaERNdk5GQi1rYm1OeGpfcWh2UlZHZzBMRUpneTE?oc=5",
-          "score": 8,
-          "reason": "欧州での攻めの事業展開は将来の収益源として期待",
-          "date": "2025-12-23 23:18"
+          "title": "三井住友FG・中島達社長「強い資金需要、預金とのバランスにズレ」 - 日本経済新聞",
+          "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOc1E3X2xmVllsWWVWSGtIaHp6YUpJYjZ1WEpGZjJfSHhkUHdfNVJRMHQ0VG5jcURXMzhrYkszNTk2QlY5OWVLN0VUVXUwdVNHa3JjRTBFZ3gyRWswVmdNVGhQVzE3Y3BIM09CM2hud2s5M01mQkRCZmpJUU9YbTBCSkU3R0stUkRoNVVpMXMtYWlOUzJEcjBPMWx1YzZXU3dmbmc?oc=5",
+          "score": 88,
+          "reason": "旺盛な資金需要は今後の利ざや改善を強く示唆している。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "三井住友ＦＧ株が続伸 上場来高値、利ざや改善期待が継続 - QUICK Money World",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBBbFE5NkpHR2hYWjkwcHUtd25wZTZsZTNVTDJjWWhkVGVnbkt6Sjk3el90T3ZVbXFSODRoa3dSM2N4cEk4WThXUUc2ZmNmd3BDdnNPei1B?oc=5",
-          "score": 10,
-          "reason": "上場来高値更新と利ざや改善のストーリーは強力",
-          "date": "2025-12-23 23:18"
+          "score": 98,
+          "reason": "上場来高値の更新は、需給の良さと強い上昇圧力を示す。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "信越化学工業",
-      "average_score": 5,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 66,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "4063.T",
+        "current_price": 4906.0,
+        "previous_price": 4892.0,
+        "price_change": 14.0,
+        "price_change_percent": 0.2861815208503679,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 70.9,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "+0.29%",
+        "status": "部分的的中"
+      },
       "news": [
         {
           "title": "信越化学工業の株価が反発 半導体材料株に買い - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBjZGxVMXpvYWVOdFlXQUlqMDhHRDlsdFJTYTlDbjJqd3R6ekVLTWpsUW1lcWZBaG90d1NhSE9YVFV4cjBKQ3ota2ltWmhhcjdveXFoQUR5SnRwVXl6Uk1pTDFtRk8tTEZSNW1PUg?oc=5",
-          "score": 7,
-          "reason": "半導体セクター全体の買い戻しが寄与",
-          "date": "2025-12-23 23:18"
+          "score": 82,
+          "reason": "半導体需要の回復期待が材料株への買いを誘っている。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト予想】信越化学工業、26年3月期経常予想。対前週0.1%上昇。(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOa1o0UmE5YUljcFhBWjJZSml6LTlEUGVVZjVrdG8zdW9uY3NFalZwRkxjRXR4dzdpYXZZQWlvbHFnOEltb1ZIZHJKZ0dHSUhLM203cS15bzNHcFVQamYyc1N1Vy0xTkRzdUdsOGtuZzFDQ3JKNWMtejZEQmp6SkZSNXZZX0hGdkU?oc=5",
-          "score": 6,
-          "reason": "業績予想の微増は堅実だが、爆発力に欠ける",
-          "date": "2025-12-23 23:18"
+          "score": 75,
+          "reason": "アナリスト予想の上振れは、堅実な成長期待の表れ。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "信越化学工業（4063） 塩ビ樹脂市況低迷で業績予想を引き下げ。今期は減収、減益を見込む - QUICK Money World",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9WQ2E0elNvbXlTZ1NFXzZPSkJCSDVOdWVhNm95QWNnTmg5ajZNekQ2b3V1bVRVdUtzMEMtSDI5eXdNRkl2VWg5eFlSaWM4UGtLRENsRVBB?oc=5",
-          "score": 3,
-          "reason": "主力製品の市況低迷による減益見通しはネガティブ",
-          "date": "2025-12-23 23:18"
+          "score": 41,
+          "reason": "主力製品の市況悪化と減益予想は株価の重石となる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "KDDI",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 82,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "9433.T",
+        "current_price": 2715.0,
+        "previous_price": 2735.0,
+        "price_change": -20.0,
+        "price_change_percent": -0.7312614259597806,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 46.3,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.73%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "ＫＤＤＩ【9433】、上期最終は8％増益で着地 | 決算速報 - 株探ニュース - かぶたん",
+          "title": "ＫＤＤＩ【9433】、上期最終は8％増益で着地 | 決算速報 - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE13cEdycW1pY2c4QUFiUGpaSnF0R0VqY0l0M1pkcWkxbXNIYmNxTTMxeWRneGFqMVp6SlJRV0o0N0Vid0NwSmw1d05keFRxam1mUHc?oc=5",
-          "score": 8,
-          "reason": "8％増益での着地はディフェンシブ株として高評価",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "KDDIとNEC、サイバーセキュリティ分野の強化に向け合弁会社を設立 | KDDI News Room - KDDI ニュースルーム",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFA4RVZveWlyUVJjbFMyWXVCNUdNWEVmeS12b01XTEluejhIMXU4OURXSFR1TWpUSGRkQS05NUZFdENMdm5JTVE3dUhRc0E4cUI0UEo4aHpWWDRORXJwdnJnSUFEOVFKODg3emUtbw?oc=5",
-          "score": 7,
-          "reason": "セキュリティ分野の強化は新成長領域として好材料",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "着実な増益決算は、ディフェンシブ株としての魅力を高める。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "決算プラス・インパクト銘柄 【東証プライム】引け後 … リクルート、日産自、ＫＤＤＩ (11月6日発表分)(株探ニュース) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOYmt3ZXZjbXNWVmNSaXJnSjBPWEU4dmtBanpTem9uZ09UMGI1SFlBSjR3RFVXRVM3cENjYVZldWV1M3RDNVBVcmVfSVdVcGFNTUgwbTRXQUo2eVpOcVRVN3g3TjJiVVhmUDU1RWxnTlp3SDd2NWFKbUpfeWg1QjRVSGEzRFBKU00?oc=5",
-          "score": 8,
-          "reason": "決算好感銘柄として選定され、翌日の買いを誘発",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "決算後のプラスインパクト銘柄への選定は、買い安心感を生む。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "日本電信電話",
-      "average_score": 6,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 62,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "9432.T",
+        "current_price": 156.3000030517578,
+        "previous_price": 156.3000030517578,
+        "price_change": 0.0,
+        "price_change_percent": 0.0,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 50.0,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "+0.00%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "2026年の日経平均、高値予想５万4000円 下値メドは４万5000円 三菱重やソフトバンク、ＮＴＴなど注目 ★★みんなの株価予想★★ - QUICK Money World",
-          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA5NGFTLV9FVVI2WUFpbk93YzVMeWtYTHFRanF3Mzl4UGFuS1RJTmVRZmdFekEteTFtVGk2X1hDc2dmd1gwY3VHSVNCQVhZN0l0c0VBQm13?oc=5",
-          "score": 7,
-          "reason": "中長期の注目銘柄に選定されている点は評価",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "高配当かつ少額で買える「NTT（9432）」と「ソフトバンク（9434）」の株価・株主優待・配当金を比較！NISAの残り枠を埋めるならどっち？ - LIMO | くらしとお金の経済メディア",
-          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFBzR2lOMnBrLW91NHhtelFhUUdHR1VNOFNNdkJid3RmSGxxUXViZy1uWmxQQ0hEN0doai12R0s2UHlBaGxOYWpWMWZlemw?oc=5",
-          "score": 7,
-          "reason": "NISA関連の個人投資家による買い支えを期待",
-          "date": "2025-12-23 23:18"
+          "title": "ＮＴＴ(株)【9432】：株価・株式情報 - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1KVFVQQzhzZDlNZS1nazBUbFllTldtRW85NHh4SEVyN1V0THFtcmFxTzk3NkJqOTdGSGVGdGhtbXdZbEZ0UGtTZnljRkVhYkM3Snc?oc=5",
+          "score": 55,
+          "reason": "安定感はあるが、目新しさに欠ける現状維持の評価。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "NTT株価はなぜ安い|高配当なのに評価されない5つの理由 - EBC Financial Group",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1MckloZ1o5dFRET1R5aUJlM2cwTnlNV0dPd25CdlVmU3h3WHU2YURQUmxSODRqQjFQMFd1eHpWZFBsTHdfcjFGSFNmRWFveGU1SXc?oc=5",
-          "score": 4,
-          "reason": "安値の理由を分析されるなど、評価の停滞感が顕在",
-          "date": "2025-12-23 23:18"
+          "score": 45,
+          "reason": "割安の放置は、何らかの構造的な懸念を投資家に意識させる。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "2026年の日経平均、高値予想５万4000円 下値メドは４万5000円 三菱重やソフトバンク、ＮＴＴなど注目 ★★みんなの株価予想★★ - QUICK Money World",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA5NGFTLV9FVVI2WUFpbk93YzVMeWtYTHFRanF3Mzl4UGFuS1RJTmVRZmdFekEteTFtVGk2X1hDc2dmd1gwY3VHSVNCQVhZN0l0c0VBQm13?oc=5",
+          "score": 85,
+          "reason": "長期的な市場上昇シナリオの中での注目株指定はプラス。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "リクルートホールディングス",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 96,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6098.T",
+        "current_price": 9094.0,
+        "previous_price": 9105.0,
+        "price_change": -11.0,
+        "price_change_percent": -0.12081274025260845,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 49.4,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.12%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "リクルート株価が大幅続伸 今期純利益10%増に上方修正 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5WUGhGWktraENNZXJieWNpbldXUXVNWGhGUUpGNW1rZkpDcmhscjZfS29qU25PQVpERWVTRm9ZbEJCRDJDNWdjMFdJT0FjLUJPZTlDTVI3UjE5b0Y2dFdSc1FoOUNiemstNkFCZQ?oc=5",
-          "score": 9,
-          "reason": "10％利益上方修正は強力な上昇トレンドを作る",
-          "date": "2025-12-23 23:18"
+          "score": 97,
+          "reason": "上方修正を伴う大幅続伸は、非常に強い上昇トレンド。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【決算速報】リクルート、今期最終を5％上方修正・最高益予想を上乗せ(株探ニュース) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQZ1pEOXlFQnFmVnpVbEJGTldhTWlNX25jR0RNSk5nRGRjM0RlZE9ZNGpLd3pzTldUZldzSm9jUTlNdnZPWUFmT3VZbXQ2XzNGTmwyS3BWOEkxYlEzaU9BRWFMYUE4ZjJRTDZVZS1nQUJ0R3o3SVpzYTVFNnNqT1NwUnByVldVY28?oc=5",
-          "score": 9,
-          "reason": "最高益予想の上乗せは投資家への強いアピール",
-          "date": "2025-12-23 23:18"
+          "score": 96,
+          "reason": "最高益の上乗せは、成長力の高さを改めて証明している。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "【材料】 リクルートがマドを開けて続騰、米国での単価上昇寄与し今期業績予想を上方修正 - かぶたん",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1MNWdKMFR6VGJ5RUZvcnFRcmJqRnZJdk5LREpWQm5nZWpoZUpaSU5LZy1IYTJwdW0zY3NoTkFaWFBVNkJwbnJmcWs1QTd3QVZKTkxWRlU1RnVGUXl2OWlJZQ?oc=5",
-          "score": 9,
-          "reason": "米国事業の単価上昇による上方修正は高く評価",
-          "date": "2025-12-23 23:18"
+          "title": "話題株ピックアップ【昼刊】：リクルート、フルヤ金属、ＢＡＳＥ | 注目株 - かぶたん",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5EQUNYTnZmU2hDYThVZEotd0pmVkJ6eFU2LUVUWnVPM2dVSV93d01QYmxoeG5OMUpMUlVwcHN4V0xKLW5Td1VoUmVjRkNoWFJyUlk0eGNMaVJOWXdSZ1I2Qw?oc=5",
+          "score": 95,
+          "reason": "注目株としての露出増は、追随買いを呼び込みやすい。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "ダイキン工業",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 91,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6367.T",
+        "current_price": 20155.0,
+        "previous_price": 20350.0,
+        "price_change": -195.0,
+        "price_change_percent": -0.9582309582309583,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 45.2,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.96%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "【アナリスト予想】ダイキン工業、26年3月期経常予想。対前週1%上昇。(アイフィス株予報) - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNSDlpdEw2VE8tY2ZvWTM1WlJfWHo1M3p4TmVYenN1OVgyMURqcnktaFVyYXFoVVBkYnpzbExZR2F5ZG1QcmNJQlNjWUUxZk9jU0RFZE44RS1LejR5Z2ttODNxcTNicEpMX0NCUllkcVBHcTJCVmxmOUMwZEdXT3J1RzRGcE1qdXc?oc=5",
-          "score": 7,
-          "reason": "アナリストの業績予想引き上げは好印象",
-          "date": "2025-12-23 23:18"
+          "title": "ダイキン工業(株)【6367】：株価・株式情報 - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5HVE1tSWJnMGZXWWFURGFHUktZdWMtLVRtZjkyMDlsdXpqeHA1UmFYVTE5NnhpWFZDVEZWczZCM1FzdXVVRzFXNVdFczVmV3gxbmc?oc=5",
+          "score": 85,
+          "reason": "世界的な空調需要の回復を背景に、安定的な成長が見込まれる。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "日経平均株価671円高 ダイキン急伸、マネーはAI本丸から好決算銘柄へ - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9CMC1aeWtXYnh4a2Z1MUlfaWduVUZRMk9sQlR0MjBENHRwTTZhdktENDZpRUxzc1hxQzA0dXo0czAtRi1HVkhkLXJYX0JmSk9kWUxCakthMkZXZVptRWN6SUFsZ1VNSlh3WG9WOA?oc=5",
-          "score": 9,
-          "reason": "好決算を受けた株価急伸は強い買いエネルギーを示す",
-          "date": "2025-12-23 23:18"
+          "score": 94,
+          "reason": "好決算を受けた資金流入による急伸は、評価の転換点。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "ダイキン工業、AIデータセンター冷却技術で米国企業を連続で買収：製造マネジメントニュース - MONOist",
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9DQ21QRV9yWXFpUi1Mc0VwVDBDYnZ5dkhydlU1WklRT1ZzOGthNjVjYXgyaUhSM3ZjSHlfMWlfcER6Z3FjTTRZYXcxUzRFaFFxMHBGb3l6MFE4ODU0d0dUZWlPWHByRV9vOUZDZTlTSQ?oc=5",
-          "score": 9,
-          "reason": "AI関連需要を取り込む米国買収は成長性を補完",
-          "date": "2025-12-23 23:18"
+          "score": 95,
+          "reason": "AI関連需要の取り込みは、将来的な爆発的成長を予感させる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "本田技研工業",
-      "average_score": 3,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 32,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "7267.T",
+        "current_price": 1553.5,
+        "previous_price": 1564.0,
+        "price_change": -10.5,
+        "price_change_percent": -0.6713554987212277,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 72.0,
+        "prediction": "下落予測 (弱い)",
+        "actual": "-0.67%",
+        "status": "部分的的中"
+      },
       "news": [
-        {
-          "title": "ホンダ【7267】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE51QllHdllFUXNVTzNRWkZJdGN5eHVSNmVRbWt0NnFLbmJPNDF5dldtUVlTazQ5NTkxTUhzaG9lRmJRZEVjLUtFU2RWT3ptTzRqUkE?oc=5",
-          "score": 5,
-          "reason": "自動車セクター全体への不透明感から様子見姿勢",
-          "date": "2025-12-23 23:18"
-        },
         {
           "title": "本田技研工業（7267） 当研究所では26/3期の営業利益予想を減額、27/3期以降は据え置き - QUICK Money World",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBpZ1FhSWpzR3hMYlVNUEF0ZDVrR21KU3ZZbFliMW96Q3RtbW1uOHZCY1lidGFvb19TdG9IcEdiZThxSzBYeTByT2RZOUNpM1JrSzRSZ0Rn?oc=5",
-          "score": 3,
-          "reason": "利益予想の減額判断は株価の重石となる",
-          "date": "2025-12-23 23:18"
+          "score": 35,
+          "reason": "営業利益の減額修正は、株価にとって明確な売り材料。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "【アナリスト予想】本田技研工業、26年3月期経常予想。対前週1.4%下降。(アイフィス株予報) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQaVl2ZGdBLXk5RmZOMmdFVmEwb21VZGVXWDIwRWVaTHRuMUxnWFBlZExDeS1QMG9pSC1RV215UnNlQ1hTekJpdk9kYUJvQ0I1dzVhTTBCdzlISExHYnJXVlhuYlNadmMzbm1SclAyV0xHV19odngtcDhtZGIzbmhENHRqeVdObjA?oc=5",
+          "score": 30,
+          "reason": "コンセンサスの低下は、機関投資家の売りを誘発する。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "ホンダの株価5.1%安 26年3月期業績を下方修正 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE01N1RNT2JHQloyMTZFZEZCTm8yN2xaRW1TWVUtcHZoMWdHOU83NWxnMnA2VmNVQ3ZLVTUyVGd0Wi1oVk02dEt2RDUtUkNTM2h4b2ozS0xxRmhVdm1JMU9COEZxbjNkVWczSUdxaQ?oc=5",
-          "score": 2,
-          "reason": "業績下方修正を受けた5%超の急落は警戒が必要",
-          "date": "2025-12-23 23:18"
+          "score": 31,
+          "reason": "5%を超える急落と下方修正は、深刻な警戒信号。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "武田薬品工業",
-      "average_score": 3,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 42,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "4502.T",
+        "current_price": 4860.0,
+        "previous_price": 4823.0,
+        "price_change": 37.0,
+        "price_change_percent": 0.7671573709309558,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 46.2,
+        "prediction": "下落予測 (弱い)",
+        "actual": "+0.77%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "決算:武田薬品工業の純利益下振れ 26年3月期42%増、細胞療法開発中止で - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5VX0EtSW8xTVhfbFlRUXFqTkFCMHpackFwN1c0YkhsUTRpdXhuM2ZoVFhNRUg5Y3kwRklHMDRXTUZHMnc5djZXaHMyR1h0cnJFU2tVRlJ2eUtkMldNNUdQOV93RW1hQS1nRnpnVQ?oc=5",
-          "score": 3,
-          "reason": "利益の下振れと開発中止のダブルパンチは重い",
-          "date": "2025-12-23 23:18"
+          "score": 35,
+          "reason": "開発中止と利益下振れは、創薬企業の成長シナリオを損なう。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "武田薬品工業【4502】、今期最終を33％下方修正 | 決算速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE0wNGMyX0xZMUlBa0JRenp2WUNpQnk3STllSHE3emh4aEpLM0NBSzhDWmJ4SXJMZ3llMjVMdTNwM2NTZGFFeTA2ZU9pakRlUk1BWUE?oc=5",
-          "score": 2,
-          "reason": "33％という大幅な下方修正はネガティブサプライズ",
-          "date": "2025-12-23 23:18"
+          "score": 26,
+          "reason": "33%という大幅な下方修正は、ネガティブインパクト大。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "【決算速報】武田薬品工業、中間税引前178,804百万。アナリスト予想を下回る(アイフィス株予報) - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNcFN6bXhyVVlRaHAxUkl2UkZKLVBtNzFqbnExdGVUbExHM3p5MTVNR3Y5SHdlR092TVFCNzRPODFGYTB4RGJRRURMM2c4Y2VrczlBSGZPM1V3X3BraW4tUjdjaExvcElucGNSWGRhMGV0WGhUMVI1bUNqeXZGbFA0WEQtRHFqbW8?oc=5",
-          "score": 3,
-          "reason": "アナリスト予想を下回る着地で評価が低下",
-          "date": "2025-12-23 23:18"
+          "title": "武田薬品【4502】の配当は？ 連続増配でも株価停滞のナゼ 新薬25年度に申請見込み、デング熱ワクチン好発進で上昇なるか - Yahoo!ニュース",
+          "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1HU19tYTJGMm45MWRGMkxVSm5wRmtycDE4MFpLQjN6Zzc1VDZiMWpoQXFBS25jcVIwcldZSjB6am9UZW5JUWxSQkVSWWdKUm5hLWFWRjVrdDdGSkRNSmxvb0ZJOWFKSGRYOC1wU1hBTE95SFNRN0ZHTElHUnhQanM?oc=5",
+          "score": 65,
+          "reason": "配当と新薬期待は下支えになるが、業績回復が優先課題。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "みずほフィナンシャルG",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 92,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8411.T",
+        "current_price": 5714.0,
+        "previous_price": 5770.0,
+        "price_change": -56.0,
+        "price_change_percent": -0.9705372616984401,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 45.1,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-0.97%",
+        "status": "外れ"
+      },
       "news": [
         {
-          "title": "(株)みずほフィナンシャルグループ【8411】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1WWUNmc0I5WWtzTUhFY21UQVZSaGMxUVZZS3QwTWpxbDdlbVM4LWRVRngtbk45alFYMjA3TnBJcUZtR09RSFU0X3V0UXFlcUZYdlE?oc=5",
-          "score": 7,
-          "reason": "メガバンクとしての注目度が急速に向上",
-          "date": "2025-12-23 23:18"
+          "title": "【アナリスト予想】みずほＦＧ、26年3月期経常予想。対前週0.7%上昇。(アイフィス株予報) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPWkJwUUs3eVk1Uzd6WVdtQ2JMNUVBNmExbXNQUk1VYm5ZXy1wRWJuQjhQS1lKeGFOQXp6WXR4d1RuM1hzZ1pnNGloRkl1TmJhd1JjMm03MUFhR3lEWV84VGFjY2UyWjgyVDdUMExfUFluN3lqU1dIenpnRnItcVlnQ1VQd1YyM1U?oc=5",
+          "score": 88,
+          "reason": "業績予想の底上げは、ポジティブなコンセンサスを形成。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "みずほフィナンシャルグループ【8411】、今期最終を11％上方修正・最高益予想を上乗せ | 決算速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5QYnQ2XzhDWGlxcGNwZnJOWHZSU3ZjMnJPc1lNU0hIc1ZXcUNNV2otZXpUZFNIQVR2c0h4VEdFdlBQVTZCUjFQMzFwRC1BOEFZT1E?oc=5",
-          "score": 10,
-          "reason": "11％の上方修正と最高益更新は文句なしの材料",
-          "date": "2025-12-23 23:18"
+          "score": 95,
+          "reason": "11%の上方修正と最高益更新は、極めて強い買い材料。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "みずほFGの株価が年初来高値 日銀利上げ観測が追い風 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE84dURLUWtQdGJsbjF3T3dCc3R1LXNUeWw1Nkg3dGVCT3hDcHc1T1E0ZGRCNmZRWkxQMHppQkZZZjRXaUJhSFkzNkpVY0ltNnZwQmV1dHgzd013b3Y4X0FyX2pueDhPakdfS2xwSQ?oc=5",
-          "score": 9,
-          "reason": "年初来高値更新に加え利上げが収益拡大に寄与",
-          "date": "2025-12-23 23:18"
+          "score": 94,
+          "reason": "年初来高値更新とマクロ環境の好転がガッチリ噛み合う。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "オリエンタルランド",
-      "average_score": 6,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 63,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "4661.T",
+        "current_price": 2898.0,
+        "previous_price": 2908.5,
+        "price_change": -10.5,
+        "price_change_percent": -0.36101083032490977,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 48.2,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "-0.36%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "オリエンタルランドの株価続伸 SBIが「買い」に引き上げ - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9lXzA5Y05WdHJMdWo1Vlo2NFlFTnJELW1RblNDX2QtaWRlb0pCalJLM2gwVXRTWnp1cXVscmVXSlFfU0ZzUTU4ZlRBaWl2OF94TXB0aGxlMXdyZEcxX1RZeUVqOHhOTHVVTHJxbw?oc=5",
-          "score": 8,
-          "reason": "SBI証券による「買い」への引上げは好材料",
-          "date": "2025-12-23 23:18"
+          "score": 90,
+          "reason": "大手証券の格上げによる株価続伸は、強い買い意欲を示す。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "オリエンタルランドが急落...日中対立が株価に与える影響と、サンリオ自社株買いの狙い（ニューズウィーク日本版） - Yahoo!ニュース",
           "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE95bUJZOTdtc2tDbzJDWXdScXlJTEpjdnRVVktGLUhDcm4wc3JGOTYzUVhIdHdjRkRlcEVPZndtMHJNY1ZydWRTQjF5T01FaTNGM3BOSFhPZ3FiSDUxeTdMeHFvRWhkczBieFQ4bDZaR2l2TW54WVpveDdBNjRaMWc?oc=5",
-          "score": 4,
-          "reason": "外部要因（日中対立）による不透明感が懸念される",
-          "date": "2025-12-23 23:18"
+          "score": 50,
+          "reason": "地政学リスクへの懸念が急落を招き、上昇気流に水を差した。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【銘柄】オリエンタルランドが急落...日中対立が株価に与える影響と、サンリオ自社株買いの狙い - ニューズウィーク日本版 オフィシャルサイト",
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rN1ZsaTRXTUlabWNkZUdGdUJMd2ZxdF9oQU1JYUdtMVFnU3AtektCNFVMTDkteFBmUWRlZktNekJ2VDViWVphRUVhanpjcllNNnRtWFV0NDFnSW03UE9UcnZ5N2U5SFdlTlFENFNfZw?oc=5",
-          "score": 5,
-          "reason": "株価急落の要因として地政学リスクが意識されている",
-          "date": "2025-12-23 23:18"
+          "score": 50,
+          "reason": "外部要因による株価調整が続いており、様子見姿勢を誘う。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "村田製作所",
-      "average_score": 6,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 64,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6981.T",
+        "current_price": 3164.0,
+        "previous_price": 3199.0,
+        "price_change": -35.0,
+        "price_change_percent": -1.0940919037199124,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 44.5,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "-1.09%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "日中関係悪化で注目「中国関連株」6銘柄 売上比率54.1％のTDK、村田製作所など（LIMO） - Yahoo!ニュース",
           "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5nZGVlUjQxWHV0dEgzV3VmbnlsUzZxMzhxbVlBdHBUQ1Rqb2VFa0RTNGhRS0VfU1JTZGc2RVlobnRhU0hWM01XbzN0dlM0VXFSMFh2dmg0MjlfdVBZNFdTQWRvNDJnRmRSMkNKVUZUc0RjQ2VuV2l2cmM1Y3JlRUk?oc=5",
-          "score": 4,
-          "reason": "高い中国売上比率がリスクとして意識される",
-          "date": "2025-12-23 23:18"
+          "score": 50,
+          "reason": "高い中国依存度がリスクとして意識され、上値が重くなる。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "決算:村田製作所の純利益6%減に上方修正 26年3月期、円安寄与 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE0zSmk3eWpWVDBuSmVQRTNhZ2QwR0d3X0p0VS1RaEpubFBxWlZDWFN5aVdMd3I0ejBQemlWX2NVSnJObWJxWk5ibEhMcTBBbTB0eDBkQU5GTnBtaElPclVKLW9sRTk4TnUyYlFvcg?oc=5",
-          "score": 7,
-          "reason": "円安による上方修正で収益基盤の強さを示す",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "円安効果による上方修正は、業績の底打ち期待を高める。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "村田製作所、通期純利益予想を上方修正 ＡＩ関連需要などで - Reuters",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQb0tLbmZkQURzRmI1bUtKVThGU3FiSW1EUFlnby1ERExWSER4NU9NSlk1UUFSRHQ2ZVdzZXYwcm9pWDI1dVVseDZkNVZVTUs1c1VjTllpSUxueHBFWEJpaUlEdU8xQkZpQW1LWXNMQm9kRDN4RDUyMkJOT3NXWUpFVXRkRG5aMFBYcjdJ?oc=5",
-          "score": 8,
-          "reason": "AI関連需要による上方修正は中長期の成長性を期待",
-          "date": "2025-12-23 23:18"
+          "title": "村田製、4-6月期(1Q)最終は25％減益で着地 - かぶたん",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBva1B1dGVKRUtobHh3V0phc29XejBldlhMRERnZ3VEa0ZsSV9NMzZfd29adWl6aUdsN2RnWnBsRm9qcW9OeTBHdmV2Ym5MQWtFRGc?oc=5",
+          "score": 58,
+          "reason": "直近の減益着地はネガティブだが、通期予想でカバー可能。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "日本たばこ産業",
-      "average_score": 7,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 90,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "2914.T",
+        "current_price": 5775.0,
+        "previous_price": 5765.0,
+        "price_change": 10.0,
+        "price_change_percent": 0.17346053772766695,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 70.5,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "+0.17%",
+        "status": "部分的的中"
+      },
       "news": [
         {
-          "title": "【アナリスト評価】日本たばこ産業、レーティング中立を据置き、目標株価5,800円に引上げ（日系大手証券）(アイフィス株予報) - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOSm1fYUQ1cDVoSGxDTEN6ZE81Mkk2bXV0YTZhX21sSHhvZWJ4MVFQUmo0VHktTWF3WHRTSDNGay1xMTB3d3hmZC1Kd0RzODMtR0x6cGxHQllha2R3ak9xMng2SUxTQ0RGLVJiTHRTZVM5d19iM0MwVldVWkhZSzlzb1B1eXdEMW8?oc=5",
-          "score": 6,
-          "reason": "レーティングは据え置きだが、目標株価の引上げは堅実",
-          "date": "2025-12-23 23:18"
+          "title": "ＪＴが続伸、野村証は目標株価を引き上げ(ウエルスアドバイザー) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQWUVSZTNvbnIyRko0VG4xY3poWUJ1bE5vendESVVrbzVEOFpUQVJ1YjEwRmYtR0kyVUNuaVNTUWlyUy1lMlVSUkoxbHUzZlkwak1VM09zZDMwM2Vzb21Bb3MwdVFDMThIemJYVUhtQXpiZERfblNSZWFNTm4xeEJBeTl0QlZvSXM?oc=5",
+          "score": 92,
+          "reason": "最大手証券の目標株価引き上げは、極めて強い追い風。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "【高配当株】「INPEX（1605）」と「JT（2914）」の株価・株主優待・配当金を比較！12月26日が権利付き最終日に - LIMO | くらしとお金の経済メディア",
-          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9UUHlXZk5Ca1kxa0FsdHB5Y3ZiMzhxLUZlYi1LNmQ4VEtta2I0TXh3Z1VlNVkwS0JfY1dnOUFpNWJDdDdpbElEY09yRGY?oc=5",
-          "score": 8,
-          "reason": "配当権利取りに向けた買いが年末まで下値を支える",
-          "date": "2025-12-23 23:18"
+          "title": "ＪＴが続伸、野村証は目標株価を引き上げ 速報 - kabushiki.jp",
+          "link": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE5JZXRUQnR6ZzkxWnFtenhTLTZhdXdka1plbVNkVWdMTnhRaG1zNlprUlMtNjFaa3BGWjNsUUoxVmtjaERJM01J?oc=5",
+          "score": 88,
+          "reason": "続伸の勢いがあり、投資家の関心度が非常に高い。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "JT株価が最高値 配当取り目的の買い、NISA口座経由で増加 - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9ta3cwNldsUTZXMkJodWNrT21lS2M4STZlZ2Q3dzVyRXF5S2tKWXhab2NDdTJJRUhVRDZrZ2ZLTkRLUE5tZVUyN28zUnB5cWlpUm41dmZGSjl1Y2lCZFlPdjJLOTV2Q3ZFWXpiSA?oc=5",
-          "score": 8,
-          "reason": "最高値更新とNISA需要は強い株価推移を裏付ける",
-          "date": "2025-12-23 23:18"
+          "title": "【JT（2914）の株価】12月24日の終値は5775円「配当利回り」はいくらか「権利付き最終日」12月26日が迫る、2026年6月はいつ？ - LIMO | くらしとお金の経済メディア",
+          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9xWlZuMmlJRjVNdEs2Rlk1aGFOTjNITVp1S25vME11Tzl6aUtJc2FvWFNnMjBNN25OSXFhOUdrN0FMakJiU3ZYb0FZOWw?oc=5",
+          "score": 91,
+          "reason": "高配当と権利取りの買いが期待でき、株価の下支えとなる。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "セブン＆アイ・ホールディングス",
-      "average_score": 7,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 68,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "3382.T",
+        "current_price": 2237.0,
+        "previous_price": 2233.0,
+        "price_change": 4.0,
+        "price_change_percent": 0.17913121361397222,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 70.5,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "+0.18%",
+        "status": "部分的的中"
+      },
       "news": [
-        {
-          "title": "(株)セブン銀行【8410】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE16cktmNkNnNW1tZGFhTzJZNVFLSEJ0Wm9uZlZzYU01WjQ4VFoxT3BFeDM0RXY2OENpOWpQMEp3Zi1saWxNWTVFRFNRNHpLb3pCb0E?oc=5",
-          "score": 6,
-          "reason": "銀行部門の安定した推移が評価される",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "イオン(株)【8267】：株価・株式情報 - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5wTEhxY1BJaTFETGk1NFFUSnV6UVFxeE5xdzh3bUhIT1o5NWZ0aHdiWGgxTkVDZUdBV04zb2w4S3ZOaFU3Tkx6UWVFZVBBZ2Vja3c?oc=5",
-          "score": 6,
-          "reason": "流通大手同士の比較から株価の割安感が検討される",
-          "date": "2025-12-23 23:18"
-        },
         {
           "title": "セブン&アイ、買収提案の置き土産 なるか「1株利益2倍」 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAyUzRCdHdxU2ZZR2FGOW1BcGxUdzhkMlBBMFpmZG0xZS04NUdDbmV2c2hMb3RTUkM3aWJ3RDUxWGZKblV3UjJGWFJsaGZOQnhUcUpXQ1dUakktd0J1ODZKNGlTcjNvS3JxVVB3VQ?oc=5",
-          "score": 8,
-          "reason": "買収提案に対する経営目標の引き上げを期待",
-          "date": "2025-12-23 23:18"
+          "score": 82,
+          "reason": "強気の利益目標は、構造改革への本気度として好感される。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "セブン&アイがきょう決算、市場は営業増益予想も株高の決め手欠く - Bloomberg.com",
+          "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA5Z0RxUGwzMzR6VE1Ud3FZYTBVSlZhU3U0dkFrNWMzTXJrQUpnZHY3UlNOQU81dXI3eTU2WW1WTDZFdXBMQlJ0Z2VLd28xdkNXZk5JQTZmdHJyaGdIX2lENDliWW1qM3cxM05FVkRKU3JxV1k0OEE?oc=5",
+          "score": 55,
+          "reason": "増益予想ながら、新たな買い材料が不足しているとの見方。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "「イオン」が上場来高値を更新！PER197倍でも買われるのは「株式分割」と「優待」が理由？（MONEY PLUS） - Yahoo!ニュース",
+          "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9vOHlCdXlnX2lab2cwMlBVRmdaQlR2WWtsTUNNQ3RaRV9hY19hOHpGbUljNEc2UVRSWGNpRkJPdVpUS0o4dk9yOWM3MnZtSUFHVS1KVUpxUUJ4RThRYzNjU045VG0yNlNBQ0x1QWdYQ3BvdUZZV3NXa1ZfZjdoMGs?oc=5",
+          "score": 66,
+          "reason": "セクター他社の高評価は、同社への連想買いを誘う可能性。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "デンソー",
-      "average_score": 3,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 25,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6902.T",
+        "current_price": 2137.5,
+        "previous_price": 2149.5,
+        "price_change": -12.0,
+        "price_change_percent": -0.5582693649685974,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 71.7,
+        "prediction": "下落予測 (弱い)",
+        "actual": "-0.56%",
+        "status": "部分的的中"
+      },
       "news": [
         {
           "title": "デンソー株価大幅反落 26年3月純利益下振れ、品質費用引き当て - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5XV1BLMXFjRl9PaFZ1UXBzaTA5V2VYNFZ4SkVKSUVjYkpjNk0tUTZwSV9PTHNQdTJTRE9ZbmhENHFFaU5adnB3Y3pndFhEcDRmSHl6bW5MRVl2ZjBwMEpxTTk1ZVpKc1d5b1VCag?oc=5",
-          "score": 2,
-          "reason": "品質関連費用の引き当てによる減益は市場への衝撃大",
-          "date": "2025-12-23 23:18"
+          "score": 20,
+          "reason": "利益下振れと品質費用計上は、企業信頼と業績の両面に打撃。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト予想】デンソー、26年3月期経常予想。対前週0.2%下降。(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPSE5zZVZwZl9LSmozUHhxRW5JVlpwV0RBdXFUWVNqOEtOQkJaelZlcGJHSDRmWDRxdWpFNDRrcktDVFVuczJmTmRoR3pqQ1VMXzh6NC0zS3VpVVBNa0VYTFlzU2xPMUE5RUkyOXFQQmYtcGdIVy1WSmNFOTc2VHFIc01HYTNIUUE?oc=5",
-          "score": 4,
-          "reason": "予想の下降修正は慎重な姿勢を強める",
-          "date": "2025-12-23 23:18"
+          "score": 35,
+          "reason": "アナリスト予想の下降は、株価の調整が続くことを示唆。",
+          "date": "2025-12-24 15:09"
         },
         {
-          "title": "デンソー【6902】、4-6月期(1Q)最終は16％減益で着地 | 決算速報 - 株探ニュース - かぶたん",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5YMkVuempneFBxdDh1QnJfU1otdnNoMmdpSnQtLXdNNGVzaEJLOFZuVW5IUnFkeXM3aU5EbGtGaWt1TWZXanBkNGpUNVhOUlc2S1E?oc=5",
-          "score": 3,
-          "reason": "1Qの16％減益着地は投資家の期待を裏切る形に",
-          "date": "2025-12-23 23:18"
+          "title": "ホットストック：デンソーが急落、純利益予想の下方修正を嫌気 - Reuters",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPN0FQdWIwRGNGYWZBNVFnMW53NGFpSEhRZVJwemsxNUdYNHlKM2RrLVBNdEV4cmlRa3UteFVRR05IOUtlMVk2b2hKMUtKY0xuUnA3Z0VLWWtCWENqbjROZ0tQaE1UaFBlekpidFdzREtOdnlXOVVnRmdkWE5Jd0hZVw?oc=5",
+          "score": 21,
+          "reason": "市場の期待を裏切る急落は、戻り待ちの売りを誘発する。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "SMC",
-      "average_score": 5,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 60,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6273.T",
+        "current_price": 53580.0,
+        "previous_price": 53800.0,
+        "price_change": -220.0,
+        "price_change_percent": -0.40892193308550184,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 48.0,
+        "prediction": "上昇予測 (中程度)",
+        "actual": "-0.41%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "ワクーが急反騰、ＳＭＣと再生医療事業のベトナム展開検討するパートナーシップ契約 - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5YS0w1LUNVOWdXaGF1RFpWVmluTXRTRG9XVVpDZHdCd0tyRi02UWpkTVpzczNsWm91MjF4cFc5cnZMNHVXdlU4Z0xSRzhnY29KM2hwNllfMWphT2pTS2F1OF9QYmlkdw?oc=5",
-          "score": 7,
-          "reason": "再生医療関連の提携は新規事業への期待を生む",
-          "date": "2025-12-23 23:18"
+          "score": 80,
+          "reason": "新規事業の海外展開は、将来の成長エンジンとして期待大。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "決算:SMC、4〜6月純利益29％減 関税影響で顧客の設備投資意欲減 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE51M1ZTeUJrbllld3FVaUlZNEN3SkpPU0xOTGJ6a0I0S3V1T21Lc3RkRktubFlCVlhKeUQ5Zm5SRXVnRmxHbGhzUDRYV2huM0pqTGhZdTA0X1hRMWxZNWk3MWJDdVBFODFLT3FYLQ?oc=5",
-          "score": 3,
-          "reason": "純利益29％減という大幅減益はネガティブ",
-          "date": "2025-12-23 23:18"
+          "score": 45,
+          "reason": "大幅な減益決算は、景気敏感株としての弱さを露呈。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト予想】ＳＭＣ、26年3月期経常予想。対前週0.5%下降。(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTUdQWEpmdmZxX1RPN1JKc2x4UVIzSVFjenpPT2hvdUhKOFhNYnI4bUJreXFkTVJSWlZpU2FJRm8wXzE2VW1MMnNnVjhHM0ZSM2hxeUF5TTBHd2kwUjBYdTY2Q0p5eUdDTVJOOHZhbFE0UGIzNk94ZDJ4WTFHc1BFdU1XNVhhZFk?oc=5",
-          "score": 4,
-          "reason": "微減ながら業績予想の下降は上値を重くする",
-          "date": "2025-12-23 23:18"
+          "score": 55,
+          "reason": "予想の小幅低下は、目先の成長鈍化を投資家に印象付ける。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "富士通",
-      "average_score": 9,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 88,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6702.T",
+        "current_price": 4253.0,
+        "previous_price": 4296.0,
+        "price_change": -43.0,
+        "price_change_percent": -1.000931098696462,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 45.0,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-1.00%",
+        "status": "外れ"
+      },
       "news": [
+        {
+          "title": "富士通－底堅い 東大とワークロードシフト技術の検証に関する実証実験を実施へ(トレーダーズ・ウェブ) - Yahoo!ファイナンス",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPNXI5Q1A5dkY4Y0UwSHZCZ0RJMXZ6RFBrcXFHR2kyOG0yZ0ZUdnNyQW5jbnNuTVhCNi1TdU1EWnR0bVd3aVV1M2tUcF81NGdPSXpuaU9kTG5RdUR0NmVWOVBHSUVDZHF4LTdZZWtWTElzRFZtTWlhaEdRLTRwT3BpU01XVTY2aWs?oc=5",
+          "score": 82,
+          "reason": "大学との共同研究は、技術的優位性の向上を期待させる。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "富士通【6702】、上期最終が7.4倍増益で着地・7-9月期も4.8倍増益 | 決算速報 - かぶたん",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBIeUxUeU5UdUN3U24wbGMweUVCeHJvY3JuMjdMZnBKWUVxZEIzbXVjbVJFektCcng0UENYLS1QMGl4eXA1RXhoMEJqUTl1WDBueVE?oc=5",
+          "score": 98,
+          "reason": "7.4倍増益という驚異的な決算は、株価を強力に牽引する。",
+          "date": "2025-12-24 15:09"
+        },
         {
           "title": "富士通－反発 東北大学と超伝導発現メカニズム解明に繋がる因果関係を自動抽出(トレーダーズ・ウェブ) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNQlZ3ZWpuNVpleGY3UlYtVWxkWUpJVXJxVXlULVhGei1XNVU5Yi05eFIxZlBUenN3RWtWcTRUa3RjUEh6TGZHc0xBVkRtdDFvV0xhbENwa21ucktaV3p3QkN5TllGMVJ3dWIzTzdqLWlwY1cxZmJsYkxNeVlHME5CMXZCMGtXbXc?oc=5",
-          "score": 7,
-          "reason": "先端技術の研究成果発表は長期的な期待を維持",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "後場コメント No.5 ｉｓｐａｃｅ、ユミルリンク、オプティム、大黒天、千代建、富士通(トレーダーズ・ウェブ) - Yahoo!ファイナンス",
-          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPYWVxLWpGLVk3MEZreXRlSXROakZob3dOSkd3YjNuQW1ObnEzbW40YmZwdjRlaE9iWWxSMHlBeGRPOGRPNlg4ZWNBS1drS3diazJGeW9uTGlIdE1tTF9UUjZ5RFl0YURCaG1SLVhIaW9Cak4wVEw2Q0tTdXVlNlZwUjhoMGNJOEU?oc=5",
-          "score": 6,
-          "reason": "活発な市場取引の中での存在感が強まっている",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "富士通【6702】、上期最終が7.4倍増益で着地・7-9月期も4.8倍増益 | 決算速報 - 株探ニュース - かぶたん",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBIeUxUeU5UdUN3U24wbGMweUVCeHJvY3JuMjdMZnBKWUVxZEIzbXVjbVJFektCcng0UENYLS1QMGl4eXA1RXhoMEJqUTl1WDBueVE?oc=5",
-          "score": 10,
-          "reason": "7.4倍増益という驚異的な決算数字は強い買い材料",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "次世代技術への注力姿勢が、中長期的な投資価値を高める。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "アドバンテスト",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 94,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "6857.T",
+        "current_price": 20160.0,
+        "previous_price": 19675.0,
+        "price_change": 485.0,
+        "price_change_percent": 2.4650571791613722,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 77.4,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "+2.47%",
+        "status": "的中"
+      },
       "news": [
         {
-          "title": "アドバンテスト株価が続伸 米エヌビディアやSOXが上昇 - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBtc0drT19ha1Q5ZzVVTjRJUUQ3cVlUVk9DQzVuTnlIZUpUYXViQzVwSHNNMjA4ME9laGFDckxKN2plaHluTUZTUWMyZWlyRG51aTRHT0VINWNZNUJPU3hNVzRFT2lOM1VRRmhWbQ?oc=5",
-          "score": 9,
-          "reason": "米エヌビディア連動の半導体上昇トレンドを享受",
-          "date": "2025-12-23 23:18"
+          "title": "アドバンテスト株価反発、NVIDIA高や米の中国関税先送りを好感 - 日本経済新聞",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBLU0R5UkU0el9NQnRfd3BsNjh0OVVpTlFVYXV2eXBSdWs3eFNwYjlJY1hBMG52UXNId1FjYU13eC1icFNUZWYtek84eDAwQk83LUdvdHhlTEJ4bUthWkJjcjRQd09YSVhWNUNHTg?oc=5",
+          "score": 93,
+          "reason": "外部環境の好転が追い風となり、ハイテク株の買いを誘う。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "アドバンテスト（6857）の株価は+2.07%の上昇（2025年12月19日・株式取引概況） - LIMO | くらしとお金の経済メディア",
           "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE14cVNiNHBYSjRMTHJCZVBSRlZ5bXlTMGN5Q0hSZmQwSmRkQ0N0R05HTEphZDlXQ29BdF9KMHZIeGhEVG5UdklueHQzNzY?oc=5",
-          "score": 7,
-          "reason": "着実な続伸は投資家の信頼を得ている証拠",
-          "date": "2025-12-23 23:18"
+          "score": 90,
+          "reason": "着実な上昇トレンドを維持しており、投資家からの信頼が厚い。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "日経平均寄与度ランキング（大引け）～日経平均は大幅続伸、アドバンテストと東エレクの2銘柄で約426円押し上げ(フィスコ) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNRE9VSjg1RGRRWU12aTBDRjdKVkdXYS1oQVNaSHgwZUpxczB1R2dhX29yemFTR2tHNUoxTDQxTzlNMmotRDEwR1p5aktmM3BDQXFkLW1INGtmVG9PUDJuQnFrLVd5SWFtbHZmMTczYVRuMGhubDRsNE83NzQwOXdRRF9iUkd6YW8?oc=5",
-          "score": 8,
-          "reason": "指数寄与度の高さからインデックス買いが入る",
-          "date": "2025-12-23 23:18"
+          "score": 99,
+          "reason": "指数への高い寄与度は、市場の主役であることを証明。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "三菱商事",
-      "average_score": 3,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 38,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "8058.T",
+        "current_price": 3512.0,
+        "previous_price": 3568.0,
+        "price_change": -56.0,
+        "price_change_percent": -1.5695067264573992,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 74.7,
+        "prediction": "下落予測 (弱い)",
+        "actual": "-1.57%",
+        "status": "的中"
+      },
       "news": [
         {
           "title": "伊藤忠は大幅増益で三菱商事は株価急落──総合商社5社決算まとめ「資源の次」は？ - ビジネス+IT",
           "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1FeE9vOVBkX2tNcnFaUzVXck1EcFlqMGwtVGdyS2RIdnpfNkZhZUtVUUtuY0NHUFJINFlPX2Y2WVA1WE9sTHRLLUJVd1VjdlkyWFg0?oc=5",
-          "score": 2,
-          "reason": "競合（伊藤忠）との格差が鮮明になり株価急落",
-          "date": "2025-12-23 23:18"
-        },
-        {
-          "title": "三菱商事株価が下げ拡大、4〜9月純利益42%減 市場予想に届かず - 日本経済新聞",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1vdGVXMkxKV19ySWJ0aHgyVmkwQmd4cU1mSDRYbE5fOE1IS2xwQk9jMzVIXzJHaU9Rb2RwQmlyeTRXOU8xV09iYmttaGUydW05Y3hlTHpNQzBnTzNkVkVzOV90V2g5MGh4eHYzcQ?oc=5",
-          "score": 2,
-          "reason": "42％もの利益減と市場予想未達は非常に失望を誘う",
-          "date": "2025-12-23 23:18"
+          "score": 40,
+          "reason": "他商社との比較で劣勢が際立ち、資金流出の要因に。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "【アナリスト予想】三菱商事、26年3月期経常予想。対前週0.6%下降。(アイフィス株予報) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOTlBpamJnUDV0amtrNWQxLVJ6b1U4TWFoNWwtRVhHLWJWQVV2Y1FHMEUtVzFhR3Ixb3hpVUlSSVQ4bkRldi15OXRSTnM5LWIyaTlyNzhVcG5CaUJweDVwck9NWkc3ZVZVdlpJR2pjVmQ5WktUM0N0UVlZUGdnRzRtV2RUTEZzVXc?oc=5",
-          "score": 4,
-          "reason": "アナリスト予想の下降は下げ止まりの時期を遅らせる",
-          "date": "2025-12-23 23:18"
+          "score": 45,
+          "reason": "業績予想の下降は、投資家の様子見姿勢を強める。",
+          "date": "2025-12-24 15:09"
+        },
+        {
+          "title": "三菱商事株価が下げ拡大、4〜9月純利益42%減 市場予想に届かず - 日本経済新聞",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1vdGVXMkxKV19ySWJ0aHgyVmkwQmd4cU1mSDRYbE5fOE1IS2xwQk9jMzVIXzJHaU9Rb2RwQmlyeTRXOU8xV09iYmttaGUydW05Y3hlTHpNQzBnTzNkVkVzOV90V2g5MGh4eHYzcQ?oc=5",
+          "score": 30,
+          "reason": "42%の減益と市場予想未達は、短期的には強い売り材料。",
+          "date": "2025-12-24 15:09"
         }
       ]
     },
     {
       "company": "HOYA",
-      "average_score": 8,
-      "updated_at": "2025-12-23 23:19",
+      "average_score": 88,
+      "updated_at": "2025-12-24 15:10",
+      "stock_info": {
+        "ticker": "7741.T",
+        "current_price": 23655.0,
+        "previous_price": 23940.0,
+        "price_change": -285.0,
+        "price_change_percent": -1.1904761904761905,
+        "date": "2025-12-24"
+      },
+      "score_evaluation": {
+        "accuracy": 44.0,
+        "prediction": "上昇予測 (非常に強い)",
+        "actual": "-1.19%",
+        "status": "外れ"
+      },
       "news": [
         {
           "title": "ＨＯＹＡ－3日続伸 470万8300株の自己株消却へ 割合1.37％(トレーダーズ・ウェブ) - Yahoo!ファイナンス",
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNdFlHd1FNS2xnTjJZVFZkcWI5ejFLaVgyRUItaGh1c2pUaFBCUk5rUjNRYXdmUEdCMWMyMmVjUjdPQ0h3ZVkzT3NWQmtKZ3A2Yks3Rk5SNGYwZ0dFRjRNdm9wWXJjSm9kdmYxNFJGcGRqRkltVUJFUk02ZnZfUEozWjRFZFVDM1E?oc=5",
-          "score": 9,
-          "reason": "大規模な自己株消却は株主還元として最高級の評価",
-          "date": "2025-12-23 23:18"
+          "score": 95,
+          "reason": "自己株消却は、1株当たり価値を向上させる強力な好材料。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "決算:HOYA、キオクシアHDの全株売却 4〜9月の純利益7%増 - 日本経済新聞",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBLekVhRHF0SGRrWjI5bFo1Y1p2SnluTjhEanM0UWtDTlZrQ2FBNGg3TFVPQXppWEwydF9LaEtlUUdKY1RwMVE3dHh3UzZ2cmpxaDZ2UjJZYjI4N1BMekUwek5RMWk3em1yZURMUQ?oc=5",
-          "score": 7,
-          "reason": "資産売却による財務基盤強化と利益増を好感",
-          "date": "2025-12-23 23:18"
+          "score": 85,
+          "reason": "資産売却益と増益の確保は、財務基盤の強化として評価。",
+          "date": "2025-12-24 15:09"
         },
         {
           "title": "ＨＯＹＡ【7741】、上期最終が7％増益で着地・7-9月期も5％増益 | 決算速報 - 株探ニュース - かぶたん",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE4yTEpxM3NZamhBQm9rTjVrc2RtdExac1JpLWpNR0hvQldjSW14NS1zVUpvRHZGdHJxaHQzTHZUcmFsRkxSa3A1TEVoX1dCWTB0RXc?oc=5",
-          "score": 8,
-          "reason": "連続的な利益増は事業の安定性と成長性を裏打ち",
-          "date": "2025-12-23 23:18"
+          "score": 84,
+          "reason": "着実な増益基調を維持しており、安定した株価形成に寄与。",
+          "date": "2025-12-24 15:09"
         }
       ]
     }
