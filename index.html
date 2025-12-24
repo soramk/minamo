@@ -364,29 +364,6 @@
             }, 200);
         }
 
-        // 履歴を読み込む
-        function loadHistory() {
-            fetch('history.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("History not found");
-                    return response.json();
-                })
-                .then(history => {
-                    historyData = history;
-                    const select = document.getElementById('historySelect');
-                    select.innerHTML = '<option value="">最新データを表示</option>';
-                    
-                    history.forEach((entry, index) => {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.textContent = entry.timestamp;
-                        select.appendChild(option);
-                    });
-                })
-                .catch(err => {
-                    console.log('履歴データが見つかりません:', err);
-                });
-        }
 
         // 初期データ読み込み
         Promise.all([
@@ -481,26 +458,32 @@
         function loadHistory() {
             return fetch('history.json')
                 .then(response => {
-                    if (!response.ok) throw new Error("History not found");
+                    if (!response.ok) {
+                        // ファイルが存在しない場合は空配列を返す
+                        historyData = [];
+                        return [];
+                    }
                     return response.json();
                 })
                 .then(history => {
-                    historyData = history;
+                    historyData = history || [];
                     const select = document.getElementById('historySelect');
                     const datePicker = document.getElementById('historyDatePicker');
+                    
+                    if (!select || !datePicker) return;
                     
                     select.innerHTML = '<option value="">最新データを表示</option>';
                     
                     // 日付の範囲を設定
-                    if (history.length > 0) {
-                        const dates = history.map(entry => entry.timestamp.split(' ')[0]);
+                    if (historyData.length > 0) {
+                        const dates = historyData.map(entry => entry.timestamp.split(' ')[0]);
                         const minDate = dates[dates.length - 1];
                         const maxDate = dates[0];
                         datePicker.min = minDate;
                         datePicker.max = maxDate;
                     }
                     
-                    history.forEach((entry, index) => {
+                    historyData.forEach((entry, index) => {
                         const option = document.createElement('option');
                         option.value = index;
                         option.textContent = entry.timestamp;
@@ -508,7 +491,8 @@
                     });
                 })
                 .catch(err => {
-                    console.log('履歴データが見つかりません:', err);
+                    console.log('履歴データの読み込みエラー:', err);
+                    historyData = [];
                 });
         }
 

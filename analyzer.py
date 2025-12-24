@@ -366,18 +366,28 @@ def main():
         try:
             with open(HISTORY_FILE, "r", encoding="utf-8") as f:
                 history = json.load(f)
-        except:
+                if not isinstance(history, list):
+                    print("Warning: History file is not a list, resetting...")
+                    history = []
+        except json.JSONDecodeError as e:
+            print(f"Warning: Failed to parse history file: {e}, resetting...")
+            history = []
+        except Exception as e:
+            print(f"Warning: Error reading history file: {e}, resetting...")
             history = []
     
     # 新しい履歴を追加（最新が先頭）
     history.insert(0, history_entry)
     
     # 履歴を保存（期限なく全て保持）
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2, ensure_ascii=False)
-    
-    print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
-    print(f"History updated. Total entries: {len(history)}")
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(history, f, indent=2, ensure_ascii=False)
+        print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
+        print(f"History updated. Total entries: {len(history)}")
+    except Exception as e:
+        print(f"Error saving history file: {e}")
+        print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
 
 if __name__ == "__main__":
     main()
