@@ -352,11 +352,7 @@ def main():
     # 新しい履歴を追加（最新が先頭）
     history.insert(0, history_entry)
     
-    # 履歴は最大50件まで保持
-    if len(history) > 50:
-        history = history[:50]
-    
-    # 履歴を保存
+    # 履歴を保存（期限なく全て保持）
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
     

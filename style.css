@@ -34,7 +34,7 @@ header {
 }
 
 .logo {
-    max-width: 120px;
+    max-width: 180px;
     height: auto;
     margin-bottom: 0.5rem;
     filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
@@ -100,6 +100,67 @@ h1 {
 .history-select:focus {
     outline: none;
     border-color: var(--accent);
+}
+
+.history-date-picker {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.history-date-picker:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Graph Container */
+.graph-container {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.graph-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.graph-period-select,
+.graph-company-select {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.graph-period-select:focus,
+.graph-company-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.graph-wrapper {
+    margin-bottom: 3rem;
+    height: 400px;
+    position: relative;
+}
+
+.graph-wrapper:last-child {
+    margin-bottom: 0;
 }
 
 /* Company Card Layout */

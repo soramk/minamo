@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- Google Fonts for premium feel -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -19,9 +21,33 @@
 
         <div class="history-controls">
             <button id="showHistoryBtn" class="history-btn">履歴を表示</button>
+            <input type="date" id="historyDatePicker" class="history-date-picker" style="display: none;">
             <select id="historySelect" class="history-select" style="display: none;">
                 <option value="">最新データを表示</option>
             </select>
+            <button id="showGraphBtn" class="history-btn">グラフを表示</button>
+        </div>
+
+        <div id="graphContainer" class="graph-container" style="display: none;">
+            <div class="graph-controls">
+                <select id="graphPeriod" class="graph-period-select">
+                    <option value="week">週</option>
+                    <option value="month">月</option>
+                    <option value="year">年</option>
+                </select>
+                <select id="graphCompany" class="graph-company-select">
+                    <option value="all">全企業平均</option>
+                </select>
+            </div>
+            <div class="graph-wrapper">
+                <canvas id="scoreChart"></canvas>
+            </div>
+            <div class="graph-wrapper">
+                <canvas id="accuracyChart"></canvas>
+            </div>
+            <div class="graph-wrapper">
+                <canvas id="correlationChart"></canvas>
+            </div>
         </div>
 
         <div id="app">
@@ -31,6 +57,9 @@
 
     <script>
         let historyData = [];
+        let scoreChart = null;
+        let accuracyChart = null;
+        let correlationChart = null;
         
         // データを表示する関数
         function displayData(data) {
@@ -209,14 +238,297 @@
                     'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
             });
 
+        // 日付から履歴を検索
+        function findHistoryByDate(dateStr) {
+            return historyData.find(entry => {
+                const entryDate = entry.timestamp.split(' ')[0];
+                return entryDate === dateStr;
+            });
+        }
+
+        // グラフデータを準備
+        function prepareGraphData(period, companyFilter) {
+            if (!historyData || historyData.length === 0) return null;
+
+            const now = new Date();
+            let startDate = new Date();
+            
+            switch(period) {
+                case 'week':
+                    startDate.setDate(now.getDate() - 7);
+                    break;
+                case 'month':
+                    startDate.setMonth(now.getMonth() - 1);
+                    break;
+                case 'year':
+                    startDate.setFullYear(now.getFullYear() - 1);
+                    break;
+            }
+
+            const filteredData = historyData.filter(entry => {
+                const entryDate = new Date(entry.timestamp);
+                return entryDate >= startDate;
+            }).reverse(); // 古い順にソート
+
+            const labels = [];
+            const scores = [];
+            const accuracies = [];
+            const priceChanges = [];
+
+            filteredData.forEach(entry => {
+                if (!entry.data || !entry.data.companies) return;
+                
+                const date = entry.timestamp.split(' ')[0];
+                labels.push(date);
+
+                let totalScore = 0;
+                let totalAccuracy = 0;
+                let totalPriceChange = 0;
+                let count = 0;
+                let accuracyCount = 0;
+
+                entry.data.companies.forEach(company => {
+                    if (companyFilter === 'all' || company.company === companyFilter) {
+                        totalScore += company.average_score || 0;
+                        count++;
+
+                        if (company.score_evaluation && company.score_evaluation.accuracy !== undefined) {
+                            totalAccuracy += company.score_evaluation.accuracy;
+                            accuracyCount++;
+                        }
+
+                        if (company.stock_info && company.stock_info.price_change_percent !== undefined) {
+                            totalPriceChange += company.stock_info.price_change_percent;
+                        }
+                    }
+                });
+
+                scores.push(count > 0 ? totalScore / count : 0);
+                accuracies.push(accuracyCount > 0 ? totalAccuracy / accuracyCount : 0);
+                priceChanges.push(count > 0 ? totalPriceChange / count : 0);
+            });
+
+            return { labels, scores, accuracies, priceChanges };
+        }
+
+        // 相関係数を計算
+        function calculateCorrelation(x, y) {
+            if (x.length !== y.length || x.length === 0) return 0;
+            
+            const n = x.length;
+            const sumX = x.reduce((a, b) => a + b, 0);
+            const sumY = y.reduce((a, b) => a + b, 0);
+            const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+            const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+            const sumY2 = y.reduce((sum, yi) => sum + yi * yi, 0);
+
+            const numerator = n * sumXY - sumX * sumY;
+            const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+            
+            return denominator === 0 ? 0 : numerator / denominator;
+        }
+
+        // グラフを更新
+        function updateGraphs() {
+            const period = document.getElementById('graphPeriod').value;
+            const companyFilter = document.getElementById('graphCompany').value;
+            const data = prepareGraphData(period, companyFilter);
+
+            if (!data || data.labels.length === 0) {
+                alert('グラフを表示するデータがありません');
+                return;
+            }
+
+            // スコア推移グラフ
+            const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+            if (scoreChart) scoreChart.destroy();
+            scoreChart = new Chart(scoreCtx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: '平均スコア',
+                        data: data.scores,
+                        borderColor: 'rgb(56, 189, 248)',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'スコア推移',
+                            color: 'rgb(226, 232, 240)'
+                        },
+                        legend: {
+                            labels: { color: 'rgb(226, 232, 240)' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // 精度推移グラフ
+            const accuracyCtx = document.getElementById('accuracyChart').getContext('2d');
+            if (accuracyChart) accuracyChart.destroy();
+            accuracyChart = new Chart(accuracyCtx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: '平均精度',
+                        data: data.accuracies,
+                        borderColor: 'rgb(74, 222, 128)',
+                        backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '予測精度推移',
+                            color: 'rgb(226, 232, 240)'
+                        },
+                        legend: {
+                            labels: { color: 'rgb(226, 232, 240)' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // 相関グラフ
+            const correlation = calculateCorrelation(data.scores, data.priceChanges);
+            const corrCtx = document.getElementById('correlationChart').getContext('2d');
+            if (correlationChart) correlationChart.destroy();
+            correlationChart = new Chart(corrCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'スコア vs 株価変動率',
+                        data: data.scores.map((score, i) => ({
+                            x: score,
+                            y: data.priceChanges[i]
+                        })),
+                        backgroundColor: 'rgba(56, 189, 248, 0.5)',
+                        borderColor: 'rgb(56, 189, 248)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `スコアと株価変動の相関 (相関係数: ${correlation.toFixed(3)})`,
+                            color: 'rgb(226, 232, 240)'
+                        },
+                        legend: {
+                            labels: { color: 'rgb(226, 232, 240)' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'スコア',
+                                color: 'rgb(148, 163, 184)'
+                            },
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '株価変動率 (%)',
+                                color: 'rgb(148, 163, 184)'
+                            },
+                            ticks: { color: 'rgb(148, 163, 184)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 企業リストを更新
+        function updateCompanyList() {
+            if (!historyData || historyData.length === 0) return;
+            
+            const latestData = historyData[0]?.data;
+            if (!latestData || !latestData.companies) return;
+
+            const select = document.getElementById('graphCompany');
+            const currentValue = select.value;
+            select.innerHTML = '<option value="all">全企業平均</option>';
+            
+            latestData.companies.forEach(company => {
+                const option = document.createElement('option');
+                option.value = company.company;
+                option.textContent = company.company;
+                select.appendChild(option);
+            });
+
+            if (currentValue) {
+                select.value = currentValue;
+            }
+        }
+
         // 履歴ボタンのイベント
         document.getElementById('showHistoryBtn').addEventListener('click', () => {
             const select = document.getElementById('historySelect');
+            const datePicker = document.getElementById('historyDatePicker');
             if (select.style.display === 'none') {
-                loadHistory();
-                select.style.display = 'inline-block';
+                loadHistory().then(() => {
+                    select.style.display = 'inline-block';
+                    datePicker.style.display = 'inline-block';
+                });
             } else {
                 select.style.display = 'none';
+                datePicker.style.display = 'none';
+            }
+        });
+
+        // カレンダー選択のイベント
+        document.getElementById('historyDatePicker').addEventListener('change', (e) => {
+            const selectedDate = e.target.value;
+            if (selectedDate) {
+                const entry = findHistoryByDate(selectedDate);
+                if (entry && entry.data) {
+                    displayData(entry.data);
+                } else {
+                    alert('選択した日付のデータが見つかりません');
+                }
             }
         });
 
@@ -236,6 +548,59 @@
                 }
             }
         });
+
+        // グラフボタンのイベント
+        document.getElementById('showGraphBtn').addEventListener('click', () => {
+            const container = document.getElementById('graphContainer');
+            if (container.style.display === 'none') {
+                loadHistory().then(() => {
+                    updateCompanyList();
+                    container.style.display = 'block';
+                    updateGraphs();
+                });
+            } else {
+                container.style.display = 'none';
+            }
+        });
+
+        // グラフ期間変更のイベント
+        document.getElementById('graphPeriod').addEventListener('change', updateGraphs);
+        document.getElementById('graphCompany').addEventListener('change', updateGraphs);
+
+        // 履歴を読み込む（Promiseを返す）
+        function loadHistory() {
+            return fetch('history.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("History not found");
+                    return response.json();
+                })
+                .then(history => {
+                    historyData = history;
+                    const select = document.getElementById('historySelect');
+                    const datePicker = document.getElementById('historyDatePicker');
+                    
+                    select.innerHTML = '<option value="">最新データを表示</option>';
+                    
+                    // 日付の範囲を設定
+                    if (history.length > 0) {
+                        const dates = history.map(entry => entry.timestamp.split(' ')[0]);
+                        const minDate = dates[dates.length - 1];
+                        const maxDate = dates[0];
+                        datePicker.min = minDate;
+                        datePicker.max = maxDate;
+                    }
+                    
+                    history.forEach((entry, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = entry.timestamp;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.log('履歴データが見つかりません:', err);
+                });
+        }
 
         // ページ読み込み時に履歴を読み込む
         loadHistory();
