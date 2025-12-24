@@ -1,0 +1,526 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-main: #e2e8f0;
+    --text-sub: #94a3b8;
+    --accent: #38bdf8;
+    --score-high: #4ade80;
+    --score-mid: #facc15;
+    --score-low: #f87171;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(74, 222, 128, 0.05) 0%, transparent 40%);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeIn 1s ease-out;
+}
+
+.logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 0;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -2px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-sub);
+    letter-spacing: 2px;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+}
+
+/* History Controls */
+.history-controls {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.history-btn {
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: var(--accent);
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.history-btn:hover {
+    background: rgba(56, 189, 248, 0.3);
+    border-color: rgba(56, 189, 248, 0.6);
+    transform: translateY(-1px);
+}
+
+.history-select {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.history-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.history-date-picker {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.history-date-picker:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Graph Container */
+.graph-container {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.graph-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.graph-period-select,
+.graph-company-select {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.graph-period-select:focus,
+.graph-company-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.graph-wrapper {
+    margin-bottom: 3rem;
+    height: 400px;
+    position: relative;
+}
+
+.graph-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+/* Company Card Layout */
+.company-card {
+    display: grid;
+    grid-template-columns: 300px 1fr 400px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.company-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+/* Left Column: Info */
+.company-info {
+    padding: 2rem;
+    background: rgba(15, 23, 42, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.company-info h2 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+.main-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.score-label {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+    margin-bottom: 0.2rem;
+}
+
+.score-value {
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.score-value::after {
+    content: "点";
+    font-size: 1.5rem;
+    margin-left: 0.2rem;
+    opacity: 0.7;
+}
+
+.score-high .score-value {
+    color: var(--score-high);
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+}
+
+.score-mid .score-value {
+    color: var(--score-mid);
+    text-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+}
+
+.score-low .score-value {
+    color: var(--score-low);
+    text-shadow: 0 0 20px rgba(248, 113, 113, 0.3);
+}
+
+.updated-at {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    opacity: 0.8;
+}
+
+/* Stock Info */
+.stock-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.stock-price, .stock-change {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.stock-label {
+    color: var(--text-sub);
+    font-size: 0.75rem;
+}
+
+.stock-value {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Score Evaluation */
+.score-evaluation {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.eval-hit {
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.05);
+}
+
+.eval-partial {
+    border-color: rgba(250, 204, 21, 0.3);
+    background: rgba(250, 204, 21, 0.05);
+}
+
+.eval-miss {
+    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba(248, 113, 113, 0.05);
+}
+
+.eval-header {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.eval-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.eval-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.eval-label {
+    color: var(--text-sub);
+}
+
+.eval-value {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* Middle Column: News */
+.company-news {
+    padding: 1.5rem 2rem;
+}
+
+/* Right Column: Graph */
+.company-graph {
+    padding: 1.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.company-graph-period {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    max-width: 120px;
+}
+
+.company-graph-period:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.company-graph canvas {
+    max-width: 100%;
+    max-height: 300px;
+    flex: 1;
+}
+
+.company-news h3 {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    /* Custom Scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.news-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.news-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.news-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-score {
+    font-size: 1.2rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.text-high {
+    color: var(--score-high);
+}
+
+.text-mid {
+    color: var(--score-mid);
+}
+
+.text-low {
+    color: var(--score-low);
+}
+
+.news-content {
+    flex: 1;
+}
+
+.news-title {
+    display: block;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+    transition: color 0.2s;
+}
+
+.news-title:hover {
+    color: var(--accent);
+}
+
+.news-date {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    opacity: 0.7;
+    margin-top: 0.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.news-reason {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    line-height: 1.5;
+}
+
+#status {
+    text-align: center;
+    margin-top: 4rem;
+    color: var(--text-sub);
+    font-size: 1.2rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+@media (max-width: 1200px) {
+    .company-card {
+        grid-template-columns: 280px 1fr;
+    }
+
+    .company-graph {
+        grid-column: 1 / -1;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .company-card {
+        grid-template-columns: 1fr;
+    }
+
+    .company-info {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+    }
+
+    .company-graph {
+        grid-column: 1;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minamo | 市場観測</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for premium feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="minamo.png" alt="Minamo Logo" class="logo">
+            <div class="subtitle">Market Ripple Observer</div>
+        </header>
+
+        <div class="history-controls">
+            <button id="showHistoryBtn" class="history-btn">履歴を表示</button>
+            <input type="date" id="historyDatePicker" class="history-date-picker" style="display: none;">
+            <select id="historySelect" class="history-select" style="display: none;">
+                <option value="">最新データを表示</option>
+            </select>
+        </div>
+
+        <div id="app">
+            <div id="status">Scanning the surface...</div>
+        </div>
+    </div>
+
+    <script>
+        let historyData = [];
+        let companyCharts = {}; // 企業ごとのグラフを保持
+        
+        // 企業ごとのグラフを描画
+        function drawCompanyGraph(companyName, historyData, period = 'month') {
+            if (!historyData || historyData.length === 0) return;
+            
+            const canvasId = `chart-${companyName.replace(/\s+/g, '-')}`;
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            // 既存のグラフを破棄
+            if (companyCharts[companyName]) {
+                companyCharts[companyName].destroy();
+            }
+            
+            // 期間に応じてデータを取得
+            const now = new Date();
+            const startDate = new Date();
+            
+            switch(period) {
+                case 'week':
+                    startDate.setDate(now.getDate() - 7);
+                    break;
+                case 'month':
+                    startDate.setMonth(now.getMonth() - 1);
+                    break;
+                case 'year':
+                    startDate.setFullYear(now.getFullYear() - 1);
+                    break;
+            }
+            
+            const filteredData = historyData.filter(entry => {
+                const entryDate = new Date(entry.timestamp);
+                return entryDate >= startDate;
+            }).reverse();
+            
+            const labels = [];
+            const scores = [];
+            const accuracies = [];
+            
+            filteredData.forEach(entry => {
+                if (!entry.data || !entry.data.companies) return;
+                
+                const company = entry.data.companies.find(c => c.company === companyName);
+                if (!company) return;
+                
+                const date = entry.timestamp.split(' ')[0];
+                // 期間に応じて日付フォーマットを変更
+                if (period === 'year') {
+                    labels.push(date.split('-').slice(0, 2).join('/')); // YYYY/MM形式
+                } else {
+                    labels.push(date.split('-').slice(1).join('/')); // MM/DD形式
+                }
+                scores.push(company.average_score || 0);
+                
+                if (company.score_evaluation && company.score_evaluation.accuracy !== undefined) {
+                    accuracies.push(company.score_evaluation.accuracy);
+                } else {
+                    accuracies.push(null);
+                }
+            });
+            
+            if (labels.length === 0) return;
+            
+            const ctx = canvas.getContext('2d');
+            companyCharts[companyName] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'スコア',
+                            data: scores,
+                            borderColor: 'rgb(56, 189, 248)',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '精度',
+                            data: accuracies,
+                            borderColor: 'rgb(74, 222, 128)',
+                            backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: 'rgb(226, 232, 240)',
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // データを表示する関数
+        function displayData(data) {
+            const app = document.getElementById('app');
+            app.innerHTML = ''; // ローディング消去
+
+            // データ構造の正規化
+            let companies = [];
+            let metadata = null;
+
+            if (Array.isArray(data)) {
+                companies = data;
+            } else if (data.companies) {
+                companies = data.companies;
+                metadata = data.metadata;
+            }
+
+            if (!companies || companies.length === 0) {
+                app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
+                return;
+            }
+
+            // メタデータ表示（トークン数など）
+            if (metadata && metadata.token_usage) {
+                const totalTokens = metadata.token_usage.total_tokens || 0;
+                const metaHtml = `
+                    <div class="system-status" style="text-align: center; color: var(--text-sub); font-size: 0.8rem; margin-bottom: 2rem; opacity: 0.8;">
+                        <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+                            Last Scan: ${metadata.updated_at} &nbsp;|&nbsp; Token Usage: ${totalTokens.toLocaleString()}
+                        </span>
+                    </div>
+                `;
+                app.innerHTML += metaHtml;
+            }
+
+            // 既存のグラフを全て破棄
+            Object.values(companyCharts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            companyCharts = {};
+            
+            companies.forEach(company => {
+                // スコアに応じたクラス（100点満点）
+                let scoreClass = 'score-low';
+                if (company.average_score >= 70) scoreClass = 'score-high';
+                else if (company.average_score >= 50) scoreClass = 'score-mid';
+
+                // 株価情報のHTML生成
+                let stockHtml = '';
+                if (company.stock_info) {
+                    const stock = company.stock_info;
+                    const changeClass = stock.price_change >= 0 ? 'text-high' : 'text-low';
+                    stockHtml = `
+                        <div class="stock-info">
+                            <div class="stock-price">
+                                <span class="stock-label">現在価格</span>
+                                <span class="stock-value">¥${stock.current_price.toLocaleString()}</span>
+                            </div>
+                            <div class="stock-change ${changeClass}">
+                                <span class="stock-label">前日比</span>
+                                <span class="stock-value">${stock.price_change >= 0 ? '+' : ''}${stock.price_change.toFixed(2)} (${stock.price_change_percent >= 0 ? '+' : ''}${stock.price_change_percent.toFixed(2)}%)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // スコア評価のHTML生成
+                let evaluationHtml = '';
+                if (company.score_evaluation) {
+                    const eval = company.score_evaluation;
+                    let statusClass = 'eval-hit';
+                    if (eval.status === '外れ') statusClass = 'eval-miss';
+                    else if (eval.status === '部分的的中') statusClass = 'eval-partial';
+                    
+                    evaluationHtml = `
+                        <div class="score-evaluation ${statusClass}">
+                            <div class="eval-header">予測精度評価</div>
+                            <div class="eval-details">
+                                <div class="eval-item">
+                                    <span class="eval-label">予測:</span>
+                                    <span class="eval-value">${eval.prediction}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">実際:</span>
+                                    <span class="eval-value">${eval.actual}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">結果:</span>
+                                    <span class="eval-value">${eval.status}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">精度:</span>
+                                    <span class="eval-value">${eval.accuracy}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ニュースリストのHTML生成
+                let newsHtml = '';
+                if (company.news && company.news.length > 0) {
+                    newsHtml = '<ul class="news-list">';
+                    company.news.forEach(news => {
+                        let newsScoreClass = 'text-low';
+                        if (news.score >= 70) newsScoreClass = 'text-high';
+                        else if (news.score >= 50) newsScoreClass = 'text-mid';
+
+                        const newsDate = news.date || news.collected_at || '';
+                        const dateDisplay = newsDate ? `<div class="news-date">${newsDate}</div>` : '';
+                        newsHtml += `
+                           <li class="news-item">
+                               <div class="news-score ${newsScoreClass}">${news.score}</div>
+                               <div class="news-content">
+                                   <a href="${news.link}" target="_blank" class="news-title">${news.title}</a>
+                                   ${dateDisplay}
+                                   <div class="news-reason">${news.reason}</div>
+                               </div>
+                           </li>
+                       `;
+                    });
+                    newsHtml += '</ul>';
+                } else {
+                    newsHtml = '<div class="no-news">No recent news analyzed.</div>';
+                }
+
+                const html = `
+                    <div class="company-card" data-company="${company.company}">
+                        <div class="company-info">
+                            <h2>${company.company}</h2>
+                            <div class="main-score ${scoreClass}">
+                                <span class="score-label">AI SCORE</span>
+                                <span class="score-value">${company.average_score}</span>
+                            </div>
+                            ${stockHtml}
+                            ${evaluationHtml}
+                            <div class="updated-at">Updated: ${company.updated_at}</div>
+                        </div>
+                        <div class="company-news">
+                            <h3>Latest Analysis</h3>
+                            ${newsHtml}
+                        </div>
+                        <div class="company-graph">
+                            <select class="company-graph-period" data-company="${company.company}">
+                                <option value="week">週</option>
+                                <option value="month" selected>月</option>
+                                <option value="year">年</option>
+                            </select>
+                            <canvas id="chart-${company.company.replace(/\s+/g, '-')}"></canvas>
+                        </div>
+                    </div>
+                `;
+                app.innerHTML += html;
+            });
+            
+            // 全ての企業カードが追加された後にグラフを描画
+            setTimeout(() => {
+                companies.forEach(company => {
+                    const periodSelect = document.querySelector(`.company-graph-period[data-company="${company.company}"]`);
+                    const period = periodSelect ? periodSelect.value : 'month';
+                    drawCompanyGraph(company.company, historyData, period);
+                    
+                    // 期間選択のイベントリスナーを追加
+                    if (periodSelect) {
+                        periodSelect.addEventListener('change', (e) => {
+                            drawCompanyGraph(company.company, historyData, e.target.value);
+                        });
+                    }
+                });
+            }, 200);
+        }
+
+
+        // 初期データ読み込み
+        Promise.all([
+            fetch('data/current.json').then(response => {
+                if (!response.ok) throw new Error("Data not found");
+                return response.json();
+            }),
+            loadHistory()
+        ]).then(([data]) => {
+            displayData(data);
+        }).catch(err => {
+            console.error(err);
+            document.getElementById('status').innerHTML =
+                'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
+        });
+
+        // 日付から履歴を検索
+        function findHistoryByDate(dateStr) {
+            return historyData.find(entry => {
+                const entryDate = entry.timestamp.split(' ')[0];
+                return entryDate === dateStr;
+            });
+        }
+
+
+        // 履歴ボタンのイベント
+        document.getElementById('showHistoryBtn').addEventListener('click', () => {
+            const select = document.getElementById('historySelect');
+            const datePicker = document.getElementById('historyDatePicker');
+            if (select.style.display === 'none') {
+                loadHistory().then(() => {
+                    select.style.display = 'inline-block';
+                    datePicker.style.display = 'inline-block';
+                });
+            } else {
+                select.style.display = 'none';
+                datePicker.style.display = 'none';
+            }
+        });
+
+        // カレンダー選択のイベント
+        document.getElementById('historyDatePicker').addEventListener('change', (e) => {
+            const selectedDate = e.target.value;
+            if (selectedDate) {
+                // 履歴データを再読み込みしてから検索
+                loadHistory().then(() => {
+                    const entry = findHistoryByDate(selectedDate);
+                    if (entry && entry.data) {
+                        displayData(entry.data);
+                    } else {
+                        alert('選択した日付のデータが見つかりません');
+                    }
+                });
+            }
+        });
+
+        // 履歴選択のイベント
+        document.getElementById('historySelect').addEventListener('change', (e) => {
+            const index = e.target.value;
+            if (index === '') {
+                // 最新データを表示
+                fetch('data/current.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // 履歴データも再読み込み
+                        loadHistory().then(() => {
+                            displayData(data);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            } else {
+                // 履歴データを表示
+                if (historyData[index] && historyData[index].data) {
+                    displayData(historyData[index].data);
+                }
+            }
+        });
+
+
+        // 履歴を読み込む（Promiseを返す）
+        async function loadHistory() {
+            try {
+                // 履歴ディレクトリのインデックスファイルを読み込む
+                const indexResponse = await fetch('data/history/index.json');
+                let dateFiles = [];
+                
+                if (indexResponse.ok) {
+                    dateFiles = await indexResponse.json();
+                } else {
+                    // インデックスがない場合、最近90日分の日付を生成
+                    const today = new Date();
+                    for (let i = 0; i < 90; i++) {
+                        const date = new Date(today);
+                        date.setDate(date.getDate() - i);
+                        dateFiles.push(date.toISOString().split('T')[0]);
+                    }
+                }
+                
+                // 各日付ファイルから履歴を読み込む
+                const historyPromises = dateFiles.map(date => 
+                    fetch(`data/history/${date}.json`)
+                        .then(response => response.ok ? response.json() : [])
+                        .catch(() => [])
+                );
+                
+                const dailyHistories = await Promise.all(historyPromises);
+                
+                // 全ての履歴をマージして時系列でソート
+                historyData = dailyHistories
+                    .flat()
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                const select = document.getElementById('historySelect');
+                const datePicker = document.getElementById('historyDatePicker');
+                
+                if (!select || !datePicker) return;
+                
+                select.innerHTML = '<option value="">最新データを表示</option>';
+                
+                // 日付の範囲を設定
+                if (historyData.length > 0) {
+                    const dates = historyData.map(entry => entry.timestamp.split(' ')[0]);
+                    const minDate = dates[dates.length - 1];
+                    const maxDate = dates[0];
+                    datePicker.min = minDate;
+                    datePicker.max = maxDate;
+                }
+                
+                historyData.forEach((entry, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = entry.timestamp;
+                    select.appendChild(option);
+                });
+            } catch (err) {
+                console.log('履歴データの読み込みエラー:', err);
+                historyData = [];
+            }
+        }
+
+        // ページ読み込み時に履歴を読み込む
+        loadHistory();
+    </script>
+</body>
+
+</html>
