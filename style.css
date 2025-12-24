@@ -166,7 +166,7 @@ h1 {
 /* Company Card Layout */
 .company-card {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px 1fr 350px;
     background: var(--card-bg);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
@@ -328,9 +328,25 @@ h1 {
     font-weight: 500;
 }
 
-/* Right Column: News */
+/* Middle Column: News */
 .company-news {
     padding: 1.5rem 2rem;
+}
+
+/* Right Column: Graph */
+.company-graph {
+    padding: 1.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.company-graph canvas {
+    max-width: 100%;
+    max-height: 300px;
 }
 
 .company-news h3 {
@@ -449,6 +465,19 @@ h1 {
     }
 }
 
+@media (max-width: 1200px) {
+    .company-card {
+        grid-template-columns: 280px 1fr;
+    }
+
+    .company-graph {
+        grid-column: 1 / -1;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
     .company-card {
         grid-template-columns: 1fr;
@@ -458,5 +487,11 @@ h1 {
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         padding: 1.5rem;
+    }
+
+    .company-graph {
+        grid-column: 1;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 }

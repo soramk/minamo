@@ -60,6 +60,148 @@
         let scoreChart = null;
         let accuracyChart = null;
         let correlationChart = null;
+        let companyCharts = {}; // 企業ごとのグラフを保持
+        
+        // 企業ごとのグラフを描画
+        function drawCompanyGraph(companyName, historyData) {
+            if (!historyData || historyData.length === 0) return;
+            
+            const canvasId = `chart-${companyName.replace(/\s+/g, '-')}`;
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            // 既存のグラフを破棄
+            if (companyCharts[companyName]) {
+                companyCharts[companyName].destroy();
+            }
+            
+            // 過去30日分のデータを取得
+            const now = new Date();
+            const startDate = new Date();
+            startDate.setDate(now.getDate() - 30);
+            
+            const filteredData = historyData.filter(entry => {
+                const entryDate = new Date(entry.timestamp);
+                return entryDate >= startDate;
+            }).reverse();
+            
+            const labels = [];
+            const scores = [];
+            const accuracies = [];
+            
+            filteredData.forEach(entry => {
+                if (!entry.data || !entry.data.companies) return;
+                
+                const company = entry.data.companies.find(c => c.company === companyName);
+                if (!company) return;
+                
+                const date = entry.timestamp.split(' ')[0];
+                labels.push(date.split('-').slice(1).join('/')); // MM/DD形式
+                scores.push(company.average_score || 0);
+                
+                if (company.score_evaluation && company.score_evaluation.accuracy !== undefined) {
+                    accuracies.push(company.score_evaluation.accuracy);
+                } else {
+                    accuracies.push(null);
+                }
+            });
+            
+            if (labels.length === 0) return;
+            
+            const ctx = canvas.getContext('2d');
+            companyCharts[companyName] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'スコア',
+                            data: scores,
+                            borderColor: 'rgb(56, 189, 248)',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '精度',
+                            data: accuracies,
+                            borderColor: 'rgb(74, 222, 128)',
+                            backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: 'rgb(226, 232, 240)',
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgb(148, 163, 184)',
+                                font: {
+                                    size: 9
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
         
         // データを表示する関数
         function displayData(data) {
@@ -95,6 +237,12 @@
                 app.innerHTML += metaHtml;
             }
 
+            // 既存のグラフを全て破棄
+            Object.values(companyCharts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            companyCharts = {};
+            
             companies.forEach(company => {
                 // スコアに応じたクラス（100点満点）
                 let scoreClass = 'score-low';
@@ -178,7 +326,7 @@
                 }
 
                 const html = `
-                    <div class="company-card">
+                    <div class="company-card" data-company="${company.company}">
                         <div class="company-info">
                             <h2>${company.company}</h2>
                             <div class="main-score ${scoreClass}">
@@ -193,10 +341,20 @@
                             <h3>Latest Analysis</h3>
                             ${newsHtml}
                         </div>
+                        <div class="company-graph">
+                            <canvas id="chart-${company.company.replace(/\s+/g, '-')}"></canvas>
+                        </div>
                     </div>
                 `;
                 app.innerHTML += html;
             });
+            
+            // 全ての企業カードが追加された後にグラフを描画
+            setTimeout(() => {
+                companies.forEach(company => {
+                    drawCompanyGraph(company.company, historyData);
+                });
+            }, 200);
         }
 
         // 履歴を読み込む
@@ -224,19 +382,23 @@
         }
 
         // 初期データ読み込み
-        fetch('data.json')
-            .then(response => {
+        Promise.all([
+            fetch('data.json').then(response => {
                 if (!response.ok) throw new Error("Data not found");
                 return response.json();
-            })
-            .then(data => {
-                displayData(data);
-            })
-            .catch(err => {
-                console.error(err);
-                document.getElementById('status').innerHTML =
-                    'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
-            });
+            }),
+            fetch('history.json').then(response => {
+                if (!response.ok) return [];
+                return response.json();
+            }).catch(() => [])
+        ]).then(([data, history]) => {
+            historyData = history;
+            displayData(data);
+        }).catch(err => {
+            console.error(err);
+            document.getElementById('status').innerHTML =
+                'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
+        });
 
         // 日付から履歴を検索
         function findHistoryByDate(dateStr) {
@@ -523,12 +685,15 @@
         document.getElementById('historyDatePicker').addEventListener('change', (e) => {
             const selectedDate = e.target.value;
             if (selectedDate) {
-                const entry = findHistoryByDate(selectedDate);
-                if (entry && entry.data) {
-                    displayData(entry.data);
-                } else {
-                    alert('選択した日付のデータが見つかりません');
-                }
+                // 履歴データを再読み込みしてから検索
+                loadHistory().then(() => {
+                    const entry = findHistoryByDate(selectedDate);
+                    if (entry && entry.data) {
+                        displayData(entry.data);
+                    } else {
+                        alert('選択した日付のデータが見つかりません');
+                    }
+                });
             }
         });
 
@@ -539,7 +704,19 @@
                 // 最新データを表示
                 fetch('data.json')
                     .then(response => response.json())
-                    .then(data => displayData(data))
+                    .then(data => {
+                        // 履歴データも再読み込み
+                        return fetch('history.json')
+                            .then(response => {
+                                if (!response.ok) return [];
+                                return response.json();
+                            })
+                            .catch(() => [])
+                            .then(history => {
+                                historyData = history;
+                                displayData(data);
+                            });
+                    })
                     .catch(err => console.error(err));
             } else {
                 // 履歴データを表示
