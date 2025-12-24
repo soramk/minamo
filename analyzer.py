@@ -385,8 +385,17 @@ def main():
             json.dump(history, f, indent=2, ensure_ascii=False)
         print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
         print(f"History updated. Total entries: {len(history)}")
+        print(f"History file saved to: {os.path.abspath(HISTORY_FILE)}")
+        # ファイルが実際に作成されたか確認
+        if os.path.exists(HISTORY_FILE):
+            file_size = os.path.getsize(HISTORY_FILE)
+            print(f"History file exists. Size: {file_size} bytes")
+        else:
+            print(f"ERROR: History file was not created at {os.path.abspath(HISTORY_FILE)}")
     except Exception as e:
         print(f"Error saving history file: {e}")
+        import traceback
+        traceback.print_exc()
         print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
 
 if __name__ == "__main__":
