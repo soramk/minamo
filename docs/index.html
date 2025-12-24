@@ -203,6 +203,7 @@
 
         // データを表示する関数
         function displayData(data) {
+            console.log('displayData called with:', data);
             const app = document.getElementById('app');
             app.innerHTML = ''; // ローディング消去
 
@@ -217,7 +218,10 @@
                 metadata = data.metadata;
             }
 
+            console.log('Companies after normalization:', companies.length);
+
             if (!companies || companies.length === 0) {
+                console.warn('No companies data found');
                 app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
                 return;
             }
@@ -460,25 +464,43 @@
                 displayData(currentData);
             } else {
                 // データを再読み込み
-                fetch('data/current.json')
-                    .then(response => response.json())
-                    .then(data => displayData(data))
-                    .catch(err => console.error(err));
+                fetch('data/current.json?' + new Date().getTime())
+                    .then(response => {
+                        if (!response.ok) throw new Error("Data not found");
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Reloaded data:', data);
+                        displayData(data);
+                    })
+                    .catch(err => {
+                        console.error('Error reloading data:', err);
+                    });
             }
         });
 
 
         // 初期データ読み込み
+        console.log('Loading initial data...');
         Promise.all([
-            fetch('data/current.json').then(response => {
+            fetch('data/current.json?' + new Date().getTime()).then(response => {
+                console.log('Response status:', response.status);
                 if (!response.ok) throw new Error("Data not found");
                 return response.json();
             }),
             loadHistory()
         ]).then(([data]) => {
-            displayData(data);
+            console.log('Data loaded:', data);
+            console.log('Companies count:', data.companies ? data.companies.length : 0);
+            if (data && data.companies && data.companies.length > 0) {
+                displayData(data);
+            } else {
+                console.error('No companies data found');
+                document.getElementById('status').innerHTML =
+                    'まだ水面は静かです。<br><small>(データが空です)</small>';
+            }
         }).catch(err => {
-            console.error(err);
+            console.error('Error loading data:', err);
             document.getElementById('status').innerHTML =
                 'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
         });
@@ -528,15 +550,21 @@
             const index = e.target.value;
             if (index === '') {
                 // 最新データを表示
-                fetch('data/current.json')
-                    .then(response => response.json())
+                fetch('data/current.json?' + new Date().getTime())
+                    .then(response => {
+                        if (!response.ok) throw new Error("Data not found");
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('Loaded latest data:', data);
                         // 履歴データも再読み込み
                         loadHistory().then(() => {
                             displayData(data);
                         });
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => {
+                        console.error('Error loading latest data:', err);
+                    });
             } else {
                 // 履歴データを表示
                 if (historyData[index] && historyData[index].data) {
