@@ -461,32 +461,32 @@ def main():
         batch_input = []
         
         for company in config:
-        print(f"Checking {company['name']}...")
-        entries = fetch_news(company['query'])
-        
-        news_items = []
-        for entry in entries:
-            # 記事の公開日を取得（RSSフィードから）
-            article_date = now_jst().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻（JST）
-            if hasattr(entry, 'published'):
-                try:
-                    # feedparserが日付を解析している場合
-                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                        article_date = datetime(*entry.published_parsed[:6]).strftime("%Y-%m-%d %H:%M")
-                    else:
-                        # 文字列から日付を抽出
-                        article_date = entry.published
-                except:
-                    pass
+            print(f"Checking {company['name']}...")
+            entries = fetch_news(company['query'])
             
-            news_items.append({
-                "title": entry.title,
-                "snippet": entry.summary,
-                "link": entry.link,
-                "date": article_date,  # 記事の公開日
-                "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持（JST）
-            })
-        
+            news_items = []
+            for entry in entries:
+                # 記事の公開日を取得（RSSフィードから）
+                article_date = now_jst().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻（JST）
+                if hasattr(entry, 'published'):
+                    try:
+                        # feedparserが日付を解析している場合
+                        if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                            article_date = datetime(*entry.published_parsed[:6]).strftime("%Y-%m-%d %H:%M")
+                        else:
+                            # 文字列から日付を抽出
+                            article_date = entry.published
+                    except:
+                        pass
+                
+                news_items.append({
+                    "title": entry.title,
+                    "snippet": entry.summary,
+                    "link": entry.link,
+                    "date": article_date,  # 記事の公開日
+                    "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持（JST）
+                })
+            
             if news_items:
                 batch_input.append({
                     "name": company["name"],
