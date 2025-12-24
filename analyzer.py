@@ -17,12 +17,13 @@ def now_jst():
 
 # 設定
 CONFIG_FILE = "config.json"
-DATA_DIR = "data"
+DATA_DIR = "docs/data"  # GitHub Pages用にdocs/dataに直接保存
 HISTORY_DIR = os.path.join(DATA_DIR, "history")
 DB_FILE = os.path.join(DATA_DIR, "current.json")  # 最新データ
 RSS_BASE_URL = "https://news.google.com/rss/search?q={}&hl=ja&gl=JP&ceid=JP:ja"
 
 # ディレクトリを作成
+os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(HISTORY_DIR, exist_ok=True)
 
 # 企業名からティッカーシンボルのマッピング（日本の主要企業）
@@ -56,7 +57,153 @@ COMPANY_TICKER_MAP = {
     "富士通": "6702.T",
     "アドバンテスト": "6857.T",
     "三菱商事": "8058.T",
-    "HOYA": "7741.T"
+    "HOYA": "7741.T",
+    "パナソニック": "6752.T",
+    "三菱重工業": "7011.T",
+    "日本製鉄": "5401.T",
+    "JFEホールディングス": "5411.T",
+    "住友化学": "4005.T",
+    "三菱ケミカルホールディングス": "4188.T",
+    "旭化成": "3407.T",
+    "東レ": "3402.T",
+    "帝人": "3401.T",
+    "住友金属鉱山": "5713.T",
+    "三井金属鉱業": "5706.T",
+    "住友商事": "8053.T",
+    "丸紅": "8002.T",
+    "双日": "2768.T",
+    "豊田自動織機": "6201.T",
+    "コマツ": "6301.T",
+    "日立建機": "6305.T",
+    "オムロン": "6645.T",
+    "三菱電機": "6503.T",
+    "富士電機": "6504.T",
+    "東芝": "6502.T",
+    "シャープ": "6753.T",
+    "日本電気": "6701.T",
+    "京セラ": "6971.T",
+    "TDK": "6762.T",
+    "アルプスアルパイン": "6770.T",
+    "ローム": "6963.T",
+    "ルネサスエレクトロニクス": "6723.T",
+    "日亜化学工業": "5393.T",
+    "日本電産": "6594.T",
+    "ニコン": "7731.T",
+    "キヤノン": "7751.T",
+    "リコー": "7752.T",
+    "セイコーエプソン": "6724.T",
+    "スズキ": "7269.T",
+    "マツダ": "7261.T",
+    "スバル": "7270.T",
+    "いすゞ自動車": "7202.T",
+    "日産自動車": "7201.T",
+    "ブリヂストン": "5108.T",
+    "住友ゴム工業": "5110.T",
+    "アイシン": "7259.T",
+    "トヨタ紡織": "3116.T",
+    "日本郵政": "6178.T",
+    "JR東日本": "9020.T",
+    "JR西日本": "9021.T",
+    "JR東海": "9022.T",
+    "ANAホールディングス": "9202.T",
+    "日本航空": "9201.T",
+    "川崎重工業": "7012.T",
+    "IHI": "7013.T",
+    "住友重機械工業": "6302.T",
+    "日立造船": "7004.T",
+    "三井物産": "8031.T",
+    "住友不動産": "8830.T",
+    "三井不動産": "8801.T",
+    "三菱地所": "8802.T",
+    "野村ホールディングス": "8604.T",
+    "大和証券グループ本社": "8601.T",
+    "SMBC日興証券": "8609.T",
+    "第一生命ホールディングス": "8750.T",
+    "日本生命保険": "7181.T",
+    "明治安田生命保険": "7182.T",
+    "損害保険ジャパン": "8751.T",
+    "東京海上ホールディングス": "8766.T",
+    "MS&ADインシュアランスグループ": "8725.T",
+    "SOMPOホールディングス": "8630.T",
+    "日本製紙": "3863.T",
+    "王子ホールディングス": "3861.T",
+    "花王": "4452.T",
+    "資生堂": "4911.T",
+    "コーセー": "4922.T",
+    "味の素": "2802.T",
+    "キッコーマン": "2801.T",
+    "日本ハム": "2282.T",
+    "明治ホールディングス": "2269.T",
+    "森永製菓": "2201.T",
+    "カルビー": "2229.T",
+    "アサヒグループホールディングス": "2502.T",
+    "キリン": "2503.T",
+    "サントリーホールディングス": "2587.T",
+    "イオン": "8267.T",
+    "永旺リテール": "8261.T",
+    "ローソン": "2651.T",
+    "ファミリーマート": "8028.T",
+    "パルコ": "8251.T",
+    "高島屋": "8233.T",
+    "三越伊勢丹ホールディングス": "3099.T",
+    "大塚ホールディングス": "4578.T",
+    "アステラス製薬": "4503.T",
+    "エーザイ": "4523.T",
+    "第一三共": "4568.T",
+    "中外製薬": "4519.T",
+    "塩野義製薬": "4507.T",
+    "オノフィ": "4528.T",
+    "テルモ": "4543.T",
+    "日本光電工業": "6849.T",
+    "日本郵船": "9101.T",
+    "商船三井": "9104.T",
+    "川崎汽船": "9107.T",
+    "ヤマトホールディングス": "9064.T",
+    "佐川急便": "9123.T",
+    "日本通運": "9062.T",
+    "楽天グループ": "4755.T",
+    "サイバーエージェント": "4751.T",
+    "GMOインターネット": "9449.T",
+    "Zホールディングス": "4689.T",
+    "ヤフー": "4689.T",
+    "メルカリ": "4385.T",
+    "ワークスアプリケーションズ": "3751.T",
+    "オプティム": "3694.T",
+    "日本ガイシ": "5333.T",
+    "AGC": "5201.T",
+    "太平洋セメント": "5233.T",
+    "住友大阪セメント": "5232.T",
+    "TOTO": "5332.T",
+    "LIXIL": "5938.T",
+    "積水ハウス": "1928.T",
+    "大和ハウス工業": "1925.T",
+    "セキスイハイム": "1924.T",
+    "大林組": "1802.T",
+    "鹿島建設": "1812.T",
+    "清水建設": "1803.T",
+    "大成建設": "1801.T",
+    "竹中工務店": "1810.T",
+    "前田建設工業": "1820.T",
+    "東急": "9005.T",
+    "東武鉄道": "9001.T",
+    "西武ホールディングス": "9024.T",
+    "近鉄グループホールディングス": "9041.T",
+    "京王電鉄": "9007.T",
+    "小田急電鉄": "9009.T",
+    "京成電鉄": "9009.T",
+    "東京ガス": "9531.T",
+    "大阪ガス": "9532.T",
+    "東邦ガス": "9533.T",
+    "東京電力ホールディングス": "9501.T",
+    "関西電力": "9503.T",
+    "中部電力": "9502.T",
+    "九州電力": "9508.T",
+    "中国電力": "9504.T",
+    "四国電力": "9507.T",
+    "北海道電力": "9509.T",
+    "東北電力": "9506.T",
+    "北陸電力": "9505.T",
+    "沖縄電力": "9511.T"
 }
 
 # Geminiクライアントは後で初期化
@@ -88,6 +235,34 @@ def update_history_index(current_date):
     sorted_dates = sorted(existing_dates, reverse=True)
     with open(index_file, "w", encoding="utf-8") as f:
         json.dump(sorted_dates, f, indent=2)
+
+def migrate_old_data():
+    """既存のdata/フォルダの内容をdocs/data/に移行"""
+    old_data_dir = "data"
+    if not os.path.exists(old_data_dir):
+        return
+    
+    try:
+        # 既存のdata/current.jsonを移行
+        old_current = os.path.join(old_data_dir, "current.json")
+        if os.path.exists(old_current):
+            import shutil
+            shutil.copy2(old_current, DB_FILE)
+            print(f"Migrated {old_current} to {DB_FILE}")
+        
+        # 既存のdata/history/を移行
+        old_history_dir = os.path.join(old_data_dir, "history")
+        if os.path.exists(old_history_dir):
+            import shutil
+            for file in os.listdir(old_history_dir):
+                if file.endswith('.json'):
+                    old_file = os.path.join(old_history_dir, file)
+                    new_file = os.path.join(HISTORY_DIR, file)
+                    if not os.path.exists(new_file):
+                        shutil.copy2(old_file, new_file)
+                        print(f"Migrated {old_file} to {new_file}")
+    except Exception as e:
+        print(f"Error migrating old data: {e}")
 
 def migrate_old_history():
     """既存のhistory.jsonを本日の日付で保存"""
@@ -410,8 +585,15 @@ def main():
                         "status": "外れ"
                     }
             
+        # 業種情報を取得
+        sector = None
+        original_config = next((c for c in config if c["name"] == company_name), None)
+        if original_config and "sector" in original_config:
+            sector = original_config["sector"]
+        
         company_record = {
             "company": company_name,
+            "sector": sector,
             "average_score": predicted_score,
             "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
             "stock_info": stock_info,
@@ -501,6 +683,8 @@ def main():
         print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
 
 if __name__ == "__main__":
-    # 初回実行時に既存のhistory.jsonを移行
+    # 初回実行時に既存のdata/フォルダを移行
+    migrate_old_data()
+    # 既存のhistory.jsonを移行
     migrate_old_history()
     main()
