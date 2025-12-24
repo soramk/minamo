@@ -95,7 +95,7 @@ def fetch_stock_price(company_name):
         # 過去2営業日のデータを取得
         hist = stock.history(period="5d")
         if len(hist) < 2:
-            print(f"Warning: Not enough data for {company_name}")
+            print(f"Warning: Not enough data for {company_name} ({ticker})")
             return None
         
         # 最新の2日分のデータを取得
@@ -116,7 +116,12 @@ def fetch_stock_price(company_name):
             "date": latest.name.strftime("%Y-%m-%d") if hasattr(latest.name, 'strftime') else str(latest.name)
         }
     except Exception as e:
-        print(f"Error fetching stock price for {company_name} ({ticker}): {e}")
+        # エラーメッセージを確認して、上場廃止の可能性がある場合は警告のみ
+        error_msg = str(e)
+        if "delisted" in error_msg.lower() or "not found" in error_msg.lower() or "no data found" in error_msg.lower():
+            print(f"Warning: Stock data not available for {company_name} ({ticker}) - possibly delisted or symbol not found")
+        else:
+            print(f"Error fetching stock price for {company_name} ({ticker}): {e}")
         return None
 
 def analyze_batch(companies_news):
