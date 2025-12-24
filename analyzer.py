@@ -10,9 +10,13 @@ import yfinance as yf
 
 # 設定
 CONFIG_FILE = "config.json"
-DB_FILE = "data.json"
-HISTORY_FILE = "history.json"
+DATA_DIR = "data"
+HISTORY_DIR = os.path.join(DATA_DIR, "history")
+DB_FILE = os.path.join(DATA_DIR, "current.json")  # 最新データ
 RSS_BASE_URL = "https://news.google.com/rss/search?q={}&hl=ja&gl=JP&ceid=JP:ja"
+
+# ディレクトリを作成
+os.makedirs(HISTORY_DIR, exist_ok=True)
 
 # 企業名からティッカーシンボルのマッピング（日本の主要企業）
 COMPANY_TICKER_MAP = {
@@ -50,6 +54,84 @@ COMPANY_TICKER_MAP = {
 
 # Geminiクライアントは後で初期化
 client = None
+
+def update_history_index(current_date):
+    """履歴インデックスファイルを更新"""
+    index_file = os.path.join(HISTORY_DIR, "index.json")
+    
+    # 既存のインデックスを読み込む
+    existing_dates = set()
+    if os.path.exists(index_file):
+        try:
+            with open(index_file, "r", encoding="utf-8") as f:
+                existing_dates = set(json.load(f))
+        except:
+            pass
+    
+    # 現在の日付を追加
+    existing_dates.add(current_date)
+    
+    # 実際に存在するファイルのみをインデックスに含める
+    if os.path.exists(HISTORY_DIR):
+        actual_files = {f.replace('.json', '') for f in os.listdir(HISTORY_DIR) 
+                       if f.endswith('.json') and f != 'index.json'}
+        existing_dates = existing_dates.intersection(actual_files)
+    
+    # ソートして保存
+    sorted_dates = sorted(existing_dates, reverse=True)
+    with open(index_file, "w", encoding="utf-8") as f:
+        json.dump(sorted_dates, f, indent=2)
+
+def migrate_old_history():
+    """既存のhistory.jsonを本日の日付で保存"""
+    # ディレクトリを作成
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    
+    old_history_file = "history.json"
+    if not os.path.exists(old_history_file):
+        return
+    
+    try:
+        # 既存のhistory.jsonを読み込む
+        with open(old_history_file, "r", encoding="utf-8") as f:
+            old_history = json.load(f)
+        
+        if not isinstance(old_history, list) or len(old_history) == 0:
+            print("No history data to migrate")
+            return
+        
+        # 本日の日付で保存
+        today = datetime.now().strftime("%Y-%m-%d")
+        today_file = os.path.join(HISTORY_DIR, f"{today}.json")
+        
+        # 既存のファイルがある場合はマージ
+        if os.path.exists(today_file):
+            with open(today_file, "r", encoding="utf-8") as f:
+                existing_history = json.load(f)
+            # 重複を避けてマージ
+            existing_timestamps = {entry["timestamp"] for entry in existing_history}
+            new_entries = [entry for entry in old_history if entry["timestamp"] not in existing_timestamps]
+            merged_history = new_entries + existing_history
+        else:
+            merged_history = old_history
+        
+        # 時系列でソート（最新が先頭）
+        merged_history.sort(key=lambda x: x["timestamp"], reverse=True)
+        
+        # 保存
+        with open(today_file, "w", encoding="utf-8") as f:
+            json.dump(merged_history, f, indent=2, ensure_ascii=False)
+        
+        print(f"Migrated {len(old_history)} history entries to {today_file}")
+        print(f"Total entries in today's file: {len(merged_history)}")
+        
+        # インデックスを更新
+        update_history_index(today)
+        
+    except Exception as e:
+        print(f"Error migrating old history: {e}")
+        import traceback
+        traceback.print_exc()
 
 def init_client():
     global client
@@ -169,6 +251,10 @@ def analyze_batch(companies_news):
         return [], {}
 
 def main():
+    # ディレクトリを作成（確実に作成されるように）
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    
     if not init_client():
         return
 
@@ -350,48 +436,57 @@ def main():
         "companies": companies_data
     }
 
+    # ディレクトリを作成（念のため）
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+
     # 保存
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(final_output, f, indent=2, ensure_ascii=False)
     
-    # 履歴に追加
+    # 履歴を日付ごとに分割して保存
+    timestamp = datetime.now()
+    date_str = timestamp.strftime("%Y-%m-%d")
+    time_str = timestamp.strftime("%H:%M")
+    
     history_entry = {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "timestamp": timestamp.strftime("%Y-%m-%d %H:%M"),
         "data": final_output
     }
     
+    # 日付ごとの履歴ファイル
+    history_file = os.path.join(HISTORY_DIR, f"{date_str}.json")
+    
     # 既存の履歴を読み込む
-    history = []
-    if os.path.exists(HISTORY_FILE):
+    daily_history = []
+    if os.path.exists(history_file):
         try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                history = json.load(f)
-                if not isinstance(history, list):
+            with open(history_file, "r", encoding="utf-8") as f:
+                daily_history = json.load(f)
+                if not isinstance(daily_history, list):
                     print("Warning: History file is not a list, resetting...")
-                    history = []
+                    daily_history = []
         except json.JSONDecodeError as e:
             print(f"Warning: Failed to parse history file: {e}, resetting...")
-            history = []
+            daily_history = []
         except Exception as e:
             print(f"Warning: Error reading history file: {e}, resetting...")
-            history = []
+            daily_history = []
     
     # 新しい履歴を追加（最新が先頭）
-    history.insert(0, history_entry)
+    daily_history.insert(0, history_entry)
     
-    # 履歴を保存（期限なく全て保持）
+    # 日付ごとの履歴を保存
     try:
-        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-            json.dump(history, f, indent=2, ensure_ascii=False)
+        with open(history_file, "w", encoding="utf-8") as f:
+            json.dump(daily_history, f, indent=2, ensure_ascii=False)
+        
+        # 履歴インデックスを更新
+        update_history_index(date_str)
+        
         print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
-        print(f"History updated. Total entries: {len(history)}")
-        print(f"History file saved to: {os.path.abspath(HISTORY_FILE)}")
-        # ファイルが実際に作成されたか確認
-        if os.path.exists(HISTORY_FILE):
-            file_size = os.path.getsize(HISTORY_FILE)
-            print(f"History file exists. Size: {file_size} bytes")
-        else:
-            print(f"ERROR: History file was not created at {os.path.abspath(HISTORY_FILE)}")
+        print(f"History saved to: {os.path.abspath(history_file)}")
+        print(f"Daily history entries: {len(daily_history)}")
     except Exception as e:
         print(f"Error saving history file: {e}")
         import traceback
@@ -399,4 +494,6 @@ def main():
         print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
 
 if __name__ == "__main__":
+    # 初回実行時に既存のhistory.jsonを移行
+    migrate_old_history()
     main()

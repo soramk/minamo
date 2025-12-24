@@ -367,16 +367,12 @@
 
         // 初期データ読み込み
         Promise.all([
-            fetch('data.json').then(response => {
+            fetch('data/current.json').then(response => {
                 if (!response.ok) throw new Error("Data not found");
                 return response.json();
             }),
-            fetch('history.json').then(response => {
-                if (!response.ok) return [];
-                return response.json();
-            }).catch(() => [])
-        ]).then(([data, history]) => {
-            historyData = history;
+            loadHistory()
+        ]).then(([data]) => {
             displayData(data);
         }).catch(err => {
             console.error(err);
@@ -429,20 +425,13 @@
             const index = e.target.value;
             if (index === '') {
                 // 最新データを表示
-                fetch('data.json')
+                fetch('data/current.json')
                     .then(response => response.json())
                     .then(data => {
                         // 履歴データも再読み込み
-                        return fetch('history.json')
-                            .then(response => {
-                                if (!response.ok) return [];
-                                return response.json();
-                            })
-                            .catch(() => [])
-                            .then(history => {
-                                historyData = history;
-                                displayData(data);
-                            });
+                        loadHistory().then(() => {
+                            displayData(data);
+                        });
                     })
                     .catch(err => console.error(err));
             } else {
@@ -455,45 +444,64 @@
 
 
         // 履歴を読み込む（Promiseを返す）
-        function loadHistory() {
-            return fetch('history.json')
-                .then(response => {
-                    if (!response.ok) {
-                        // ファイルが存在しない場合は空配列を返す
-                        historyData = [];
-                        return [];
+        async function loadHistory() {
+            try {
+                // 履歴ディレクトリのインデックスファイルを読み込む
+                const indexResponse = await fetch('data/history/index.json');
+                let dateFiles = [];
+                
+                if (indexResponse.ok) {
+                    dateFiles = await indexResponse.json();
+                } else {
+                    // インデックスがない場合、最近90日分の日付を生成
+                    const today = new Date();
+                    for (let i = 0; i < 90; i++) {
+                        const date = new Date(today);
+                        date.setDate(date.getDate() - i);
+                        dateFiles.push(date.toISOString().split('T')[0]);
                     }
-                    return response.json();
-                })
-                .then(history => {
-                    historyData = history || [];
-                    const select = document.getElementById('historySelect');
-                    const datePicker = document.getElementById('historyDatePicker');
-                    
-                    if (!select || !datePicker) return;
-                    
-                    select.innerHTML = '<option value="">最新データを表示</option>';
-                    
-                    // 日付の範囲を設定
-                    if (historyData.length > 0) {
-                        const dates = historyData.map(entry => entry.timestamp.split(' ')[0]);
-                        const minDate = dates[dates.length - 1];
-                        const maxDate = dates[0];
-                        datePicker.min = minDate;
-                        datePicker.max = maxDate;
-                    }
-                    
-                    historyData.forEach((entry, index) => {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.textContent = entry.timestamp;
-                        select.appendChild(option);
-                    });
-                })
-                .catch(err => {
-                    console.log('履歴データの読み込みエラー:', err);
-                    historyData = [];
+                }
+                
+                // 各日付ファイルから履歴を読み込む
+                const historyPromises = dateFiles.map(date => 
+                    fetch(`data/history/${date}.json`)
+                        .then(response => response.ok ? response.json() : [])
+                        .catch(() => [])
+                );
+                
+                const dailyHistories = await Promise.all(historyPromises);
+                
+                // 全ての履歴をマージして時系列でソート
+                historyData = dailyHistories
+                    .flat()
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                const select = document.getElementById('historySelect');
+                const datePicker = document.getElementById('historyDatePicker');
+                
+                if (!select || !datePicker) return;
+                
+                select.innerHTML = '<option value="">最新データを表示</option>';
+                
+                // 日付の範囲を設定
+                if (historyData.length > 0) {
+                    const dates = historyData.map(entry => entry.timestamp.split(' ')[0]);
+                    const minDate = dates[dates.length - 1];
+                    const maxDate = dates[0];
+                    datePicker.min = minDate;
+                    datePicker.max = maxDate;
+                }
+                
+                historyData.forEach((entry, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = entry.timestamp;
+                    select.appendChild(option);
                 });
+            } catch (err) {
+                console.log('履歴データの読み込みエラー:', err);
+                historyData = [];
+            }
         }
 
         // ページ読み込み時に履歴を読み込む

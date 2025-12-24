@@ -39,9 +39,16 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python analyzer.py
 
+      - name: Copy data to docs directory
+        run: |
+          mkdir -p docs/data/history
+          cp data/current.json docs/data/current.json || echo "current.json not found"
+          cp -r data/history/* docs/data/history/ 2>/dev/null || echo "No history files to copy"
+          cp index.html style.css minamo.png docs/ 2>/dev/null || echo "Web files not in root"
+
       - name: Commit and Push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data.json history.json
+          git add data/ docs/
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data and history" && git push)
