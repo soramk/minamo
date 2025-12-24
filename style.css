@@ -34,7 +34,7 @@ header {
 }
 
 .logo {
-    max-width: 60px;
+    max-width: 120px;
     height: auto;
     margin-bottom: 0.5rem;
     filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
@@ -55,6 +55,51 @@ h1 {
     letter-spacing: 2px;
     margin-top: 0.5rem;
     text-transform: uppercase;
+}
+
+/* History Controls */
+.history-controls {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.history-btn {
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: var(--accent);
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.history-btn:hover {
+    background: rgba(56, 189, 248, 0.3);
+    border-color: rgba(56, 189, 248, 0.6);
+    transform: translateY(-1px);
+}
+
+.history-select {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.history-select:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 /* Company Card Layout */
@@ -114,6 +159,13 @@ h1 {
     line-height: 1;
 }
 
+.score-value::after {
+    content: "点";
+    font-size: 1.5rem;
+    margin-left: 0.2rem;
+    opacity: 0.7;
+}
+
 .score-high .score-value {
     color: var(--score-high);
     text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
@@ -133,6 +185,86 @@ h1 {
     font-size: 0.75rem;
     color: var(--text-sub);
     opacity: 0.8;
+}
+
+/* Stock Info */
+.stock-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.stock-price, .stock-change {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.stock-label {
+    color: var(--text-sub);
+    font-size: 0.75rem;
+}
+
+.stock-value {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Score Evaluation */
+.score-evaluation {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.eval-hit {
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.05);
+}
+
+.eval-partial {
+    border-color: rgba(250, 204, 21, 0.3);
+    background: rgba(250, 204, 21, 0.05);
+}
+
+.eval-miss {
+    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba(248, 113, 113, 0.05);
+}
+
+.eval-header {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.eval-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.eval-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.eval-label {
+    color: var(--text-sub);
+}
+
+.eval-value {
+    color: var(--text-main);
+    font-weight: 500;
 }
 
 /* Right Column: News */

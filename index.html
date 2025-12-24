@@ -17,104 +17,228 @@
             <div class="subtitle">Market Ripple Observer</div>
         </header>
 
+        <div class="history-controls">
+            <button id="showHistoryBtn" class="history-btn">履歴を表示</button>
+            <select id="historySelect" class="history-select" style="display: none;">
+                <option value="">最新データを表示</option>
+            </select>
+        </div>
+
         <div id="app">
             <div id="status">Scanning the surface...</div>
         </div>
     </div>
 
     <script>
+        let historyData = [];
+        
+        // データを表示する関数
+        function displayData(data) {
+            const app = document.getElementById('app');
+            app.innerHTML = ''; // ローディング消去
+
+            // データ構造の正規化
+            let companies = [];
+            let metadata = null;
+
+            if (Array.isArray(data)) {
+                companies = data;
+            } else if (data.companies) {
+                companies = data.companies;
+                metadata = data.metadata;
+            }
+
+            if (!companies || companies.length === 0) {
+                app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
+                return;
+            }
+
+            // メタデータ表示（トークン数など）
+            if (metadata && metadata.token_usage) {
+                const totalTokens = metadata.token_usage.total_tokens || 0;
+                const metaHtml = `
+                    <div class="system-status" style="text-align: center; color: var(--text-sub); font-size: 0.8rem; margin-bottom: 2rem; opacity: 0.8;">
+                        <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+                            Last Scan: ${metadata.updated_at} &nbsp;|&nbsp; Token Usage: ${totalTokens.toLocaleString()}
+                        </span>
+                    </div>
+                `;
+                app.innerHTML += metaHtml;
+            }
+
+            companies.forEach(company => {
+                // スコアに応じたクラス（100点満点）
+                let scoreClass = 'score-low';
+                if (company.average_score >= 70) scoreClass = 'score-high';
+                else if (company.average_score >= 50) scoreClass = 'score-mid';
+
+                // 株価情報のHTML生成
+                let stockHtml = '';
+                if (company.stock_info) {
+                    const stock = company.stock_info;
+                    const changeClass = stock.price_change >= 0 ? 'text-high' : 'text-low';
+                    stockHtml = `
+                        <div class="stock-info">
+                            <div class="stock-price">
+                                <span class="stock-label">現在価格</span>
+                                <span class="stock-value">¥${stock.current_price.toLocaleString()}</span>
+                            </div>
+                            <div class="stock-change ${changeClass}">
+                                <span class="stock-label">前日比</span>
+                                <span class="stock-value">${stock.price_change >= 0 ? '+' : ''}${stock.price_change.toFixed(2)} (${stock.price_change_percent >= 0 ? '+' : ''}${stock.price_change_percent.toFixed(2)}%)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // スコア評価のHTML生成
+                let evaluationHtml = '';
+                if (company.score_evaluation) {
+                    const eval = company.score_evaluation;
+                    let statusClass = 'eval-hit';
+                    if (eval.status === '外れ') statusClass = 'eval-miss';
+                    else if (eval.status === '部分的的中') statusClass = 'eval-partial';
+                    
+                    evaluationHtml = `
+                        <div class="score-evaluation ${statusClass}">
+                            <div class="eval-header">予測精度評価</div>
+                            <div class="eval-details">
+                                <div class="eval-item">
+                                    <span class="eval-label">予測:</span>
+                                    <span class="eval-value">${eval.prediction}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">実際:</span>
+                                    <span class="eval-value">${eval.actual}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">結果:</span>
+                                    <span class="eval-value">${eval.status}</span>
+                                </div>
+                                <div class="eval-item">
+                                    <span class="eval-label">精度:</span>
+                                    <span class="eval-value">${eval.accuracy}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ニュースリストのHTML生成
+                let newsHtml = '';
+                if (company.news && company.news.length > 0) {
+                    newsHtml = '<ul class="news-list">';
+                    company.news.forEach(news => {
+                        let newsScoreClass = 'text-low';
+                        if (news.score >= 70) newsScoreClass = 'text-high';
+                        else if (news.score >= 50) newsScoreClass = 'text-mid';
+
+                        newsHtml += `
+                           <li class="news-item">
+                               <div class="news-score ${newsScoreClass}">${news.score}</div>
+                               <div class="news-content">
+                                   <a href="${news.link}" target="_blank" class="news-title">${news.title}</a>
+                                   <div class="news-reason">${news.reason}</div>
+                               </div>
+                           </li>
+                       `;
+                    });
+                    newsHtml += '</ul>';
+                } else {
+                    newsHtml = '<div class="no-news">No recent news analyzed.</div>';
+                }
+
+                const html = `
+                    <div class="company-card">
+                        <div class="company-info">
+                            <h2>${company.company}</h2>
+                            <div class="main-score ${scoreClass}">
+                                <span class="score-label">AI SCORE</span>
+                                <span class="score-value">${company.average_score}</span>
+                            </div>
+                            ${stockHtml}
+                            ${evaluationHtml}
+                            <div class="updated-at">Updated: ${company.updated_at}</div>
+                        </div>
+                        <div class="company-news">
+                            <h3>Latest Analysis</h3>
+                            ${newsHtml}
+                        </div>
+                    </div>
+                `;
+                app.innerHTML += html;
+            });
+        }
+
+        // 履歴を読み込む
+        function loadHistory() {
+            fetch('history.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("History not found");
+                    return response.json();
+                })
+                .then(history => {
+                    historyData = history;
+                    const select = document.getElementById('historySelect');
+                    select.innerHTML = '<option value="">最新データを表示</option>';
+                    
+                    history.forEach((entry, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = entry.timestamp;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.log('履歴データが見つかりません:', err);
+                });
+        }
+
+        // 初期データ読み込み
         fetch('data.json')
             .then(response => {
                 if (!response.ok) throw new Error("Data not found");
                 return response.json();
             })
             .then(data => {
-                const app = document.getElementById('app');
-                app.innerHTML = ''; // ローディング消去
-
-                // データ構造の正規化
-                let companies = [];
-                let metadata = null;
-
-                if (Array.isArray(data)) {
-                    companies = data;
-                } else if (data.companies) {
-                    companies = data.companies;
-                    metadata = data.metadata;
-                }
-
-                if (!companies || companies.length === 0) {
-                    app.innerHTML = '<div id="status">No ripples detected.<br><small>データがありません</small></div>';
-                    return;
-                }
-
-                // メタデータ表示（トークン数など）
-                if (metadata && metadata.token_usage) {
-                    const totalTokens = metadata.token_usage.total_tokens || 0;
-                    const metaHtml = `
-                        <div class="system-status" style="text-align: center; color: var(--text-sub); font-size: 0.8rem; margin-bottom: 2rem; opacity: 0.8;">
-                            <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 20px;">
-                                Last Scan: ${metadata.updated_at} &nbsp;|&nbsp; Token Usage: ${totalTokens.toLocaleString()}
-                            </span>
-                        </div>
-                    `;
-                    app.innerHTML += metaHtml;
-                }
-
-                companies.forEach(company => {
-                    // スコアに応じたクラス
-                    let scoreClass = 'score-low';
-                    if (company.average_score >= 8) scoreClass = 'score-high';
-                    else if (company.average_score >= 5) scoreClass = 'score-mid';
-
-                    // ニュースリストのHTML生成
-                    let newsHtml = '';
-                    if (company.news && company.news.length > 0) {
-                        newsHtml = '<ul class="news-list">';
-                        company.news.forEach(news => {
-                            let newsScoreClass = 'text-low';
-                            if (news.score >= 8) newsScoreClass = 'text-high';
-                            else if (news.score >= 5) newsScoreClass = 'text-mid';
-
-                            newsHtml += `
-                               <li class="news-item">
-                                   <div class="news-score ${newsScoreClass}">${news.score}</div>
-                                   <div class="news-content">
-                                       <a href="${news.link}" target="_blank" class="news-title">${news.title}</a>
-                                       <div class="news-reason">${news.reason}</div>
-                                   </div>
-                               </li>
-                           `;
-                        });
-                        newsHtml += '</ul>';
-                    } else {
-                        newsHtml = '<div class="no-news">No recent news analyzed.</div>';
-                    }
-
-                    const html = `
-                        <div class="company-card">
-                            <div class="company-info">
-                                <h2>${company.company}</h2>
-                                <div class="main-score ${scoreClass}">
-                                    <span class="score-label">AI SCORE</span>
-                                    <span class="score-value">${company.average_score}</span>
-                                </div>
-                                <div class="updated-at">Updated: ${company.updated_at}</div>
-                            </div>
-                            <div class="company-news">
-                                <h3>Latest Analysis</h3>
-                                ${newsHtml}
-                            </div>
-                        </div>
-                    `;
-                    app.innerHTML += html;
-                });
+                displayData(data);
             })
             .catch(err => {
                 console.error(err);
                 document.getElementById('status').innerHTML =
                     'まだ水面は静かです。<br><small>(データ読み込みエラー、または初回実行待ちです)</small>';
             });
+
+        // 履歴ボタンのイベント
+        document.getElementById('showHistoryBtn').addEventListener('click', () => {
+            const select = document.getElementById('historySelect');
+            if (select.style.display === 'none') {
+                loadHistory();
+                select.style.display = 'inline-block';
+            } else {
+                select.style.display = 'none';
+            }
+        });
+
+        // 履歴選択のイベント
+        document.getElementById('historySelect').addEventListener('change', (e) => {
+            const index = e.target.value;
+            if (index === '') {
+                // 最新データを表示
+                fetch('data.json')
+                    .then(response => response.json())
+                    .then(data => displayData(data))
+                    .catch(err => console.error(err));
+            } else {
+                // 履歴データを表示
+                if (historyData[index] && historyData[index].data) {
+                    displayData(historyData[index].data);
+                }
+            }
+        });
+
+        // ページ読み込み時に履歴を読み込む
+        loadHistory();
     </script>
 </body>
 
