@@ -183,11 +183,25 @@ def main():
         
         news_items = []
         for entry in entries:
+            # 記事の公開日を取得（RSSフィードから）
+            article_date = datetime.now().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻
+            if hasattr(entry, 'published'):
+                try:
+                    # feedparserが日付を解析している場合
+                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                        article_date = datetime(*entry.published_parsed[:6]).strftime("%Y-%m-%d %H:%M")
+                    else:
+                        # 文字列から日付を抽出
+                        article_date = entry.published
+                except:
+                    pass
+            
             news_items.append({
                 "title": entry.title,
                 "snippet": entry.summary,
                 "link": entry.link,
-                "date": datetime.now().strftime("%Y-%m-%d %H:%M") # 収集時刻
+                "date": article_date,  # 記事の公開日
+                "collected_at": datetime.now().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持
             })
         
         if news_items:
@@ -316,7 +330,8 @@ def main():
                     "link": original_news["link"],
                     "score": analyzed_news.get("score", 0),
                     "reason": analyzed_news.get("reason", "N/A"),
-                    "date": original_news["date"]
+                    "date": original_news["date"],  # 記事の公開日
+                    "collected_at": original_news.get("collected_at", original_news["date"])  # 収集時刻
                 })
         
         companies_data.append(company_record)
