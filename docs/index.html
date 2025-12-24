@@ -25,6 +25,9 @@
             <select id="historySelect" class="history-select" style="display: none;">
                 <option value="">最新データを表示</option>
             </select>
+            <select id="sectorFilter" class="sector-filter">
+                <option value="">全業種</option>
+            </select>
         </div>
 
         <div id="app">
@@ -193,6 +196,11 @@
             });
         }
         
+        // 業種フィルタ用の変数
+        let currentSectorFilter = '';
+        let allCompaniesData = [];
+        let currentMetadata = null;
+
         // データを表示する関数
         function displayData(data) {
             const app = document.getElementById('app');
@@ -214,6 +222,28 @@
                 return;
             }
 
+            // 全企業データを保存（フィルタリング用）
+            allCompaniesData = companies;
+            currentMetadata = metadata;
+
+            // 業種フィルタを適用
+            if (currentSectorFilter) {
+                companies = companies.filter(company => company.sector === currentSectorFilter);
+            }
+
+            // 業種でグループ化
+            const companiesBySector = {};
+            companies.forEach(company => {
+                const sector = company.sector || 'その他';
+                if (!companiesBySector[sector]) {
+                    companiesBySector[sector] = [];
+                }
+                companiesBySector[sector].push(company);
+            });
+
+            // 業種リストを更新
+            updateSectorFilter(companiesBySector);
+
             // メタデータ表示（トークン数など）
             if (metadata && metadata.token_usage) {
                 const totalTokens = metadata.token_usage.total_tokens || 0;
@@ -227,13 +257,37 @@
                 app.innerHTML += metaHtml;
             }
 
+            // フィルタリング結果の表示
+            if (currentSectorFilter) {
+                const filterInfo = `
+                    <div class="filter-info" style="text-align: center; color: var(--accent); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        表示中: ${currentSectorFilter} (${companies.length}社)
+                    </div>
+                `;
+                app.innerHTML += filterInfo;
+            }
+
             // 既存のグラフを全て破棄
             Object.values(companyCharts).forEach(chart => {
                 if (chart) chart.destroy();
             });
             companyCharts = {};
             
-            companies.forEach(company => {
+            // 業種ごとに表示
+            const sortedSectors = Object.keys(companiesBySector).sort();
+            
+            sortedSectors.forEach(sector => {
+                const sectorCompanies = companiesBySector[sector];
+                
+                // 業種セクションのヘッダー
+                const sectorHeader = `
+                    <div class="sector-section">
+                        <h2 class="sector-title">${sector}</h2>
+                    </div>
+                `;
+                app.innerHTML += sectorHeader;
+                
+                sectorCompanies.forEach(company => {
                 // スコアに応じたクラス（100点満点）
                 let scoreClass = 'score-low';
                 if (company.average_score >= 70) scoreClass = 'score-high';
@@ -344,7 +398,8 @@
                         </div>
                     </div>
                 `;
-                app.innerHTML += html;
+                    app.innerHTML += html;
+                });
             });
             
             // 全ての企業カードが追加された後にグラフを描画
@@ -363,6 +418,46 @@
                 });
             }, 200);
         }
+
+        // 業種フィルタを更新
+        function updateSectorFilter(companiesBySector) {
+            const select = document.getElementById('sectorFilter');
+            if (!select) return;
+            
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">全業種</option>';
+            
+            const sectors = Object.keys(companiesBySector).sort();
+            sectors.forEach(sector => {
+                const option = document.createElement('option');
+                option.value = sector;
+                option.textContent = `${sector} (${companiesBySector[sector].length})`;
+                select.appendChild(option);
+            });
+            
+            if (currentValue) {
+                select.value = currentValue;
+            }
+        }
+
+        // 業種フィルタのイベント
+        document.getElementById('sectorFilter').addEventListener('change', (e) => {
+            currentSectorFilter = e.target.value;
+            // 現在表示中のデータを再表示
+            if (allCompaniesData.length > 0) {
+                const currentData = {
+                    companies: allCompaniesData,
+                    metadata: currentMetadata
+                };
+                displayData(currentData);
+            } else {
+                // データを再読み込み
+                fetch('data/current.json')
+                    .then(response => response.json())
+                    .then(data => displayData(data))
+                    .catch(err => console.error(err));
+            }
+        });
 
 
         // 初期データ読み込み
