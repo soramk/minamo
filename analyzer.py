@@ -433,24 +433,34 @@ def analyze_batch(companies_news):
         return [], {}
 
 def main():
-    # ディレクトリを作成（確実に作成されるように）
-    os.makedirs(DATA_DIR, exist_ok=True)
-    os.makedirs(HISTORY_DIR, exist_ok=True)
-    
-    if not init_client():
-        return
-
     try:
-        config = load_config()
-    except Exception as e:
-        print(f"Error loading config.json: {e}")
-        return
+        # ディレクトリを作成（確実に作成されるように）
+        os.makedirs(DATA_DIR, exist_ok=True)
+        os.makedirs(HISTORY_DIR, exist_ok=True)
+        
+        if not init_client():
+            print("Error: Failed to initialize Gemini client")
+            return
 
-    # 1. ニュース収集
-    print("Fetching news...")
-    batch_input = []
-    
-    for company in config:
+        try:
+            config = load_config()
+        except Exception as e:
+            print(f"Error loading config.json: {e}")
+            import traceback
+            traceback.print_exc()
+            return
+
+        if not config or len(config) == 0:
+            print("Error: config.json is empty or invalid")
+            return
+
+        print(f"Loaded {len(config)} companies from config.json")
+
+        # 1. ニュース収集
+        print("Fetching news...")
+        batch_input = []
+        
+        for company in config:
         print(f"Checking {company['name']}...")
         entries = fetch_news(company['query'])
         
@@ -477,210 +487,237 @@ def main():
                 "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持（JST）
             })
         
-        if news_items:
-            batch_input.append({
-                "name": company["name"],
-                "news": news_items
-            })
+            if news_items:
+                batch_input.append({
+                    "name": company["name"],
+                    "news": news_items
+                })
 
-    if not batch_input:
-        print("No news found.")
-        return
+        if not batch_input:
+            print("No news found.")
+            return
 
-    # 2. 一括分析
-    print("Analyzing all companies with Gemini...")
-    analysis_results, token_usage = analyze_batch([
-        {"name": item["name"], "news": [{"title": n["title"], "snippet": n["snippet"]} for n in item["news"]]}
-        for item in batch_input
-    ])
-    
-    if token_usage:
-        print(f"Token Usage: {token_usage}")
-
-    # 3. 株価情報を取得
-    print("Fetching stock prices...")
-    stock_prices = {}
-    for company in config:
-        company_name = company["name"]
-        stock_info = fetch_stock_price(company_name)
-        if stock_info:
-            stock_prices[company_name] = stock_info
-
-    # 4. 結果のマージと保存
-    companies_data = []
-    
-    # APIのレスポンスと元のリンク情報などを紐付け
-    for result in analysis_results:
-        # 元のデータ（リンク情報など）を探す
-        original_company = next((x for x in batch_input if x["name"] == result.get("company")), None)
-        if not original_company:
-            continue
+        # 2. 一括分析
+        print("Analyzing all companies with Gemini...")
+        analysis_results, token_usage = analyze_batch([
+            {"name": item["name"], "news": [{"title": n["title"], "snippet": n["snippet"]} for n in item["news"]]}
+            for item in batch_input
+        ])
         
-        company_name = result.get("company")
-        predicted_score = result.get("average_score", 0)
+        if token_usage:
+            print(f"Token Usage: {token_usage}")
         
-        # 株価情報とスコアを比較
-        stock_info = stock_prices.get(company_name)
-        score_evaluation = None
-        if stock_info:
-            price_change_percent = stock_info["price_change_percent"]
-            # スコアと実際の株価変動を比較して評価
-            # スコアが高い（50以上）→ 上昇期待、スコアが低い（50未満）→ 下落期待
-            # スコアの強度も考慮（50-60:弱い、60-70:中程度、70-80:強い、80-100:非常に強い）
-            score_strength = "弱い" if predicted_score < 60 else ("中程度" if predicted_score < 70 else ("強い" if predicted_score < 80 else "非常に強い"))
+        if not analysis_results or len(analysis_results) == 0:
+            print("Error: No analysis results returned from Gemini API")
+            print(f"Batch input had {len(batch_input)} companies")
+            return
+
+        print(f"Analysis completed for {len(analysis_results)} companies")
+
+        # 3. 株価情報を取得
+        print("Fetching stock prices...")
+        stock_prices = {}
+        for company in config:
+            company_name = company["name"]
+            stock_info = fetch_stock_price(company_name)
+            if stock_info:
+                stock_prices[company_name] = stock_info
+
+        # 4. 結果のマージと保存
+        companies_data = []
+        
+        # APIのレスポンスと元のリンク情報などを紐付け
+        for result in analysis_results:
+            # 元のデータ（リンク情報など）を探す
+            original_company = next((x for x in batch_input if x["name"] == result.get("company")), None)
+            if not original_company:
+                continue
             
-            if predicted_score >= 50:
-                # 上昇期待の場合
-                if price_change_percent > 0:
-                    # 正しく予測（上昇期待で実際に上昇）
-                    # スコアの強度と実際の変動率を考慮して精度を計算
-                    base_accuracy = 50
-                    direction_bonus = 20  # 方向が正しい
-                    magnitude_bonus = min(30, abs(price_change_percent) * 3)  # 変動率に応じたボーナス
-                    accuracy = min(100, base_accuracy + direction_bonus + magnitude_bonus)
-                    
-                    # 変動率が1%未満の場合は部分的的中
-                    status = "的中" if price_change_percent >= 1.0 else "部分的的中"
-                    score_evaluation = {
-                        "accuracy": round(accuracy, 1),
-                        "prediction": f"上昇予測 ({score_strength})",
-                        "actual": f"{price_change_percent:+.2f}%",
-                        "status": status
-                    }
-                else:
-                    # 外れ（上昇期待だが実際は下落）
-                    # 外れ度合いに応じて精度を下げる
-                    penalty = min(50, abs(price_change_percent) * 5)
-                    accuracy = max(0, 50 - penalty)
-                    score_evaluation = {
-                        "accuracy": round(accuracy, 1),
-                        "prediction": f"上昇予測 ({score_strength})",
-                        "actual": f"{price_change_percent:+.2f}%",
-                        "status": "外れ"
-                    }
-            else:
-                # 下落期待の場合
-                if price_change_percent < 0:
-                    # 正しく予測（下落期待で実際に下落）
-                    base_accuracy = 50
-                    direction_bonus = 20
-                    magnitude_bonus = min(30, abs(price_change_percent) * 3)
-                    accuracy = min(100, base_accuracy + direction_bonus + magnitude_bonus)
-                    
-                    status = "的中" if price_change_percent <= -1.0 else "部分的的中"
-                    score_evaluation = {
-                        "accuracy": round(accuracy, 1),
-                        "prediction": f"下落予測 ({score_strength})",
-                        "actual": f"{price_change_percent:+.2f}%",
-                        "status": status
-                    }
-                else:
-                    # 外れ（下落期待だが実際は上昇）
-                    penalty = min(50, abs(price_change_percent) * 5)
-                    accuracy = max(0, 50 - penalty)
-                    score_evaluation = {
-                        "accuracy": round(accuracy, 1),
-                        "prediction": f"下落予測 ({score_strength})",
-                        "actual": f"{price_change_percent:+.2f}%",
-                        "status": "外れ"
-                    }
+            company_name = result.get("company")
+            predicted_score = result.get("average_score", 0)
             
-        # 業種情報を取得
-        sector = None
-        original_config = next((c for c in config if c["name"] == company_name), None)
-        if original_config and "sector" in original_config:
-            sector = original_config["sector"]
-        
-        company_record = {
-            "company": company_name,
-            "sector": sector,
-            "average_score": predicted_score,
-            "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
-            "stock_info": stock_info,
-            "score_evaluation": score_evaluation,
-            "news": []
+            # 株価情報とスコアを比較
+            stock_info = stock_prices.get(company_name)
+            score_evaluation = None
+            if stock_info:
+                price_change_percent = stock_info["price_change_percent"]
+                # スコアと実際の株価変動を比較して評価
+                # スコアが高い（50以上）→ 上昇期待、スコアが低い（50未満）→ 下落期待
+                # スコアの強度も考慮（50-60:弱い、60-70:中程度、70-80:強い、80-100:非常に強い）
+                score_strength = "弱い" if predicted_score < 60 else ("中程度" if predicted_score < 70 else ("強い" if predicted_score < 80 else "非常に強い"))
+                
+                if predicted_score >= 50:
+                    # 上昇期待の場合
+                    if price_change_percent > 0:
+                        # 正しく予測（上昇期待で実際に上昇）
+                        # スコアの強度と実際の変動率を考慮して精度を計算
+                        base_accuracy = 50
+                        direction_bonus = 20  # 方向が正しい
+                        magnitude_bonus = min(30, abs(price_change_percent) * 3)  # 変動率に応じたボーナス
+                        accuracy = min(100, base_accuracy + direction_bonus + magnitude_bonus)
+                        
+                        # 変動率が1%未満の場合は部分的的中
+                        status = "的中" if price_change_percent >= 1.0 else "部分的的中"
+                        score_evaluation = {
+                            "accuracy": round(accuracy, 1),
+                            "prediction": f"上昇予測 ({score_strength})",
+                            "actual": f"{price_change_percent:+.2f}%",
+                            "status": status
+                        }
+                    else:
+                        # 外れ（上昇期待だが実際は下落）
+                        # 外れ度合いに応じて精度を下げる
+                        penalty = min(50, abs(price_change_percent) * 5)
+                        accuracy = max(0, 50 - penalty)
+                        score_evaluation = {
+                            "accuracy": round(accuracy, 1),
+                            "prediction": f"上昇予測 ({score_strength})",
+                            "actual": f"{price_change_percent:+.2f}%",
+                            "status": "外れ"
+                        }
+                else:
+                    # 下落期待の場合
+                    if price_change_percent < 0:
+                        # 正しく予測（下落期待で実際に下落）
+                        base_accuracy = 50
+                        direction_bonus = 20
+                        magnitude_bonus = min(30, abs(price_change_percent) * 3)
+                        accuracy = min(100, base_accuracy + direction_bonus + magnitude_bonus)
+                        
+                        status = "的中" if price_change_percent <= -1.0 else "部分的的中"
+                        score_evaluation = {
+                            "accuracy": round(accuracy, 1),
+                            "prediction": f"下落予測 ({score_strength})",
+                            "actual": f"{price_change_percent:+.2f}%",
+                            "status": status
+                        }
+                    else:
+                        # 外れ（下落期待だが実際は上昇）
+                        penalty = min(50, abs(price_change_percent) * 5)
+                        accuracy = max(0, 50 - penalty)
+                        score_evaluation = {
+                            "accuracy": round(accuracy, 1),
+                            "prediction": f"下落予測 ({score_strength})",
+                            "actual": f"{price_change_percent:+.2f}%",
+                            "status": "外れ"
+                        }
+            
+            # 業種情報を取得
+            sector = None
+            original_config = next((c for c in config if c["name"] == company_name), None)
+            if original_config and "sector" in original_config:
+                sector = original_config["sector"]
+            
+            company_record = {
+                "company": company_name,
+                "sector": sector,
+                "average_score": predicted_score,
+                "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
+                "stock_info": stock_info,
+                "score_evaluation": score_evaluation,
+                "news": []
+            }
+
+            # ニュースごとの紐付け (タイトルで簡易マッチング)
+            for analyzed_news in result.get("news", []):
+                original_news = next((x for x in original_company["news"] if x["title"] == analyzed_news.get("title")), None)
+                if original_news:
+                    company_record["news"].append({
+                        "title": original_news["title"],
+                        "link": original_news["link"],
+                        "score": analyzed_news.get("score", 0),
+                        "reason": analyzed_news.get("reason", "N/A"),
+                        "date": original_news["date"],  # 記事の公開日
+                        "collected_at": original_news.get("collected_at", original_news["date"])  # 収集時刻
+                    })
+            
+            companies_data.append(company_record)
+
+        # 保存データの構築 (メタデータを含める)
+        final_output = {
+            "metadata": {
+                "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
+                "token_usage": token_usage
+            },
+            "companies": companies_data
         }
 
-        # ニュースごとの紐付け (タイトルで簡易マッチング)
-        for analyzed_news in result.get("news", []):
-            original_news = next((x for x in original_company["news"] if x["title"] == analyzed_news.get("title")), None)
-            if original_news:
-                company_record["news"].append({
-                    "title": original_news["title"],
-                    "link": original_news["link"],
-                    "score": analyzed_news.get("score", 0),
-                    "reason": analyzed_news.get("reason", "N/A"),
-                    "date": original_news["date"],  # 記事の公開日
-                    "collected_at": original_news.get("collected_at", original_news["date"])  # 収集時刻
-                })
-        
-        companies_data.append(company_record)
+        # ディレクトリを作成（念のため）
+        os.makedirs(DATA_DIR, exist_ok=True)
+        os.makedirs(HISTORY_DIR, exist_ok=True)
 
-    # 保存データの構築 (メタデータを含める)
-    final_output = {
-        "metadata": {
-            "updated_at": now_jst().strftime("%Y-%m-%d %H:%M"),
-            "token_usage": token_usage
-        },
-        "companies": companies_data
-    }
+        # データが空でないことを確認
+        if len(companies_data) == 0:
+            print("Error: No company data to save. Analysis may have failed.")
+            return
 
-    # ディレクトリを作成（念のため）
-    os.makedirs(DATA_DIR, exist_ok=True)
-    os.makedirs(HISTORY_DIR, exist_ok=True)
-
-    # 保存
-    with open(DB_FILE, "w", encoding="utf-8") as f:
-        json.dump(final_output, f, indent=2, ensure_ascii=False)
-    
-    # 履歴を日付ごとに分割して保存（JST）
-    timestamp = now_jst()
-    date_str = timestamp.strftime("%Y-%m-%d")
-    time_str = timestamp.strftime("%H:%M")
-    
-    history_entry = {
-        "timestamp": timestamp.strftime("%Y-%m-%d %H:%M"),
-        "data": final_output
-    }
-    
-    # 日付ごとの履歴ファイル
-    history_file = os.path.join(HISTORY_DIR, f"{date_str}.json")
-    
-    # 既存の履歴を読み込む
-    daily_history = []
-    if os.path.exists(history_file):
+        # 保存
+        print(f"Saving data for {len(companies_data)} companies to {DB_FILE}")
         try:
-            with open(history_file, "r", encoding="utf-8") as f:
-                daily_history = json.load(f)
-                if not isinstance(daily_history, list):
-                    print("Warning: History file is not a list, resetting...")
-                    daily_history = []
-        except json.JSONDecodeError as e:
-            print(f"Warning: Failed to parse history file: {e}, resetting...")
-            daily_history = []
+            with open(DB_FILE, "w", encoding="utf-8") as f:
+                json.dump(final_output, f, indent=2, ensure_ascii=False)
+            print(f"Successfully saved current.json to {os.path.abspath(DB_FILE)}")
         except Exception as e:
-            print(f"Warning: Error reading history file: {e}, resetting...")
-            daily_history = []
-    
-    # 新しい履歴を追加（最新が先頭）
-    daily_history.insert(0, history_entry)
-    
-    # 日付ごとの履歴を保存
-    try:
-        with open(history_file, "w", encoding="utf-8") as f:
-            json.dump(daily_history, f, indent=2, ensure_ascii=False)
+            print(f"Error saving current.json: {e}")
+            import traceback
+            traceback.print_exc()
+            return
         
-        # 履歴インデックスを更新
-        update_history_index(date_str)
+        # 履歴を日付ごとに分割して保存（JST）
+        timestamp = now_jst()
+        date_str = timestamp.strftime("%Y-%m-%d")
+        time_str = timestamp.strftime("%H:%M")
         
-        print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
-        print(f"History saved to: {os.path.abspath(history_file)}")
-        print(f"Daily history entries: {len(daily_history)}")
+        history_entry = {
+            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M"),
+            "data": final_output
+        }
+        
+        # 日付ごとの履歴ファイル
+        history_file = os.path.join(HISTORY_DIR, f"{date_str}.json")
+        
+        # 既存の履歴を読み込む
+        daily_history = []
+        if os.path.exists(history_file):
+            try:
+                with open(history_file, "r", encoding="utf-8") as f:
+                    daily_history = json.load(f)
+                    if not isinstance(daily_history, list):
+                        print("Warning: History file is not a list, resetting...")
+                        daily_history = []
+            except json.JSONDecodeError as e:
+                print(f"Warning: Failed to parse history file: {e}, resetting...")
+                daily_history = []
+            except Exception as e:
+                print(f"Warning: Error reading history file: {e}, resetting...")
+                daily_history = []
+        
+        # 新しい履歴を追加（最新が先頭）
+        daily_history.insert(0, history_entry)
+        
+        # 日付ごとの履歴を保存
+        try:
+            with open(history_file, "w", encoding="utf-8") as f:
+                json.dump(daily_history, f, indent=2, ensure_ascii=False)
+            
+            # 履歴インデックスを更新
+            update_history_index(date_str)
+            
+            print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
+            print(f"History saved to: {os.path.abspath(history_file)}")
+            print(f"Daily history entries: {len(daily_history)}")
+        except Exception as e:
+            print(f"Error saving history file: {e}")
+            import traceback
+            traceback.print_exc()
+            print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
+    
     except Exception as e:
-        print(f"Error saving history file: {e}")
+        print(f"Error in main(): {e}")
         import traceback
         traceback.print_exc()
-        print(f"Analysis complete. Saved data for {len(companies_data)} companies.")
+        # エラーが発生しても空のデータを保存しない
+        return
 
 if __name__ == "__main__":
     # 初回実行時に既存のdata/フォルダを移行
