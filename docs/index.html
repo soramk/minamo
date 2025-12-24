@@ -464,18 +464,10 @@
                 displayData(currentData);
             } else {
                 // データを再読み込み
-                fetch('data/current.json?' + new Date().getTime())
-                    .then(response => {
-                        if (!response.ok) throw new Error("Data not found");
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Reloaded data:', data);
-                        displayData(data);
-                    })
-                    .catch(err => {
-                        console.error('Error reloading data:', err);
-                    });
+                fetch('data/current.json')
+                    .then(response => response.json())
+                    .then(data => displayData(data))
+                    .catch(err => console.error(err));
             }
         });
 
@@ -550,21 +542,15 @@
             const index = e.target.value;
             if (index === '') {
                 // 最新データを表示
-                fetch('data/current.json?' + new Date().getTime())
-                    .then(response => {
-                        if (!response.ok) throw new Error("Data not found");
-                        return response.json();
-                    })
+                fetch('data/current.json')
+                    .then(response => response.json())
                     .then(data => {
-                        console.log('Loaded latest data:', data);
                         // 履歴データも再読み込み
                         loadHistory().then(() => {
                             displayData(data);
                         });
                     })
-                    .catch(err => {
-                        console.error('Error loading latest data:', err);
-                    });
+                    .catch(err => console.error(err));
             } else {
                 // 履歴データを表示
                 if (historyData[index] && historyData[index].data) {
