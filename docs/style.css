@@ -7,6 +7,12 @@
     --score-high: #4ade80;
     --score-mid: #facc15;
     --score-low: #f87171;
+    --up-color: #38bdf8;
+    --down-color: #f43f5e;
+    --buy-bg: rgba(56, 189, 248, 0.15);
+    --sell-bg: rgba(244, 63, 94, 0.15);
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -216,6 +222,93 @@ h1 {
     border-color: rgba(56, 189, 248, 0.3);
 }
 
+/* Accuracy Stats */
+.accuracy-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.stat-box {
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    text-align: center;
+}
+
+.stat-box.up {
+    border-color: rgba(56, 189, 248, 0.2);
+}
+
+.stat-box.down {
+    border-color: rgba(244, 63, 94, 0.2);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-sub);
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.stat-box.up .stat-value {
+    color: var(--up-color);
+}
+
+.stat-box.down .stat-value {
+    color: var(--down-color);
+}
+
+/* Decision Signal */
+.decision-signal {
+    margin-top: 1.2rem;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.signal-buy {
+    background: var(--buy-bg);
+    border: 1px solid var(--up-color);
+    color: var(--up-color);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.signal-sell {
+    background: var(--sell-bg);
+    border: 1px solid var(--down-color);
+    color: var(--down-color);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
+}
+
+.signal-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--text-sub);
+    color: var(--text-sub);
+}
+
+.signal-subtitle {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
 /* Left Column: Info */
 .company-info {
     padding: 2rem;
@@ -289,7 +382,8 @@ h1 {
     width: 100%;
 }
 
-.stock-price, .stock-change {
+.stock-price,
+.stock-change {
     display: flex;
     justify-content: space-between;
     align-items: center;
