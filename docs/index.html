@@ -14,25 +14,57 @@
 
 <body>
     <div class="container">
-        <header>
-            <img src="minamo.png" alt="Minamo Logo" class="logo">
-            <div class="subtitle">Market Ripple Observer</div>
-        </header>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="minamo.png" alt="Minamo Logo" class="sidebar-logo">
+            </div>
 
-        <div class="history-controls">
-            <button id="showHistoryBtn" class="history-btn">履歴を表示</button>
-            <input type="date" id="historyDatePicker" class="history-date-picker" style="display: none;">
-            <select id="historySelect" class="history-select" style="display: none;">
-                <option value="">最新データを表示</option>
-            </select>
-            <select id="sectorFilter" class="sector-filter">
-                <option value="">全業種</option>
-            </select>
-        </div>
+            <div class="search-box">
+                <input type="text" id="companySearch" class="search-input" placeholder="企業名や銘柄コードで検索...">
+            </div>
 
-        <div id="app">
-            <div id="status">Scanning the surface...</div>
-        </div>
+            <div class="menu-section">
+                <h3 class="menu-title">業種別ナビ</h3>
+                <ul id="sectorMenu" class="menu-list">
+                    <!-- JavaScript will populate this -->
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h3 class="menu-title">ソート・フィルター</h3>
+                <ul class="menu-list">
+                    <li class="menu-item" onclick="setSort('score')">スコア順</li>
+                    <li class="menu-item" onclick="setSort('accuracy')">的中率順</li>
+                    <li class="menu-item" onclick="setSort('change')">前日比順</li>
+                </ul>
+            </div>
+
+            <div id="marketSummary" class="market-summary">
+                <h3 class="menu-title" style="margin-bottom: 0.5rem;">市場概況</h3>
+                <div id="summaryContent">
+                    <!-- JavaScript will populate this -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <div class="subtitle">Market Ripple Observer</div>
+                <div class="history-controls">
+                    <button id="showHistoryBtn" class="history-btn">履歴を表示</button>
+                    <input type="date" id="historyDatePicker" class="history-date-picker" style="display: none;">
+                    <select id="historySelect" class="history-select" style="display: none;">
+                        <option value="">最新データを表示</option>
+                    </select>
+                </div>
+            </header>
+
+            <div id="app">
+                <div id="status">Scanning the surface...</div>
+            </div>
+        </main>
     </div>
 
     <script>
@@ -199,6 +231,54 @@
         let currentSectorFilter = '';
         let allCompaniesData = [];
         let currentMetadata = null;
+        let currentSortType = 'score'; // 'score', 'accuracy', 'change'
+
+        function setSort(type) {
+            currentSortType = type;
+            // 再表示
+            if (allCompaniesData.length > 0) {
+                const currentData = {
+                    companies: allCompaniesData,
+                    metadata: currentMetadata
+                };
+                displayData(currentData);
+            }
+        }
+
+        // 市場サマリーを計算
+        function updateMarketSummary(companies) {
+            const summaryDiv = document.getElementById('summaryContent');
+            if (companies.length === 0) return;
+
+            const avgScore = Math.round(companies.reduce((acc, c) => acc + (c.average_score || 0), 0) / companies.length);
+            const upCount = companies.filter(c => c.stock_info && c.stock_info.price_change > 0).length;
+            const downCount = companies.filter(c => c.stock_info && c.stock_info.price_change < 0).length;
+
+            const totalTokens = (currentMetadata && currentMetadata.token_usage) ? currentMetadata.token_usage.total_tokens : 0;
+
+            summaryDiv.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-label">対象企業数</span>
+                    <span class="summary-value">${companies.length}社</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">平均AIスコア</span>
+                    <span class="summary-value">${avgScore}点</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">上昇銘柄数</span>
+                    <span class="summary-value text-high">${upCount}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">下落銘柄数</span>
+                    <span class="summary-value text-low">${downCount}</span>
+                </div>
+                <div class="summary-item" style="margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem; opacity: 0.6;">
+                    <span class="summary-label">ScanTime</span>
+                    <span class="summary-value">${currentMetadata ? currentMetadata.updated_at.split(' ')[1] : '-'}</span>
+                </div>
+            `;
+        }
 
         // 統計情報を計算する関数
         function calculateStats(companyName, historyData) {
@@ -305,21 +385,51 @@
                 return;
             }
 
-            // 全企業データを保存（フィルタリング用）
+            // 全企業データを保存
             allCompaniesData = companies;
             currentMetadata = metadata;
 
-            // 業種リストを更新（全データから業種を抽出）
-            updateSectorFilter(allCompaniesData);
+            // 市場サマリーの更新
+            updateMarketSummary(allCompaniesData);
 
-            // 業種フィルタを適用
-            if (currentSectorFilter) {
-                companies = companies.filter(company => company.sector === currentSectorFilter);
+            // 業種メニューを更新
+            updateSectorMenu(allCompaniesData);
+
+            // 検索とフィルタ適用
+            const searchQuery = document.getElementById('companySearch').value.toLowerCase();
+            let filteredCompanies = companies;
+
+            if (searchQuery) {
+                filteredCompanies = filteredCompanies.filter(c =>
+                    c.company.toLowerCase().includes(searchQuery) ||
+                    (c.stock_info && c.stock_info.ticker.toLowerCase().includes(searchQuery))
+                );
             }
 
-            // 業種でグループ化（フィルタリング後のデータ）
+            if (currentSectorFilter) {
+                filteredCompanies = filteredCompanies.filter(company => company.sector === currentSectorFilter);
+            }
+
+            // ソート適用
+            filteredCompanies.sort((a, b) => {
+                if (currentSortType === 'score') return (b.average_score || 0) - (a.average_score || 0);
+                if (currentSortType === 'accuracy') {
+                    // 上昇・下落の平均的中率でソート
+                    const aScore = (parseFloat(calculateStats(a.company, historyData).upAccuracy) || 0) + (parseFloat(calculateStats(a.company, historyData).downAccuracy) || 0);
+                    const bScore = (parseFloat(calculateStats(b.company, historyData).upAccuracy) || 0) + (parseFloat(calculateStats(b.company, historyData).downAccuracy) || 0);
+                    return bScore - aScore;
+                }
+                if (currentSortType === 'change') {
+                    const aChange = a.stock_info ? a.stock_info.price_change_percent : -999;
+                    const bChange = b.stock_info ? b.stock_info.price_change_percent : -999;
+                    return bChange - aChange;
+                }
+                return 0;
+            });
+
+            // 業種でグループ化
             const companiesBySector = {};
-            companies.forEach(company => {
+            filteredCompanies.forEach(company => {
                 const sector = company.sector || 'その他';
                 if (!companiesBySector[sector]) {
                     companiesBySector[sector] = [];
@@ -327,28 +437,7 @@
                 companiesBySector[sector].push(company);
             });
 
-            // メタデータ表示（トークン数など）
-            if (metadata && metadata.token_usage) {
-                const totalTokens = metadata.token_usage.total_tokens || 0;
-                const metaHtml = `
-                    <div class="system-status" style="text-align: center; color: var(--text-sub); font-size: 0.8rem; margin-bottom: 2rem; opacity: 0.8;">
-                        <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 20px;">
-                            Last Scan: ${metadata.updated_at} &nbsp;|&nbsp; Token Usage: ${totalTokens.toLocaleString()}
-                        </span>
-                    </div>
-                `;
-                app.innerHTML += metaHtml;
-            }
-
-            // フィルタリング結果の表示
-            if (currentSectorFilter) {
-                const filterInfo = `
-                    <div class="filter-info" style="text-align: center; color: var(--accent); font-size: 0.9rem; margin-bottom: 1.5rem;">
-                        表示中: ${currentSectorFilter} (${companies.length}社)
-                    </div>
-                `;
-                app.innerHTML += filterInfo;
-            }
+            // 不要なメタデータ表示を削除（サマリーに集約）
 
             // 既存のグラフを全て破棄
             Object.values(companyCharts).forEach(chart => {
@@ -684,7 +773,54 @@
         });
 
 
-        // 履歴を読み込む（Promiseを返す）
+        // 業種メニューを更新
+        function updateSectorMenu(allCompanies) {
+            const menu = document.getElementById('sectorMenu');
+            if (!menu) return;
+
+            // 全データから業種を抽出してカウント
+            const sectorsCount = {};
+            allCompanies.forEach(company => {
+                const sector = company.sector || 'その他';
+                sectorsCount[sector] = (sectorsCount[sector] || 0) + 1;
+            });
+
+            // 業種をソート
+            const sectors = Object.keys(sectorsCount).sort();
+
+            menu.innerHTML = `
+                <li class="menu-item ${!currentSectorFilter ? 'active' : ''}" onclick="selectSector('')">
+                    <span>全業種</span>
+                    <span class="menu-count">${allCompanies.length}</span>
+                </li>
+            `;
+
+            sectors.forEach(sector => {
+                const isActive = sector === currentSectorFilter;
+                const li = document.createElement('li');
+                li.className = `menu-item ${isActive ? 'active' : ''}`;
+                li.onclick = () => selectSector(sector);
+                li.innerHTML = `
+                    <span>${sector}</span>
+                    <span class="menu-count">${sectorsCount[sector]}</span>
+                `;
+                menu.appendChild(li);
+            });
+        }
+
+        function selectSector(sector) {
+            currentSectorFilter = sector;
+            if (allCompaniesData.length > 0) {
+                displayData({ companies: allCompaniesData, metadata: currentMetadata });
+            }
+        }
+
+        // 検索入力のイベント
+        document.getElementById('companySearch').addEventListener('input', () => {
+            if (allCompaniesData.length > 0) {
+                displayData({ companies: allCompaniesData, metadata: currentMetadata });
+            }
+        });
         async function loadHistory() {
             try {
                 console.log('履歴データの読み込みを開始...');

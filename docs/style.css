@@ -28,9 +28,34 @@ body {
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+    display: flex;
+    min-height: 100vh;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 300px;
+    background: var(--glass-bg);
+    border-right: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    transition: transform 0.3s ease;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem 3rem;
+    max-width: calc(100% - 300px);
+    overflow-x: hidden;
 }
 
 header {
@@ -63,14 +88,127 @@ h1 {
     text-transform: uppercase;
 }
 
-/* History Controls */
-.history-controls {
-    text-align: center;
+/* Sidebar Components */
+.sidebar-header {
     margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sidebar-logo {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+}
+
+.search-box {
+    margin-bottom: 2rem;
+}
+
+.search-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: var(--text-main);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+}
+
+.menu-section {
+    margin-bottom: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for menu */
+}
+
+.menu-section::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-title {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item.active {
+    background: var(--buy-bg);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.menu-count {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    opacity: 0.6;
+}
+
+.market-summary {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-label {
+    color: var(--text-sub);
+}
+
+.summary-value {
+    font-weight: 600;
+}
+
+/* History Controls moved into Sidebar or Header */
+.history-controls {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .history-btn {
