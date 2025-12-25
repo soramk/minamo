@@ -34,7 +34,7 @@ header {
 }
 
 .logo {
-    max-width: 180px;
+    max-width: 360px;
     height: auto;
     margin-bottom: 0.5rem;
     filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
