@@ -640,6 +640,7 @@
                             console.warn(`${date}.json: ${data.length} エントリ中 ${validEntries.length} エントリが有効です`);
                         }
                         
+                        console.log(`履歴ファイル読み込み成功: ${date}.json (${validEntries.length} エントリ)`);
                         return validEntries;
                     } catch (err) {
                         console.error(`履歴ファイルの読み込みエラー (${date}.json):`, err);
