@@ -415,6 +415,24 @@ def fetch_stock_price(company_name):
             print(f"Error fetching stock price for {company_name} ({ticker}): {e}")
         return None
 
+def extract_first_json_block(text):
+    """
+    文字列から最初に見つかった JSON ブロック（[...] または {...}）を抽出する。
+    Extra data エラーを防ぐためのガード。
+    """
+    import re
+    # 配列を優先して探す
+    array_match = re.search(r'\[\s*\{.*\}\s*\]', text, re.DOTALL)
+    if array_match:
+        return array_match.group(0)
+    
+    # オブジェクトを探す
+    object_match = re.search(r'\{\s*".*"\s*:.*\}', text, re.DOTALL)
+    if object_match:
+        return object_match.group(0)
+    
+    return text
+
 def analyze_batch(companies_news):
     """
     companies_news: [
@@ -441,7 +459,7 @@ def analyze_batch(companies_news):
 
     try:
         response = client.models.generate_content(
-            model="gemini-3-flash-preview",
+            model="gemini-2.0-flash-exp", # 最新モデルを使用
             contents=prompt_str,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json"
@@ -455,10 +473,15 @@ def analyze_batch(companies_news):
                 "candidates_tokens": response.usage_metadata.candidates_token_count,
                 "total_tokens": response.usage_metadata.total_token_count
             }
-            
-        return json.loads(response.text), usage
+        
+        # 堅牢なパース処理
+        clean_text = extract_first_json_block(response.text)
+        return json.loads(clean_text), usage
     except Exception as e:
         print(f"Error in batch analysis: {e}")
+        # パースエラーの場合、レスポンスの冒頭を出力してデバッグしやすくする
+        if hasattr(response, 'text'):
+            print(f"Raw response (first 100 chars): {response.text[:100]}...")
         return [], {}
 
 def main():
@@ -542,15 +565,30 @@ def main():
             print("No news found.")
             return
 
-        # 2. 一括分析
-        print("Analyzing all companies with Gemini...")
-        analysis_results, token_usage = analyze_batch([
-            {"name": item["name"], "news": [{"title": n["title"], "snippet": n["snippet"]} for n in item["news"]]}
-            for item in batch_input
-        ])
+        # 2. 一括分析（チャンク分けして実行）
+        print(f"Analyzing {len(batch_input)} companies with Gemini in chunks...")
+        analysis_results = []
+        token_usage = {"prompt_tokens": 0, "candidates_tokens": 0, "total_tokens": 0}
         
-        if token_usage:
-            print(f"Token Usage: {token_usage}")
+        chunk_size = 20
+        chunks = [batch_input[i:i + chunk_size] for i in range(0, len(batch_input), chunk_size)]
+        
+        for i, chunk in enumerate(chunks):
+            print(f"Processing chunk {i+1}/{len(chunks)} ({len(chunk)} companies)...")
+            chunk_input = [
+                {"name": item["name"], "news": [{"title": n["title"], "snippet": n["snippet"]} for n in item["news"]]}
+                for item in chunk
+            ]
+            
+            chunk_results, chunk_usage = analyze_batch(chunk_input)
+            
+            if chunk_results:
+                analysis_results.extend(chunk_results)
+            
+            if chunk_usage:
+                token_usage["prompt_tokens"] += chunk_usage.get("prompt_tokens", 0)
+                token_usage["candidates_tokens"] += chunk_usage.get("candidates_tokens", 0)
+                token_usage["total_tokens"] += chunk_usage.get("total_tokens", 0)
         
         if not analysis_results or len(analysis_results) == 0:
             print("Error: No analysis results returned from Gemini API")
