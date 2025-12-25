@@ -332,17 +332,44 @@ def load_config():
     with open(CONFIG_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def fetch_news(query):
+def fetch_news(query, max_items=5, days_ago=6):
+    """
+    指定されたクエリでニュースを取得し、指定された日数以内のもののみを返す
+    """
     encoded_query = urllib.parse.quote(query)
     url = RSS_BASE_URL.format(encoded_query)
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
+    
+    cutoff_date = now_jst() - timedelta(days=days_ago)
+    
     try:
         resp = requests.get(url, headers=headers, timeout=10)
         resp.raise_for_status()
         feed = feedparser.parse(resp.content)
-        return feed.entries[:3] # 各社最新3件に絞る（トークン節約のため）
+        
+        filtered_entries = []
+        for entry in feed.entries:
+            # 公開日を解析
+            published_dt = None
+            if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                published_dt = datetime(*entry.published_parsed[:6]).replace(tzinfo=timezone.utc).astimezone(JST)
+            elif hasattr(entry, 'published'):
+                try:
+                    # 一般的な形式のパース
+                    published_dt = datetime.strptime(entry.published, '%a, %d %b %Y %H:%M:%S %Z').replace(tzinfo=timezone.utc).astimezone(JST)
+                except:
+                    pass
+            
+            # 日付が取得できない、または期限内の場合のみ採用
+            if published_dt is None or published_dt >= cutoff_date:
+                filtered_entries.append(entry)
+            
+            if len(filtered_entries) >= max_items:
+                break
+                
+        return filtered_entries
     except Exception as e:
         print(f"Error fetching news for {query}: {e}")
         return []
@@ -398,11 +425,13 @@ def analyze_batch(companies_news):
     """
     
     prompt_content = {
-        "instruction": "あなたはプロの証券アナリストです。以下の各企業のニュースを分析し、投資家目線で評価してください。",
+        "instruction": "あなたはプロの証券アナリストです。以下の各企業の最新ニュース（過去6日以内）を分析し、株価に与える影響を評価してください。",
         "requirements": [
-            "各企業について、ニュース全体を通しての「株価上昇期待値」を0〜100点で採点（average_score）。",
-            "各ニュース記事について、投資への影響度を考慮した「記事ごとのスコア」（0-100）と「理由（30文字以内）」を作成。",
-            "出力はJSON形式のみ。",
+            "各企業について、直近のニュースに基づいた「株価上昇期待値」を0〜100点で採点（average_score）。",
+            "50点（中立）を基準とし、ポジティブならば高く、ネガティブならば低く設定してください。",
+            "特に直近2-3日の速報性のある情報を重視すること。",
+            "各ニュース記事について、投資判断における重要性を反映した「記事ごとのスコアリング」（0-100）と「具体的な理由（30文字以内）」を作成。",
+            "出力はJSON形式のみとし、余計な説明は省くこと。",
             "JSON構造: [{ 'company': 企業名, 'average_score': 数値, 'news': [{ 'title': 記事タイトル, 'score': 数値, 'reason': 理由 }] }]"
         ],
         "data": companies_news
@@ -462,29 +491,45 @@ def main():
         
         for company in config:
             print(f"Checking {company['name']}...")
-            entries = fetch_news(company['query'])
+            
+            # 複数のクエリで検索（会社名、会社名＋株価、会社名＋最新）
+            queries = [
+                company['name'],
+                f"{company['name']} 株価",
+                f"{company['name']} 決算 ニュース",
+                f"{company['name']} 経営戦略"
+            ]
+            
+            all_entries = []
+            seen_links = set()
+            
+            for query in queries:
+                entries = fetch_news(query, max_items=3, days_ago=6)
+                for entry in entries:
+                    if entry.link not in seen_links:
+                        all_entries.append(entry)
+                        seen_links.add(entry.link)
+                
+                if len(all_entries) >= 5: # 1社最大5件
+                    break
             
             news_items = []
-            for entry in entries:
+            for entry in all_entries:
                 # 記事の公開日を取得（RSSフィードから）
-                article_date = now_jst().strftime("%Y-%m-%d %H:%M")  # デフォルトは収集時刻（JST）
-                if hasattr(entry, 'published'):
+                article_date = now_jst().strftime("%Y-%m-%d %H:%M")  # デフォルト
+                if hasattr(entry, 'published_parsed') and entry.published_parsed:
                     try:
-                        # feedparserが日付を解析している場合
-                        if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                            article_date = datetime(*entry.published_parsed[:6]).strftime("%Y-%m-%d %H:%M")
-                        else:
-                            # 文字列から日付を抽出
-                            article_date = entry.published
+                        dt = datetime(*entry.published_parsed[:6]).replace(tzinfo=timezone.utc).astimezone(JST)
+                        article_date = dt.strftime("%Y-%m-%d %H:%M")
                     except:
                         pass
                 
                 news_items.append({
                     "title": entry.title,
-                    "snippet": entry.summary,
+                    "snippet": getattr(entry, 'summary', ''),
                     "link": entry.link,
-                    "date": article_date,  # 記事の公開日
-                    "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")  # 収集時刻も保持（JST）
+                    "date": article_date,
+                    "collected_at": now_jst().strftime("%Y-%m-%d %H:%M")
                 })
             
             if news_items:
