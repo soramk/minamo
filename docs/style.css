@@ -888,13 +888,24 @@ h1 {
         height: 100vh;
         z-index: 1000;
         transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 4.5rem 1.5rem 2rem 1.5rem;
+        padding: 4.5rem 1.2rem 2rem 1.2rem;
+        /* Reduce horizontal padding slightly */
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     .sidebar.active {
         left: 0;
+    }
+
+    .search-box {
+        margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+        padding: 1rem !important;
+        font-size: 1rem !important;
+        /* Prevent iOS zoom */
     }
 
     .menu-section {
