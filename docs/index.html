@@ -433,17 +433,22 @@
 
             // 検索とフィルタ適用
             const searchQuery = document.getElementById('companySearch').value.toLowerCase();
-            let filteredCompanies = companies;
+            let filteredCompanies = [];
 
             if (searchQuery) {
-                filteredCompanies = filteredCompanies.filter(c =>
+                // 検索クエリがある場合は全業種から検索
+                filteredCompanies = companies.filter(c =>
                     c.company.toLowerCase().includes(searchQuery) ||
-                    (c.stock_info && c.stock_info.ticker.toLowerCase().includes(searchQuery))
+                    (c.stock_info && c.stock_info.ticker.toLowerCase().includes(searchQuery)) ||
+                    (c.sector && c.sector.toLowerCase().includes(searchQuery))
                 );
-            }
-
-            if (currentSectorFilter) {
-                filteredCompanies = filteredCompanies.filter(company => company.sector === currentSectorFilter);
+            } else if (currentSectorFilter) {
+                // 業種が選択されている場合はその業種のみ
+                filteredCompanies = companies.filter(company => company.sector === currentSectorFilter);
+            } else {
+                // 検索も業種選択もない場合（初期状態など）
+                app.innerHTML = '<div id="status">業種を選択して Ripples を探索してください。<br><small>または検索ボックスから企業を探せます。</small></div>';
+                return;
             }
 
             // ソート適用
@@ -661,7 +666,12 @@
             console.log('Data loaded:', data);
             console.log('Companies count:', data.companies ? data.companies.length : 0);
             if (data && data.companies && data.companies.length > 0) {
-                displayData(data);
+                // 初期データ保存のみ行い、ユーザーに選択または検索を促す
+                allCompaniesData = data.companies;
+                currentMetadata = data.metadata;
+                updateSectorMenu(allCompaniesData);
+                updateMarketSummary(allCompaniesData);
+                document.getElementById('status').innerHTML = '業種を選択して Ripples を探索してください。<br><small>または検索ボックスから企業を探せます。</small>';
             } else {
                 console.error('No companies data found');
                 document.getElementById('status').innerHTML =
@@ -778,12 +788,7 @@
             // 業種をソート
             const sectors = Object.keys(sectorsCount).sort();
 
-            menu.innerHTML = `
-                <li class="menu-item ${!currentSectorFilter ? 'active' : ''}" onclick="selectSector('')">
-                    <span>全業種</span>
-                    <span class="menu-count">${allCompanies.length}</span>
-                </li>
-            `;
+            menu.innerHTML = '';
 
             sectors.forEach(sector => {
                 const isActive = sector === currentSectorFilter;
@@ -800,15 +805,22 @@
 
         function selectSector(sector) {
             currentSectorFilter = sector;
-            if (allCompaniesData.length > 0) {
-                displayData({ companies: allCompaniesData, metadata: currentMetadata });
-            }
+            // 検索ボックスをクリア
+            document.getElementById('companySearch').value = '';
+            // 表示更新
+            displayData({
+                companies: allCompaniesData,
+                metadata: currentMetadata
+            });
         }
 
-        // 検索入力のイベント
+        // 検索入力のリアルタイム反映
         document.getElementById('companySearch').addEventListener('input', () => {
             if (allCompaniesData.length > 0) {
-                displayData({ companies: allCompaniesData, metadata: currentMetadata });
+                displayData({
+                    companies: allCompaniesData,
+                    metadata: currentMetadata
+                });
             }
         });
         async function loadHistory() {
