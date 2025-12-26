@@ -13,6 +13,12 @@
 </head>
 
 <body>
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="メニューを開く">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
     <div class="container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
@@ -46,6 +52,8 @@
                     <!-- JavaScript will populate this -->
                 </div>
             </div>
+            <!-- Mobile Sidebar Overlay -->
+            <div id="sidebarOverlay" class="sidebar-overlay"></div>
         </aside>
 
         <!-- Main Content Area -->
@@ -73,6 +81,29 @@
     <script>
         let historyData = [];
         let companyCharts = {}; // 企業ごとのグラフを保持
+
+        // モバイルメニューの制御
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // メニューアイテムがクリックされたらサイドバーを閉じる (モバイルのみ)
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('active') && 
+                e.target.closest('.menu-item')) {
+                toggleSidebar();
+            }
+        });
 
         // 企業ごとのグラフを描画
         function drawCompanyGraph(companyName, historyData, period = 'month') {
