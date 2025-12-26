@@ -91,6 +91,7 @@
             sidebar.classList.toggle('active');
             sidebarOverlay.classList.toggle('active');
             mobileMenuBtn.classList.toggle('active');
+            document.body.classList.toggle('no-scroll');
         }
 
         if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
@@ -98,8 +99,8 @@
 
         // メニューアイテムがクリックされたらサイドバーを閉じる (モバイルのみ)
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('active') && 
+            if (window.innerWidth <= 768 &&
+                sidebar.classList.contains('active') &&
                 e.target.closest('.menu-item')) {
                 toggleSidebar();
             }
