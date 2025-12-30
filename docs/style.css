@@ -117,7 +117,16 @@ h1 {
 .sidebar-logo {
     max-width: 200px;
     height: auto;
-    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
+    opacity: 0.85;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.sidebar-logo:hover {
+    filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6));
+    opacity: 1;
+    transform: scale(1.02);
 }
 
 .search-box {
