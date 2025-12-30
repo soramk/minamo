@@ -503,28 +503,31 @@ h1 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(250, 204, 21, 0.1);
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(250, 204, 21, 0.3);
 }
 
 .ticker-code {
     font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 1px;
+    font-weight: 700;
+    color: #facc15;
+    letter-spacing: 1.5px;
 }
 
 .external-link {
-    color: var(--text-sub);
-    transition: color 0.2s;
+    color: #facc15;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
+    filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.3));
 }
 
 .external-link:hover {
-    color: var(--accent);
+    color: #fff;
+    filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.8));
+    transform: translateY(-1px);
 }
 
 .main-score {
