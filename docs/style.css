@@ -42,7 +42,7 @@ body::before {
         linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)),
         url('minamo-bg.jpg');
     background-size: contain;
-    background-position: center;
+    background-position: calc(50% + 140px) center;
     background-repeat: no-repeat;
     will-change: transform;
 }
@@ -927,6 +927,10 @@ h1 {
         grid-template-columns: 220px 1fr;
     }
 
+    body::before {
+        background-position: calc(50% + 110px) center;
+    }
+
     .sidebar {
         padding: 2rem 1rem;
     }
@@ -945,6 +949,10 @@ h1 {
 
     .container {
         grid-template-columns: 1fr;
+    }
+
+    body::before {
+        background-position: center;
     }
 
     .sidebar {
