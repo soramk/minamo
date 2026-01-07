@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minamo | いま買い！いま売り！</title>
+    <meta name="description" content="AIが分析する今すぐ買い・売りシグナルが出ている株銘柄一覧">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Signals Page Specific Styles */
+        .signals-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            padding: 2rem;
+        }
+
+        .signal-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .signal-section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-header {
+            padding: 2rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-section .section-header {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.05) 100%);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .sell-section .section-header {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(244, 63, 94, 0.05) 100%);
+            border-bottom: 2px solid rgba(244, 63, 94, 0.4);
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .buy-section .section-icon {
+            color: var(--up-color);
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+        }
+
+        .sell-section .section-icon {
+            color: var(--down-color);
+            text-shadow: 0 0 30px rgba(244, 63, 94, 0.5);
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .buy-section .section-title {
+            color: var(--up-color);
+        }
+
+        .sell-section .section-title {
+            color: var(--down-color);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .signal-list {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+        }
+
+        .signal-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .signal-list::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .signal-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .signal-card:hover {
+            transform: translateX(8px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .buy-section .signal-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+        }
+
+        .sell-section .signal-card:hover {
+            border-color: rgba(244, 63, 94, 0.4);
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .signal-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .signal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0 0 0.3rem 0;
+        }
+
+        .company-sector {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .signal-score {
+            text-align: right;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .buy-section .score-number {
+            color: var(--score-high);
+            text-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+        }
+
+        .sell-section .score-number {
+            color: var(--score-low);
+            text-shadow: 0 0 15px rgba(248, 113, 113, 0.4);
+        }
+
+        .score-unit {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .signal-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        .buy-section .signal-badge {
+            background: var(--buy-bg);
+            color: var(--up-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .sell-section .signal-badge {
+            background: var(--sell-bg);
+            color: var(--down-color);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .detail-value.positive {
+            color: var(--score-high);
+        }
+
+        .detail-value.negative {
+            color: var(--score-low);
+        }
+
+        .signal-reason {
+            margin-top: 1rem;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border-left: 3px solid;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .buy-section .signal-reason {
+            border-color: var(--up-color);
+        }
+
+        .sell-section .signal-reason {
+            border-color: var(--down-color);
+        }
+
+        .no-signals {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-sub);
+        }
+
+        .no-signals-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
+        }
+
+        .page-title {
+            font-size: 3rem;
+            margin: 0 0 0.5rem 0;
+            background: linear-gradient(135deg, #38bdf8 0%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-sub);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .last-updated {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            opacity: 0.6;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+        }
+
+        .nav-link {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .nav-link.active {
+            background: var(--buy-bg);
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .signals-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .signal-details {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nav-bar {
+                flex-wrap: wrap;
+            }
+
+            .nav-link {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signal-card {
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .signal-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .signal-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .signal-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .signal-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .signal-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .signal-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .signal-card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .signal-card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        /* Pulse animation for strong signals */
+        .strong-signal {
+            position: relative;
+        }
+
+        .strong-signal::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 18px;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        .buy-section .strong-signal::before {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), transparent);
+        }
+
+        .sell-section .strong-signal::before {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.3), transparent);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            市場観測
+        </a>
+        <a href="signals.html" class="nav-link active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            いま買い！売り！
+        </a>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1 class="page-title">いま買い！いま売り！</h1>
+        <p class="page-subtitle">AI-Powered Trading Signals</p>
+        <p id="lastUpdated" class="last-updated">Loading...</p>
+    </header>
+
+    <!-- Signals Container -->
+    <div class="signals-container">
+        <!-- Buy Section -->
+        <section class="signal-section buy-section">
+            <div class="section-header">
+                <span class="section-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </span>
+                <h2 class="section-title">いま買い！</h2>
+                <p class="section-subtitle">Buy Signals</p>
+            </div>
+            <div id="buyList" class="signal-list">
+                <div class="no-signals">
+                    <div class="no-signals-icon">📈</div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sell Section -->
+        <section class="signal-section sell-section">
+            <div class="section-header">
+                <span class="section-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                        <polyline points="17 18 23 18 23 12"></polyline>
+                    </svg>
+                </span>
+                <h2 class="section-title">いま売り！</h2>
+                <p class="section-subtitle">Sell Signals</p>
+            </div>
+            <div id="sellList" class="signal-list">
+                <div class="no-signals">
+                    <div class="no-signals-icon">📉</div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // データを読み込み
+        async function loadData() {
+            try {
+                const response = await fetch('data/current.json?' + new Date().getTime());
+                if (!response.ok) throw new Error('Data not found');
+                const data = await response.json();
+
+                // 履歴データも読み込み（的中率計算用）
+                const historyData = await loadHistory();
+
+                processSignals(data, historyData);
+            } catch (err) {
+                console.error('Error loading data:', err);
+                document.getElementById('buyList').innerHTML = '<div class="no-signals"><div class="no-signals-icon">⚠️</div><p>データの読み込みに失敗しました</p></div>';
+                document.getElementById('sellList').innerHTML = '<div class="no-signals"><div class="no-signals-icon">⚠️</div><p>データの読み込みに失敗しました</p></div>';
+            }
+        }
+
+        // 履歴データ読み込み
+        async function loadHistory() {
+            try {
+                const indexResponse = await fetch('data/history/index.json?' + new Date().getTime());
+                if (!indexResponse.ok) return [];
+
+                const indexData = await indexResponse.json();
+                const dates = indexData.dates || [];
+
+                const historyData = [];
+                for (const dateStr of dates.slice(0, 30)) { // 直近30日分
+                    try {
+                        const res = await fetch(`data/history/${dateStr}.json`);
+                        if (res.ok) {
+                            const dayData = await res.json();
+                            historyData.push({ timestamp: dateStr, data: dayData });
+                        }
+                    } catch (e) {
+                        console.warn(`Failed to load history for ${dateStr}`);
+                    }
+                }
+                return historyData;
+            } catch (err) {
+                console.warn('Failed to load history index:', err);
+                return [];
+            }
+        }
+
+        // 統計情報を計算
+        function calculateStats(companyName, historyData) {
+            let upCorrect = 0, upTotal = 0;
+            let downCorrect = 0, downTotal = 0;
+
+            historyData.forEach(entry => {
+                if (!entry.data || !entry.data.companies) return;
+                const c = entry.data.companies.find(comp => comp.company === companyName);
+                if (!c || !c.stock_info || c.average_score === undefined) return;
+
+                const change = c.stock_info.price_change_percent;
+                const score = c.average_score;
+
+                if (change > 0) {
+                    upTotal++;
+                    if (score >= 50) upCorrect++;
+                } else if (change < 0) {
+                    downTotal++;
+                    if (score < 50) downCorrect++;
+                }
+            });
+
+            return {
+                upAccuracy: upTotal > 0 ? (upCorrect / upTotal * 100).toFixed(1) : '-',
+                downAccuracy: downTotal > 0 ? (downCorrect / downTotal * 100).toFixed(1) : '-'
+            };
+        }
+
+        // シグナル処理
+        function processSignals(data, historyData) {
+            const companies = data.companies || [];
+            const metadata = data.metadata;
+
+            // 最終更新日時を表示
+            if (metadata && metadata.updated_at) {
+                document.getElementById('lastUpdated').textContent = `最終更新: ${metadata.updated_at}`;
+            }
+
+            // 買いシグナル: スコア65以上
+            const buySignals = companies
+                .filter(c => c.average_score >= 65)
+                .sort((a, b) => b.average_score - a.average_score);
+
+            // 売りシグナル: スコア35以下
+            const sellSignals = companies
+                .filter(c => c.average_score <= 35)
+                .sort((a, b) => a.average_score - b.average_score);
+
+            // 買いシグナル表示
+            renderSignals('buyList', buySignals, historyData, 'buy');
+
+            // 売りシグナル表示
+            renderSignals('sellList', sellSignals, historyData, 'sell');
+        }
+
+        // シグナル描画
+        function renderSignals(containerId, signals, historyData, type) {
+            const container = document.getElementById(containerId);
+
+            if (signals.length === 0) {
+                container.innerHTML = `
+                    <div class="no-signals">
+                        <div class="no-signals-icon">${type === 'buy' ? '📈' : '📉'}</div>
+                        <p>現在、${type === 'buy' ? '買い' : '売り'}シグナルはありません</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = signals.map((company, index) => {
+                const stats = calculateStats(company.company, historyData);
+                const isStrong = type === 'buy' ? company.average_score >= 80 : company.average_score <= 20;
+                const signalLabel = type === 'buy'
+                    ? (company.average_score >= 80 ? '強気買い' : '買い検討')
+                    : (company.average_score <= 20 ? '強気売り' : '売り検討');
+
+                const priceChange = company.stock_info?.price_change_percent || 0;
+                const priceChangeClass = priceChange >= 0 ? 'positive' : 'negative';
+                const priceChangeText = priceChange >= 0 ? `+${priceChange.toFixed(2)}%` : `${priceChange.toFixed(2)}%`;
+
+                // 最新ニュースの理由を取得
+                const latestReason = company.news && company.news.length > 0
+                    ? company.news[0].reason
+                    : '分析データに基づく判断';
+
+                return `
+                    <div class="signal-card ${isStrong ? 'strong-signal' : ''}" onclick="window.location.href='index.html'">
+                        <div class="signal-card-header">
+                            <div>
+                                <h3 class="company-name">${company.company}</h3>
+                                <span class="company-sector">${company.sector || 'その他'}</span>
+                            </div>
+                            <div class="signal-score">
+                                <span class="score-number">${company.average_score}<span class="score-unit">点</span></span>
+                                <span class="signal-badge">${signalLabel}</span>
+                            </div>
+                        </div>
+                        <div class="signal-details">
+                            <div class="detail-item">
+                                <div class="detail-label">現在価格</div>
+                                <div class="detail-value">¥${company.stock_info?.current_price?.toLocaleString() || '-'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">前日比</div>
+                                <div class="detail-value ${priceChangeClass}">${priceChangeText}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">${type === 'buy' ? '上昇' : '下落'}的中率</div>
+                                <div class="detail-value">${type === 'buy' ? stats.upAccuracy : stats.downAccuracy}%</div>
+                            </div>
+                        </div>
+                        <div class="signal-reason">
+                            💡 ${latestReason}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 初期化
+        loadData();
+    </script>
+</body>
+
+</html>
