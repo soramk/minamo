@@ -549,7 +549,10 @@
                 if (!indexResponse.ok) return [];
 
                 const indexData = await indexResponse.json();
-                const dates = indexData.dates || [];
+                // index.jsonは配列形式（datesプロパティではない）
+                const dates = Array.isArray(indexData) ? indexData : (indexData.dates || []);
+
+                console.log('Loading history for dates:', dates.slice(0, 30));
 
                 const historyData = [];
                 for (const dateStr of dates.slice(0, 30)) { // 直近30日分
@@ -563,6 +566,7 @@
                         console.warn(`Failed to load history for ${dateStr}`);
                     }
                 }
+                console.log('History data loaded:', historyData.length, 'days');
                 return historyData;
             } catch (err) {
                 console.warn('Failed to load history index:', err);
