@@ -655,8 +655,17 @@
                     ? company.news[0].reason
                     : '分析データに基づく判断';
 
+                // 的中率を取得（score_evaluationから取得、なければ履歴から計算）
+                const accuracy = company.score_evaluation?.accuracy;
+                const upAccuracy = stats.upAccuracy !== '-' ? stats.upAccuracy : (accuracy ? accuracy.toFixed(1) : '-');
+                const downAccuracy = stats.downAccuracy !== '-' ? stats.downAccuracy : '-';
+
+                // Yahoo!ファイナンスへのリンク
+                const ticker = company.stock_info?.ticker || '';
+                const yahooUrl = `https://finance.yahoo.co.jp/quote/${ticker}`;
+
                 return `
-                    <div class="signal-card ${isStrong ? 'strong-signal' : ''}" onclick="window.location.href='index.html'">
+                    <div class="signal-card ${isStrong ? 'strong-signal' : ''}" data-company="${company.company}">
                         <div class="signal-card-header">
                             <div>
                                 <h3 class="company-name">${company.company}</h3>
@@ -677,8 +686,24 @@
                                 <div class="detail-value ${priceChangeClass}">${priceChangeText}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">${type === 'buy' ? '上昇' : '下落'}的中率</div>
-                                <div class="detail-value">${type === 'buy' ? stats.upAccuracy : stats.downAccuracy}%</div>
+                                <div class="detail-label">上昇的中率</div>
+                                <div class="detail-value">${upAccuracy}%</div>
+                            </div>
+                        </div>
+                        <div class="signal-details" style="margin-top: 0.5rem;">
+                            <div class="detail-item">
+                                <div class="detail-label">銘柄コード</div>
+                                <div class="detail-value">${ticker}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">下落的中率</div>
+                                <div class="detail-value">${downAccuracy}%</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">詳細を見る</div>
+                                <div class="detail-value" style="font-size: 0.8rem;">
+                                    <a href="${yahooUrl}" target="_blank" style="color: var(--accent); text-decoration: none;">Yahoo!ファイナンス</a>
+                                </div>
                             </div>
                         </div>
                         <div class="signal-reason">
@@ -687,6 +712,17 @@
                     </div>
                 `;
             }).join('');
+
+            // カードクリック時のイベント設定
+            container.querySelectorAll('.signal-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // リンククリック時はイベント伝播を止める
+                    if (e.target.tagName === 'A') return;
+                    const companyName = card.dataset.company;
+                    // URLエンコードして検索パラメータとして渡す
+                    window.location.href = `index.html?search=${encodeURIComponent(companyName)}`;
+                });
+            });
         }
 
         // 初期化

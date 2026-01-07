@@ -683,7 +683,21 @@
                 currentMetadata = data.metadata;
                 updateSectorMenu(allCompaniesData);
                 updateMarketSummary(allCompaniesData);
-                document.getElementById('status').innerHTML = '業種を選択して Ripples を探索してください。<br><small>または検索ボックスから企業を探せます。</small>';
+
+                // URLパラメータから検索クエリを取得
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('search');
+                if (searchQuery) {
+                    // 検索ボックスに値を設定
+                    document.getElementById('companySearch').value = searchQuery;
+                    // 検索結果を表示
+                    displayData({
+                        companies: allCompaniesData,
+                        metadata: currentMetadata
+                    });
+                } else {
+                    document.getElementById('status').innerHTML = '業種を選択して Ripples を探索してください。<br><small>または検索ボックスから企業を探せます。</small>';
+                }
             } else {
                 console.error('No companies data found');
                 document.getElementById('status').innerHTML =
