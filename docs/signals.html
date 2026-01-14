@@ -662,7 +662,7 @@
                 // 的中率を取得（score_evaluationから取得、なければ履歴から計算）
                 const accuracy = company.score_evaluation?.accuracy;
                 const upAccuracy = stats.upAccuracy !== '-' ? stats.upAccuracy : (accuracy ? accuracy.toFixed(1) : '-');
-                const downAccuracy = stats.downAccuracy !== '-' ? stats.downAccuracy : '-';
+                const downAccuracy = stats.downAccuracy !== '-' ? stats.downAccuracy : (accuracy ? accuracy.toFixed(1) : '-');
 
                 // Yahoo!ファイナンスへのリンク
                 const ticker = company.stock_info?.ticker || '';
