@@ -560,13 +560,24 @@
                         const res = await fetch(`data/history/${dateStr}.json`);
                         if (res.ok) {
                             const dayData = await res.json();
-                            historyData.push({ timestamp: dateStr, data: dayData });
+                            // 履歴ファイルは配列形式で、各要素が {timestamp, data} を持つ
+                            if (Array.isArray(dayData)) {
+                                // 配列の各エントリを展開して追加
+                                dayData.forEach(entry => {
+                                    if (entry && entry.data && entry.data.companies) {
+                                        historyData.push(entry);
+                                    }
+                                });
+                            } else if (dayData && dayData.companies) {
+                                // 旧形式対応: 直接companiesを持つ場合
+                                historyData.push({ timestamp: dateStr, data: dayData });
+                            }
                         }
                     } catch (e) {
                         console.warn(`Failed to load history for ${dateStr}`);
                     }
                 }
-                console.log('History data loaded:', historyData.length, 'days');
+                console.log('History data loaded:', historyData.length, 'entries');
                 return historyData;
             } catch (err) {
                 console.warn('Failed to load history index:', err);
